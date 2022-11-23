@@ -54,12 +54,12 @@ function NewListing() {
   }
 
   return (
-    <div style={{display: "flex", flexDirection: "column"}}>
+    <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
       <h1>Create a listing</h1>
 <Box
       component="form"
       sx={{
-        '& > :not(style)': { m: 1, width: '25ch' },
+        '& > :not(style)': { m: 1, width: '25ch' }, display: "flex", flexDirection: "column", alignItems: "center"
       }}
       noValidate
       autoComplete="off"
@@ -108,7 +108,7 @@ function NewListing() {
         {/* FANCIER DATE PICKER HERE IF WE HAVE TIME */}
         
          <input type="datetime-local" name="date" id="date" />
-         <Box sx={{border: "1px dashed grey", height: "4rem"}}>
+         <Box sx={{border: "1px dashed grey", height: "4rem", borderRadius: "6px"}}>
             <input style={{padding: "1rem"}}
         ref={uploadImageRef}
         type="file"
@@ -116,8 +116,8 @@ function NewListing() {
         onChange={onUpload} />
          </Box>
         
-        <Box sx={{backgroundColor: "#80CCFF", width: "70vw", height: "4rem", borderRadius: "6px", opacity: "60%"}}>
-          <h5 style={{padding: "1rem"}}>By adding this listing you agree with Chubby Dog's terms of use</h5>
+        <Box sx={{backgroundColor: "#80CCFF", width: "70vw", borderRadius: "6px", opacity: "60%"}}>
+          <h5 style={{ margin: "1rem"}}>By adding this listing you agree with Chubby Dog's terms of use</h5>
       
         </Box>
         <Button variant="contained" size='large'>Create listing</Button>
