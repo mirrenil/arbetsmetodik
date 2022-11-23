@@ -204,7 +204,7 @@ function NewListing() {
               By adding this listing you agree with Chubby Dog's terms of use
             </h5>
           </Box>
-          <Button type="submit" variant="contained" size="large">
+          <Button sx={{background: "#00C4BA"}} type="submit" variant="contained" size="large">
             Create listing
           </Button>
         </FormGroup>
