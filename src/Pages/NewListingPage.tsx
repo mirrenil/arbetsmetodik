@@ -100,8 +100,8 @@ function NewListing() {
   };
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -209,7 +209,7 @@ function NewListing() {
           </Button>
         </FormGroup>
       </Box>
-    </div>
+    </Box>
   );
 }
 
