@@ -108,16 +108,19 @@ function NewListing() {
         {/* FANCIER DATE PICKER HERE IF WE HAVE TIME */}
         
          <input type="datetime-local" name="date" id="date" />
-        <input
+         <Box sx={{border: "1px dashed grey", height: "4rem"}}>
+            <input style={{padding: "1rem"}}
         ref={uploadImageRef}
         type="file"
         accept='image/*'
         onChange={onUpload} />
-        <div style={{backgroundColor: "#80CCFF", width: "70vw", height: "3.5rem", borderRadius: "6px", opacity: "70%"}}>
-          <h5>By adding this listing you agree with Chubby Dog's terms of use</h5>
+         </Box>
+        
+        <Box sx={{backgroundColor: "#80CCFF", width: "70vw", height: "4rem", borderRadius: "6px", opacity: "60%"}}>
+          <h5 style={{padding: "1rem"}}>By adding this listing you agree with Chubby Dog's terms of use</h5>
       
-        </div>
-        <Button variant="contained">Create listing</Button>
+        </Box>
+        <Button variant="contained" size='large'>Create listing</Button>
     </Box>
     </div>
   );
