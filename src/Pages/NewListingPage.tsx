@@ -11,8 +11,8 @@ import { display } from "@mui/system";
 
 const categories = [
   {
-    value: "",
-    label: "",
+    value: "Select a category",
+    label: "Select a category",
   },
   {
     value: "Electronics",
@@ -34,8 +34,8 @@ const categories = [
 
 const locations = [
   {
-    value: "",
-    label: "",
+    value: "Select your location",
+    label: "Select your location",
   },
   {
     value: "Stockholm",
@@ -59,6 +59,7 @@ function NewListing() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState([]);
+  const [availability, setAvailability] = useState("");
   const listingsRef = collection(db, "listings");
   const navigate = useNavigate();
 
@@ -66,14 +67,14 @@ function NewListing() {
   const handleNewListing = async (event: FormEvent) => {
     event.preventDefault();
     console.log("hello test");
-      await addDoc(listingsRef, {
-        category,
-        title,
-        description,
-        price,
-        location,
-        createdAt: Timestamp.now().toDate(),
-      });
+    await addDoc(listingsRef, {
+      category,
+      title,
+      description,
+      price,
+      location,
+      createdAt: Timestamp.now().toDate(),
+    });
     console.log("New listing added");
     navigate("/");
   };
@@ -90,7 +91,7 @@ function NewListing() {
 
   const uploadpload = async (image: string[]) => {
     console.log(image);
- // prepare for upload
+    // prepare for upload
     // await image.forEach((image) => {
     //   const imageRef = ref(storage, `images/${image.name}`);
     //   uploadBytes(imageRef, image).then(() => {
@@ -100,7 +101,13 @@ function NewListing() {
 
   return (
     <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center", height: "100vh", margin: "auto" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100vh",
+        margin: "auto",
+      }}
     >
       <h1>Create a listing</h1>
       <Box
@@ -115,10 +122,9 @@ function NewListing() {
       >
         <FormGroup onSubmit={handleNewListing}>
           <TextField
-          sx={{marginBottom: "1rem"}}
+            sx={{ marginBottom: "1rem" }}
             id="outlined-select-category-native"
             select
-            label="Select a category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             SelectProps={{
@@ -132,14 +138,14 @@ function NewListing() {
             ))}
           </TextField>
           <TextField
-          sx={{marginBottom: "1rem"}}
+            sx={{ marginBottom: "1rem" }}
             id="outlined-basic"
             label="Title"
             variant="outlined"
             onChange={(e) => setTitle(e.target.value)}
           />
           <TextField
-          sx={{marginBottom: "1rem"}}
+            sx={{ marginBottom: "1rem" }}
             id="outlined-multiline-static"
             multiline
             rows={4}
@@ -147,10 +153,9 @@ function NewListing() {
             onChange={(e) => setDescription(e.target.value)}
           />
           <TextField
-          sx={{marginBottom: "1rem"}}
+            sx={{ marginBottom: "1rem" }}
             id="outlined-select-category-native"
             select
-            label="Select your location"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             SelectProps={{
@@ -164,7 +169,7 @@ function NewListing() {
             ))}
           </TextField>
           <TextField
-          sx={{marginBottom: "1rem"}}
+            sx={{ marginBottom: "1rem" }}
             id="outlined-basic"
             label="Price per day"
             variant="outlined"
@@ -172,26 +177,20 @@ function NewListing() {
           />
 
           {/* FANCIER DATE PICKER HERE IF WE HAVE TIME */}
-     
-          <input type="date" name="date" id="date" />
-         
-          <div
-            style={{
-              border: "1px dashed grey",
-              borderRadius: "6px",
-              margin: "1rem",
-            }}
-          >
-            <input
-              style={{ padding: "1rem" }}
-              type="file"
-              onChange={() => handleImage()}
-              name="image"
-              id="image"
-              accept="image/png, image/jpeg"
-              multiple
-            />
-          </div>
+          <TextField
+            sx={{ marginBottom: "1rem" }}
+            type="date"
+            id="outlined-basic"
+            variant="outlined"
+            defaultValue="2022-12-01"
+            onChange={(e) => setAvailability(e.target.value)}
+          />
+          <TextField
+            sx={{ marginBottom: "1rem" }}
+            type="file"
+            id="outlined-basic"
+            onChange={() => handleImage()}
+          />
 
           <Box
             sx={{
