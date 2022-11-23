@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Typography, Button, } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import { CSSProperties } from 'react';
 import { Facebook } from '@mui/icons-material';
 
@@ -33,7 +33,11 @@ function SignInPage() {
 					variant="outlined"
 					type="password"
 				/>
-				<Button color="primary" variant="contained" sx={{background: '#00C4BA' }}>
+				<Button
+					color="primary"
+					variant="contained"
+					sx={{ background: '#00C4BA' }}
+				>
 					Sign in
 				</Button>
 				<Typography variant="body1" align="center">
@@ -44,7 +48,12 @@ function SignInPage() {
 					Continue with Facebook
 				</Button>
 				<Button sx={buttonStyle} variant="outlined">
-					<img src={require('../Assets/gmail_logo.png')} alt="fireSpot" style={iconStyle} height="14px" />
+					<img
+						src={require('../Assets/gmail_logo.png')}
+						alt="fireSpot"
+						style={iconStyle}
+						height="14px"
+					/>
 					Continue with Gmail
 				</Button>
 			</Box>
@@ -57,11 +66,11 @@ const wrapper: CSSProperties = {
 };
 
 const buttonStyle: CSSProperties = {
-  display: 'flex',
-  textTransform: 'none',
-}
+	display: 'flex',
+	textTransform: 'none',
+};
 const iconStyle: CSSProperties = {
-  marginRight: '.5rem'
-}
+	marginRight: '.5rem',
+};
 
 export default SignInPage;
