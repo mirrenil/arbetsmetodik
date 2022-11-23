@@ -4,27 +4,26 @@ import TextField from '@mui/material/TextField';
 import { Typography, Button } from '@mui/material';
 import { CSSProperties } from 'react';
 import { Facebook } from '@mui/icons-material';
+import '../Assets/FormStyle.css'
 
 function SignInPage() {
 	return (
-		<div style={wrapper}>
+		<div className="wrapper">
 			<Typography variant="h4" align="center" mb={5}>
 				Welcome to Chubby Dog
 			</Typography>
 			<Box
 				component="form"
+				className="box"
 				sx={{
 					'& > :not(style)': { m: 1, width: '25ch' },
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
 				}}
 				noValidate
 				autoComplete="off"
 			>
 				<TextField
 					id="outlined-basic"
-					label="Email or username"
+					label="Email"
 					variant="outlined"
 				/>
 				<TextField
@@ -43,15 +42,15 @@ function SignInPage() {
 				<Typography variant="body1" align="center">
 					OR
 				</Typography>
-				<Button sx={buttonStyle} variant="contained">
-					<Facebook style={iconStyle} />
+				<Button className="buttonStyle" variant="contained">
+					<Facebook className="iconStyle" />
 					Continue with Facebook
 				</Button>
-				<Button sx={buttonStyle} variant="outlined">
+				<Button className="buttonStyle" variant="outlined">
 					<img
 						src={require('../Assets/gmail_logo.png')}
 						alt="fireSpot"
-						style={iconStyle}
+						className="iconStyle"
 						height="14px"
 					/>
 					Continue with Gmail
@@ -60,17 +59,5 @@ function SignInPage() {
 		</div>
 	);
 }
-
-const wrapper: CSSProperties = {
-	margin: '3rem',
-};
-
-const buttonStyle: CSSProperties = {
-	display: 'flex',
-	textTransform: 'none',
-};
-const iconStyle: CSSProperties = {
-	marginRight: '.5rem',
-};
 
 export default SignInPage;
