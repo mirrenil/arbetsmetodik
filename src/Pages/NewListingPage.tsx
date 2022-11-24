@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import { Button, FormControl, FormGroup, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { db, storage } from "../firebase";
+import { db } from "../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 interface Image {
