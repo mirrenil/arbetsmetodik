@@ -9,25 +9,43 @@ import RequestsPage from './Pages/RequestsPage';
 import SignInPage from './Pages/SignIn';
 import SignUpPage from './Pages/SignUp';
 import StartPage from './Pages/StartPage';
-import { createTheme, colors, ThemeProvider, } from '@mui/material';
+import { createTheme, colors, ThemeProvider } from '@mui/material';
 import { MuiResponsiveness } from './MuiResponsiveness';
 
 const theme = createTheme({
-  status: {
-    danger: '#ff0000',
-  },
+	status: {
+		danger: '#ff0000',
+	},
 	palette: {
-    primary: {
-      main: colors.teal[200],
-      darker: colors.teal[300]
-    },
+		primary: {
+			main: colors.teal[200],
+			darker: colors.teal[300],
+		},
 		secondary: {
 			main: colors.amber[600],
 		},
-    neutral: {
-      main: colors.grey[500],
-      darker: colors.grey[700]
-    }
+		neutral: {
+			main: colors.grey[500],
+			darker: colors.grey[700],
+		},
+	},
+	typography: {
+		body1: {
+			fontFamily: 'Raleway, Arial',
+			fontSize: 3,
+		},
+		h1: {
+			fontFamily: 'Roboto, Arial',
+			fontSize: 4,
+		},
+		h2: {
+			fontFamily: 'Inter, Arial',
+			fontSize: 4,
+		},
+	},
+	shape: {
+		buttonBorderRadius: '20px',
+		inputBorderRaduis: '40px',
 	},
 });
 
@@ -35,7 +53,7 @@ function App() {
 	return (
 		<div>
 			<ThemeProvider theme={theme}>
-      {/* <MuiResponsiveness /> */}
+				{/* <MuiResponsiveness /> */}
 				<BrowserRouter>
 					<Routes>
 						<Route path="/" element={<Layout />}>
