@@ -9,6 +9,7 @@ import RequestsPage from './Pages/RequestsPage';
 import SignInPage from './Pages/SignIn';
 import SignUpPage from './Pages/SignUp';
 import StartPage from './Pages/StartPage';
+import HowItWorks from './Pages/HowItWorks';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/profile/:id" element={<ProfilePage />} />
           <Route path="/newlisting" element={<NewListingPage/>  } />
           <Route path="/requests" element={<RequestsPage/>  } />
+          <Route path="/howItWorks" element={<HowItWorks/>  } />
         </Route>
         </Routes>
         </BrowserRouter>
