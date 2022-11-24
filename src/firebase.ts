@@ -1,15 +1,19 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCOPZjwknIFTXU1sm4-Mo1ByZYZE9QUf9k",
-  authDomain: "chubby-dog-d57a4.firebaseapp.com",
-  projectId: "chubby-dog-d57a4",
-  storageBucket: "chubby-dog-d57a4.appspot.com",
-  messagingSenderId: "373666821649",
-  appId: "1:373666821649:web:247866ed5447c6b38723b0",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const firestore = getFirestore(app);
+export const app = initializeApp(firebaseConfig);
+export const storage = getStorage(app);
+export const db = getFirestore(app);
+export const auth = getAuth(app);
