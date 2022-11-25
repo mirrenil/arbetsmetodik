@@ -3,7 +3,7 @@ import React from 'react';
 
 function ProfilePage() {
   return (
-    <div >
+    <div>
       <h1>Hey this is a profile page</h1>
     </div>
   );
