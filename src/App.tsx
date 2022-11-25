@@ -10,7 +10,7 @@ import SignInPage from './Pages/SignIn';
 import SignUpPage from './Pages/SignUp';
 import StartPage from './Pages/StartPage';
 import { createTheme, colors, ThemeProvider } from '@mui/material';
-import { MuiResponsiveness } from './MuiResponsiveness';
+import { TestComponent } from './MuiResponsiveness';
 
 const theme = createTheme({
 	status: {
@@ -53,7 +53,7 @@ function App() {
 	return (
 		<div>
 			<ThemeProvider theme={theme}>
-				{/* <MuiResponsiveness /> */}
+				<TestComponent />
 				<BrowserRouter>
 					<Routes>
 						<Route path="/" element={<Layout />}>
