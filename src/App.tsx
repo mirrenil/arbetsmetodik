@@ -44,8 +44,8 @@ const theme = createTheme({
 		},
 	},
 	shape: {
-		buttonBorderRadius: '20px',
-		inputBorderRaduis: '40px',
+		buttonBorderRadius: '6px',
+		inputBorderRaduis: '6px',
 	},
 });
 
@@ -53,7 +53,7 @@ function App() {
 	return (
 		<div>
 			<ThemeProvider theme={theme}>
-				{/* <MuiResponsiveness /> */}
+				<MuiResponsiveness />
 				<BrowserRouter>
 					<Routes>
 						<Route path="/" element={<Layout />}>
