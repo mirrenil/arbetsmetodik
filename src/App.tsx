@@ -27,22 +27,21 @@ const theme = createTheme({
 			main: colors.amber[600],
 		},
 		neutral: {
-			main: colors.grey[500],
-			darker: colors.grey[700],
+			main: colors.grey[700],
 		},
 	},
 	typography: {
 		body1: {
-			fontFamily: 'Monospace, Arial',
-			fontSize: 100,
+			fontFamily: 'Inter, Arial',
+			fontSize: 14,
 		},
 		h1: {
 			fontFamily: 'Roboto, Arial',
-			fontSize: 4,
+			fontSize: 20,
 		},
 		h2: {
 			fontFamily: 'Inter, Arial',
-			fontSize: 4,
+			fontSize: 18,
 		},
 	},
 	shape: {
