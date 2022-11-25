@@ -7,13 +7,15 @@ import { useAuth } from "../authContext";
 import GoogleButton from 'react-google-button';
 
 function SignUpPage() {
-  const { signup, registerEmail, setRegisterEmail, registerPassword, setRegisterPassword, googleSignIn } = useAuth();
+  const { signup, registerEmail, setRegisterEmail, registerPassword, setRegisterPassword, googleSignIn, passwordConfirmation, setPasswordConfirmation } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+	if (registerPassword !== passwordConfirmation)  return setError("Passwords do not match");
 
     try {
       setError("");
@@ -41,7 +43,6 @@ function SignUpPage() {
       <Typography variant="h4" align="center" mb={5}>
         New to Chubby Dog?
       </Typography>
-	  {error && <Alert variant="outlined">{error}</Alert>}
       <Box
         component="form"
         className="box"
@@ -59,8 +60,8 @@ function SignUpPage() {
           required
           onChange={(e) => setRegisterEmail(e.target.value)}
         />
-        <TextField id="outlined-basic" label="Firstname" variant="outlined" />
-        <TextField id="outlined-basic" label="Lastname" variant="outlined" />
+        <TextField id="outlined-basic" label="First name" variant="outlined" />
+        <TextField id="outlined-basic" label="Last name" variant="outlined" />
         <TextField
           id="outlined-basic"
           label="Password"
@@ -69,6 +70,15 @@ function SignUpPage() {
           required
           onChange={(e) => setRegisterPassword(e.target.value)}
         />
+		<TextField
+          id="outlined-basic"
+          label="Password confirmation"
+          variant="outlined"
+          type="password"
+          required
+          onChange={(e) => setPasswordConfirmation(e.target.value)}
+        />
+		  {error && <Alert severity="error">{error}</Alert>}
         <Button
           type="submit"
           color="primary"

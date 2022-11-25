@@ -20,10 +20,9 @@ function SignInPage() {
 
 		try {
 		await login(loginEmail, loginPassword);
-		console.log("login successful");
 		navigate("/profile");
 		} catch (error) {
-			console.log("login failed" + error);
+			console.error("login failed" + error);
 			
 		setError("Failed to sign in");
 		}

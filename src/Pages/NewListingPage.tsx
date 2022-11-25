@@ -41,7 +41,6 @@ export default function NewListing() {
   const navigate = useNavigate();
 
   const handleNewListing = async (event: FormEvent) => {
-    console.log("handleNewListing started");
     event.preventDefault();
     try {
       const docRef = await addDoc(listingsRef, {
@@ -51,7 +50,6 @@ export default function NewListing() {
         price,
         createdAt: Timestamp.now(),
       });
-      console.log("Document written with ID: ", docRef.id);
       navigate("/");
     } catch (error) {
     console.error("Error adding document: ", error);

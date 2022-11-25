@@ -32,6 +32,8 @@ interface AuthContext {
   loginPassword: string;
   setLoginPassword: (password: string) => void;
   googleSignIn: () => void;
+  passwordConfirmation: string;
+  setPasswordConfirmation: (password: string) => void;
 }
 
 export const AuthContext = createContext<AuthContext>({
@@ -48,6 +50,8 @@ export const AuthContext = createContext<AuthContext>({
   loginPassword: "",
   setLoginPassword: () => Promise,
   googleSignIn: () => Promise,
+  passwordConfirmation: "",
+  setPasswordConfirmation: () => Promise,
 });
 
 export function useAuth() {
@@ -60,6 +64,7 @@ export function AuthProvider(props: any) {
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -80,7 +85,6 @@ export function AuthProvider(props: any) {
         registerEmail,
         registerPassword
       );
-      console.log(user);
     } catch (error) {
       console.error(error);
     }
@@ -94,7 +98,6 @@ export function AuthProvider(props: any) {
         loginPassword
       );
       setCurrentUser(currentUser);
-      console.log(user);
     } catch (error) {
       console.error(error);
     }
@@ -125,6 +128,8 @@ export function AuthProvider(props: any) {
         loginPassword,
         setLoginPassword,
         googleSignIn,
+        passwordConfirmation,
+        setPasswordConfirmation,
       }}
     >
        {props.children}
