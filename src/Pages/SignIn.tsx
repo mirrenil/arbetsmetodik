@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Typography, Button, Alert } from '@mui/material';
@@ -6,6 +6,7 @@ import { Facebook } from '@mui/icons-material';
 import '../Assets/FormStyle.css'
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../authContext";
+
 
 function SignInPage() {
 	const emailRef = useRef(null);
@@ -60,15 +61,11 @@ function SignInPage() {
 					label="Password"
 					variant="outlined"
 					type="password"
-					required
-					ref={passwordRef}
-					onChange={(e) => setLoginPassword(e.target.value)}
 				/>
 				<Button
 					color="primary"
 					variant="contained"
 					sx={{ background: '#00C4BA' }}
-					onClick={handleSubmit}
 				>
 					Sign in
 				</Button>
