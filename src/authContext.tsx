@@ -17,10 +17,14 @@ interface User {
 }
 
 interface AuthContext {
-  signup: ({}) => Promise<any>;
-  login: ({}) => Promise<any>;
+  signup: (email: string, password: string) => Promise<any>;
+  login: (email: string, password: string) => Promise<any>;
   logout: () => void;
   currentUser?: User;
+  setRegisterEmail: (email: string) => void;
+  setRegisterPassword: (password: string) => void;
+  setLoginEmail: (email: string) => void;
+  setLoginPassword: (password: string) => void;
 }
 
 export const AuthContext = createContext<AuthContext>({
@@ -28,6 +32,10 @@ export const AuthContext = createContext<AuthContext>({
   login: async () => {},
   logout: () => {},
   currentUser: undefined,
+  setRegisterEmail: () => Promise,
+  setRegisterPassword: () => Promise,
+  setLoginEmail: () => Promise,
+  setLoginPassword: () => Promise,
 });
 
 export function useAuth() {
@@ -92,6 +100,10 @@ export function AuthProvider(props: any) {
         login,
         logout,
         currentUser,
+        setRegisterEmail,
+        setRegisterPassword,
+        setLoginEmail,
+        setLoginPassword,
       }}
     >
        {props.children}
