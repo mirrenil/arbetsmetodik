@@ -11,6 +11,8 @@ import SignUpPage from './Pages/SignUp';
 import StartPage from './Pages/StartPage';
 import { createTheme, colors, ThemeProvider } from '@mui/material';
 import { TestComponent } from './MuiResponsiveness';
+import AuthProvider from './authContext';
+import HowItWorks from './Pages/HowItWorks';
 
 const theme = createTheme({
 	status: {
@@ -52,6 +54,7 @@ const theme = createTheme({
 function App() {
 	return (
 		<div>
+			  <AuthProvider>
 			<ThemeProvider theme={theme}>
 				<TestComponent />
 				<BrowserRouter>
@@ -65,10 +68,12 @@ function App() {
 							<Route path="/profile/:id" element={<ProfilePage />} />
 							<Route path="/newlisting" element={<NewListingPage />} />
 							<Route path="/requests" element={<RequestsPage />} />
+							<Route path="/howItWorks" element={<HowItWorks/>  } />
 						</Route>
 					</Routes>
 				</BrowserRouter>
 			</ThemeProvider>
+			</AuthProvider>
 		</div>
 	);
 }
