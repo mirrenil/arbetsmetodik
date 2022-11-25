@@ -6,12 +6,13 @@ import { Facebook } from '@mui/icons-material';
 import '../Assets/FormStyle.css'
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../authContext";
+import GoogleButton from 'react-google-button';
 
 
 function SignInPage() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-	const { login, setLoginEmail, setLoginPassword } = useAuth();
+	const { login, setLoginEmail, setLoginPassword, googleSignIn} = useAuth();
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
@@ -31,6 +32,15 @@ function SignInPage() {
 		setLoading(false);
 	};
 
+	const handleGoogleSignIn = (e: FormEvent) => {
+		e.preventDefault();
+		try {
+			googleSignIn();
+			navigate("/profile");
+		} catch (error) {
+			console.error(error);
+		}
+	};
 	
 	return (
 		<div className="wrapper">
@@ -61,6 +71,9 @@ function SignInPage() {
 					label="Password"
 					variant="outlined"
 					type="password"
+					required
+					ref={passwordRef}
+					onChange={(e) => setLoginPassword(e.target.value)}
 				/>
 				<Button
 					color="primary"
@@ -76,15 +89,7 @@ function SignInPage() {
 					<Facebook className="iconStyle" />
 					Continue with Facebook
 				</Button> 
-				<Button className="buttonStyle" variant="outlined">
-					<img
-						src={require('../Assets/gmail_logo.png')}
-						alt="fireSpot"
-						className="iconStyle"
-						height="14px"
-					/>
-					Continue with Gmail
-				</Button>
+				<GoogleButton onClick={handleGoogleSignIn}/>
 			</Box>
 		</div>
 	);

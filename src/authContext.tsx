@@ -10,6 +10,8 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 
 interface User {
@@ -25,6 +27,7 @@ interface AuthContext {
   setRegisterPassword: (password: string) => void;
   setLoginEmail: (email: string) => void;
   setLoginPassword: (password: string) => void;
+  googleSignIn: () => void;
 }
 
 export const AuthContext = createContext<AuthContext>({
@@ -36,6 +39,7 @@ export const AuthContext = createContext<AuthContext>({
   setRegisterPassword: () => Promise,
   setLoginEmail: () => Promise,
   setLoginPassword: () => Promise,
+  googleSignIn: () => Promise,
 });
 
 export function useAuth() {
@@ -56,6 +60,10 @@ export function AuthProvider(props: any) {
       return unsubscribe;
     }, [onAuthStateChanged]);
  
+  const googleSignIn = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider);
+  };
 
   const signup = async () => {
     try {
@@ -104,6 +112,7 @@ export function AuthProvider(props: any) {
         setRegisterPassword,
         setLoginEmail,
         setLoginPassword,
+        googleSignIn,
       }}
     >
        {props.children}
