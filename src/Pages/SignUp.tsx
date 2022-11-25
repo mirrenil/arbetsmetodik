@@ -1,9 +1,9 @@
-import { Facebook } from "@mui/icons-material";
-import { Typography, Box, TextField, Button, Alert } from "@mui/material";
-import React, { FormEvent, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../Assets/FormStyle.css";
-import { useAuth } from "../authContext";
+import { Facebook } from '@mui/icons-material';
+import { Typography, Box, TextField, Button, Alert } from '@mui/material';
+import React, { FormEvent, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../Assets/FormStyle.css';
+import { useAuth } from '../authContext';
 import GoogleButton from 'react-google-button';
 
 function SignUpPage() {
@@ -12,8 +12,8 @@ function SignUpPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+	const handleSubmit = async (e: FormEvent) => {
+		e.preventDefault();
 
 	if (registerPassword !== passwordConfirmation)  return setError("Passwords do not match");
 
@@ -28,11 +28,11 @@ function SignUpPage() {
     setLoading(false);
   };
 
-  	const handleGoogleSignIn = (e: FormEvent) => {
+	const handleGoogleSignIn = (e: FormEvent) => {
 		e.preventDefault();
 		try {
 			googleSignIn();
-			navigate("/profile");
+			navigate('/profile');
 		} catch (error) {
 			console.error(error);
 		}
