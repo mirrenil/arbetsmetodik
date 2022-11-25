@@ -4,11 +4,10 @@ import React, { FormEvent, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../authContext";
+import GoogleButton from 'react-google-button';
 
 function SignUpPage() {
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
-  const { signup, setRegisterEmail, setRegisterPassword } = useAuth();
+  const { signup, registerEmail, setRegisterEmail, registerPassword, setRegisterPassword, googleSignIn } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -16,20 +15,27 @@ function SignUpPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (passwordRef.current?.value !== passwordRef.current?.value) {
-      return alert("Passwords do not match");
-    }
-
     try {
       setError("");
       setLoading(true);
-      await signup(emailRef.current?.value, passwordRef.current?.value);
+      await signup(registerEmail, registerPassword);
       navigate("/");
     } catch (error) {
       setError("Failed to create an account");
     }
     setLoading(false);
   };
+
+  	const handleGoogleSignIn = (e: FormEvent) => {
+		e.preventDefault();
+		try {
+			googleSignIn();
+			navigate("/profile");
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
   return (
     <div>
       <Typography variant="h4" align="center" mb={5}>
@@ -51,7 +57,6 @@ function SignUpPage() {
           label="Email"
           variant="outlined"
           required
-          ref={emailRef}
           onChange={(e) => setRegisterEmail(e.target.value)}
         />
         <TextField id="outlined-basic" label="Firstname" variant="outlined" />
@@ -62,7 +67,6 @@ function SignUpPage() {
           variant="outlined"
           type="password"
           required
-          ref={passwordRef}
           onChange={(e) => setRegisterPassword(e.target.value)}
         />
         <Button
@@ -81,15 +85,7 @@ function SignUpPage() {
           <Facebook className="iconStyle" />
           Continue with Facebook
         </Button>
-        <Button variant="outlined" className="buttonStyle">
-          <img
-            src={require("../Assets/gmail_logo.png")}
-            alt="fireSpot"
-            className="iconStyle"
-            height="14px"
-          />
-          Continue with Gmail
-        </Button>
+        <GoogleButton onClick={handleGoogleSignIn}/>
       </Box>
     </div>
   );

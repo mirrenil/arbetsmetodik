@@ -23,9 +23,13 @@ interface AuthContext {
   login: (email: string, password: string) => Promise<any>;
   logout: () => void;
   currentUser?: User;
+  registerEmail: string;
   setRegisterEmail: (email: string) => void;
+  registerPassword: string;
   setRegisterPassword: (password: string) => void;
+  loginEmail: string;
   setLoginEmail: (email: string) => void;
+  loginPassword: string;
   setLoginPassword: (password: string) => void;
   googleSignIn: () => void;
 }
@@ -35,9 +39,13 @@ export const AuthContext = createContext<AuthContext>({
   login: async () => {},
   logout: () => {},
   currentUser: undefined,
+  registerEmail: "",
   setRegisterEmail: () => Promise,
+  registerPassword: "",
   setRegisterPassword: () => Promise,
+  loginEmail: "",
   setLoginEmail: () => Promise,
+  loginPassword: "",
   setLoginPassword: () => Promise,
   googleSignIn: () => Promise,
 });
@@ -108,9 +116,13 @@ export function AuthProvider(props: any) {
         login,
         logout,
         currentUser,
+        registerEmail,
         setRegisterEmail,
+        registerPassword,
         setRegisterPassword,
+        loginEmail,
         setLoginEmail,
+        loginPassword,
         setLoginPassword,
         googleSignIn,
       }}

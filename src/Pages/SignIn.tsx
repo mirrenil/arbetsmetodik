@@ -10,9 +10,7 @@ import GoogleButton from 'react-google-button';
 
 
 function SignInPage() {
-	const emailRef = useRef(null);
-	const passwordRef = useRef(null);
-	const { login, setLoginEmail, setLoginPassword, googleSignIn} = useAuth();
+	const { login, loginEmail, setLoginEmail, loginPassword, setLoginPassword, googleSignIn} = useAuth();
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
@@ -21,7 +19,7 @@ function SignInPage() {
 		e.preventDefault();
 
 		try {
-		await login(emailRef.current?.value, passwordRef.current?.value);
+		await login(loginEmail, loginPassword);
 		console.log("login successful");
 		navigate("/profile");
 		} catch (error) {
@@ -63,7 +61,6 @@ function SignInPage() {
 					label="Email"
 					variant="outlined"
 					required
-					ref={emailRef}
 					onChange={(e) => setLoginEmail(e.target.value)}
 				/>
 				<TextField
@@ -72,13 +69,13 @@ function SignInPage() {
 					variant="outlined"
 					type="password"
 					required
-					ref={passwordRef}
 					onChange={(e) => setLoginPassword(e.target.value)}
 				/>
 				<Button
 					color="primary"
 					variant="contained"
 					sx={{ background: '#00C4BA' }}
+					onClick={handleSubmit}
 				>
 					Sign in
 				</Button>
