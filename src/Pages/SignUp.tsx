@@ -27,6 +27,12 @@ function SignUpPage() {
 					variant="outlined"
 					type="password"
 				/>
+				<TextField
+					id="outlined-basic"
+					label="Confirm password"
+					variant="outlined"
+					type="password"
+				/>
 				<Button
 					color="primary"
 					variant="contained"
