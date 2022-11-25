@@ -1,3 +1,4 @@
+
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthProvider from "./authContext";
@@ -10,10 +11,12 @@ import RequestsPage from "./Pages/RequestsPage";
 import SignInPage from "./Pages/SignIn";
 import SignUpPage from "./Pages/SignUp";
 import StartPage from "./Pages/StartPage";
+import HowItWorks from './Pages/HowItWorks';
 
 function App() {
   return (
     <div>
+
       <AuthProvider>
         <BrowserRouter>
           <Routes>
@@ -26,8 +29,10 @@ function App() {
               <Route path="/profile/:id" element={<ProfilePage />} />
               <Route path="/newlisting" element={<NewListingPage />} />
               <Route path="/requests" element={<RequestsPage />} />
+              <Route path="/howItWorks" element={<HowItWorks/>  } />
             </Route>
           </Routes>
+
         </BrowserRouter>
       </AuthProvider>
     </div>
