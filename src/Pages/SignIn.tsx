@@ -44,7 +44,6 @@ function SignInPage() {
 			<Typography variant="h4" align="center" mb={5}>
 				Welcome to Chubby Dog
 			</Typography>
-			 {error && <Alert variant="outlined">{error}</Alert>}
 			<Box
 				component="form"
 				className="box"
@@ -70,6 +69,7 @@ function SignInPage() {
 					required
 					onChange={(e) => setLoginPassword(e.target.value)}
 				/>
+        	 {error && <Alert severity="error">{error}</Alert>}
 				<Button
 					color="primary"
 					variant="contained"

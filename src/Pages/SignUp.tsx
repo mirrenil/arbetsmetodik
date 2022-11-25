@@ -86,7 +86,7 @@ function SignUpPage() {
           sx={{ background: "#00C4BA" }}
           className="buttonStyle"
         >
-          Sign in
+          Sign up
         </Button>
         <Typography variant="body1" align="center">
           OR
