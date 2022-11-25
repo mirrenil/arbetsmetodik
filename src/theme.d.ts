@@ -6,22 +6,23 @@ declare module '@mui/material/styles' {
 		status: {
 			danger: string;
 		};
-    shape: {
-      buttonBorderRadius?: string
-      inputBorderRaduis: string
-    },
+		shape: {
+			buttonBorderRadius?: string;
+			inputBorderRaduis: string;
+		};
 	}
 	interface ThemeOptions {
 		status: {
 			danger: React.CSSProperties['color'];
 		};
-    shape: {
-      buttonBorderRadius?: React.CSSProperties['border-radius'],
-      inputBorderRaduis: React.CSSProperties['border-radius']
-    }
+		shape: {
+			buttonBorderRadius?: React.CSSProperties['border-radius'];
+			inputBorderRaduis: React.CSSProperties['border-radius'];
+		};
 	}
 	interface Palette {
 		neutral?: PaletteColor;
+    primary?: PaletteColor;
 	}
 	interface PaletteOptions {
 		neutral?: PaletteColorOptions;

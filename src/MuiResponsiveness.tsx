@@ -1,19 +1,28 @@
 import { Box, styled, Typography } from '@mui/material';
 import { typography } from '@mui/system';
+import { useTheme } from '@emotion/react';
 
-const StyledBox = styled(Box)(({ theme }) => ({
+// Orange
+const BoxOne = styled(Box)(({ theme }) => ({
 	height: '250px',
 	width: '250px',
-	backgroundColor: theme.palette.primary.darker,
-  borderRadius: theme.shape.buttonBorderRadius
+	backgroundColor: theme.palette.secondary.main,
+	borderRadius: theme.shape.buttonBorderRadius,
 }));
 
-export const MuiResponsiveness = () => {
+//Blå
+const BoxTwo = styled(Box)(({ theme }) => ({
+	height: '250px',
+	backgroundColor: theme.palette.primary.main,
+	borderRadius: theme.shape.buttonBorderRadius,
+}));
+
+export const TestComponent = () => {
 	return (
 		<>
-			<Box
+			<BoxOne />
+			<BoxTwo
 				sx={{
-					height: '300px',
 					width: {
 						xs: 100,
 						sm: 200,
@@ -21,10 +30,8 @@ export const MuiResponsiveness = () => {
 						lg: 400,
 						xl: 500,
 					},
-					bgcolor: 'secondary.light',
 				}}
-			></Box>
-      <StyledBox />
+			/>
 		</>
 	);
 };
