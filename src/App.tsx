@@ -53,7 +53,7 @@ function App() {
 	return (
 		<div>
 			<ThemeProvider theme={theme}>
-				<MuiResponsiveness />
+				{/* <MuiResponsiveness /> */}
 				<BrowserRouter>
 					<Routes>
 						<Route path="/" element={<Layout />}>
