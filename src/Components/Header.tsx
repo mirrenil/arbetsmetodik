@@ -34,7 +34,9 @@ const Header = () => {
     <Box sx={navBox}>
       <Box sx={navBoxInnerMobile}>
       <Box sx={logo}>
+        <Link to='/'>
         <Avatar alt="Logo" src={logoImg} sx={logoImgStyle}/>
+        </Link>
       </Box>
       <Box>
         <Box sx={naveItems}>
@@ -158,18 +160,21 @@ const Header = () => {
 }
  
 const navBox: SxProps = {
-  height: { xs: '100px', md: '100px', lg: '200px', xl: '500px' },
+  height: { xs: '100px', md: '550px', lg: '550px', xl: '550px' },
   width: '100%',
   display: 'flex',
   alignItems: 'center',
   userSelect: 'none',
+  zIndex: '3',
 }
 const navBoxInnerMobile: SxProps = {
   width: '100%',
   display: { xs: 'flex', md:'none', lg: 'none', xl: 'none' },
   alignItems: 'center',
   justifyContent: 'space-between',
-  borderBottom: '1px solid black',
+  zIndex: '3',
+  backgroundColor: '#ffffff'
+
 }
 const naveItems: SxProps = {
   width: '150px',
@@ -198,7 +203,7 @@ const mobileMenuList: SxProps = {
   right: '0',
   top: '100px',
   borderLeft: '1px solid black',
- 
+  backgroundColor: '#ffffff'
 }
 const naveItem: SxProps = {
  marginTop: '1em',
@@ -255,7 +260,7 @@ const searchBox: SxProps = {
 
 
 const mainLogoDiv: SxProps = {
-  width: '100%',
+  // width: '100%',
   display: { xs: 'none', md:'flex', lg: 'flex', xl: 'flex' },
   position: 'absolute',
   top: '200px',
