@@ -10,6 +10,8 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 
 interface User {
@@ -17,10 +19,21 @@ interface User {
 }
 
 interface AuthContext {
-  signup: ({}) => Promise<any>;
-  login: ({}) => Promise<any>;
+  signup: (email: string, password: string) => Promise<any>;
+  login: (email: string, password: string) => Promise<any>;
   logout: () => void;
   currentUser?: User;
+  registerEmail: string;
+  setRegisterEmail: (email: string) => void;
+  registerPassword: string;
+  setRegisterPassword: (password: string) => void;
+  loginEmail: string;
+  setLoginEmail: (email: string) => void;
+  loginPassword: string;
+  setLoginPassword: (password: string) => void;
+  googleSignIn: () => void;
+  passwordConfirmation: string;
+  setPasswordConfirmation: (password: string) => void;
 }
 
 export const AuthContext = createContext<AuthContext>({
@@ -28,6 +41,17 @@ export const AuthContext = createContext<AuthContext>({
   login: async () => {},
   logout: () => {},
   currentUser: undefined,
+  registerEmail: "",
+  setRegisterEmail: () => Promise,
+  registerPassword: "",
+  setRegisterPassword: () => Promise,
+  loginEmail: "",
+  setLoginEmail: () => Promise,
+  loginPassword: "",
+  setLoginPassword: () => Promise,
+  googleSignIn: () => Promise,
+  passwordConfirmation: "",
+  setPasswordConfirmation: () => Promise,
 });
 
 export function useAuth() {
@@ -40,6 +64,7 @@ export function AuthProvider(props: any) {
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -48,6 +73,10 @@ export function AuthProvider(props: any) {
       return unsubscribe;
     }, [onAuthStateChanged]);
  
+  const googleSignIn = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider);
+  };
 
   const signup = async () => {
     try {
@@ -56,7 +85,6 @@ export function AuthProvider(props: any) {
         registerEmail,
         registerPassword
       );
-      console.log(user);
     } catch (error) {
       console.error(error);
     }
@@ -70,7 +98,6 @@ export function AuthProvider(props: any) {
         loginPassword
       );
       setCurrentUser(currentUser);
-      console.log(user);
     } catch (error) {
       console.error(error);
     }
@@ -92,6 +119,17 @@ export function AuthProvider(props: any) {
         login,
         logout,
         currentUser,
+        registerEmail,
+        setRegisterEmail,
+        registerPassword,
+        setRegisterPassword,
+        loginEmail,
+        setLoginEmail,
+        loginPassword,
+        setLoginPassword,
+        googleSignIn,
+        passwordConfirmation,
+        setPasswordConfirmation,
       }}
     >
        {props.children}

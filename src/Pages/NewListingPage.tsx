@@ -4,10 +4,6 @@ import { Button, FormControl, FormGroup, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
-import { ref, uploadBytes } from "firebase/storage";
-interface Image {
-  File: [];
-}
 
 const categories = [
   {
@@ -37,11 +33,11 @@ export default function NewListing() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [image, setImage] = useState("");
   const listingsRef = collection(db, "listings");
   const navigate = useNavigate();
 
   const handleNewListing = async (event: FormEvent) => {
-    console.log("handleNewListing started");
     event.preventDefault();
     try {
       const docRef = await addDoc(listingsRef, {
@@ -49,9 +45,9 @@ export default function NewListing() {
         title,
         description,
         price,
+        image,
         createdAt: Timestamp.now(),
       });
-      console.log("Document written with ID: ", docRef.id);
       navigate("/");
     } catch (error) {
     console.error("Error adding document: ", error);
@@ -119,6 +115,13 @@ export default function NewListing() {
             label="Price per day"
             variant="outlined"
             onChange={(e) => setPrice(e.target.value)}
+          />
+          <TextField
+            sx={{ marginBottom: "1rem" }}
+            id="outlined-basic"
+            label="Image url"
+            variant="outlined"
+            onChange={(e) => setImage(e.target.value)}
           />
           <Box
             sx={{

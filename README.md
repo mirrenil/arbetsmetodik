@@ -1,4 +1,3 @@
-
 Grupprojekt-Arbetsmetodik
 Uthyrningsplattform
 
@@ -19,3 +18,23 @@ Man ska kunna besöka en uthyrares profilsida och se alla dess annonser
 Det ska finnas ett system för kategorisering av annonserna
 
 Plattformen ska vara responsiv (men teamet bör ta med i beräkningen att användarna förväntas att främst vilja använda mobilversionen.)
+
+## PR structure:
+
+### Detail with what was changed,
+
+### why it was changed,
+
+### and how it was changed.
+
+## Please also remove:
+
+### - unused dependencies from package.json
+
+### - console.log
+
+### - unnecessary white space
+
+### - remove unused code
+
+### - connect issue to PR
