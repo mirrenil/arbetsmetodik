@@ -1,19 +1,16 @@
 import { Box, SxProps, Typography } from '@mui/material';
-import { getDocs, collection } from 'firebase/firestore';
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import  {APIContext }  from "../Contexts/ItemContext";
 
-import { db } from '../firebase';
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Link, useParams } from 'react-router-dom';
 
 const RecentlyAdded = () => {
-  const [id, setID] = useState('')
   const ctx = useContext(APIContext);
   const allItems = ctx.items
   const items = allItems.slice(0, 6)
-  console.log('itemId', id);
-  
+  let { id } = useParams();  
   useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -33,12 +30,14 @@ const RecentlyAdded = () => {
               data-aos-delay= '100'
               >
               {items.map((item: any) =>
+            
                 <Box 
                 sx={itemDiv} 
                 key={item.id}
-                onClick={() => setID(item.id) }
+                // onClick={() => setID(item.id) }
                 >
-                  <Box sx={imgBox}>
+                    <Link to={item.id}>
+                    <Box sx={imgBox}>
                   <Box
                       component="img"
                       sx={{
@@ -53,7 +52,9 @@ const RecentlyAdded = () => {
                       <Box sx={infoBox}>
                         <Typography>  {item.title}</Typography>
                         <Typography>{item.price + '/day'}</Typography>
-                      </Box>   
+                      </Box>  
+              </Link>
+                  
                 </Box>
               )}
 

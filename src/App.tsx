@@ -61,7 +61,7 @@ function App() {
 						<Routes>
 							<Route path="/" element={<Layout />}>
 								<Route index element={<StartPage />} />
-								<Route path="/detail/:id" element={<DetailPage />} />
+								<Route path=":itemId" element={<DetailPage />} />
 								<Route path="/category/:id" element={<CategoryPage />} />
 								<Route path="/signup" element={<SignUpPage />} />
 								<Route path="/signin" element={<SignInPage />} />

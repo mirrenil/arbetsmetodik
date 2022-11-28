@@ -1,10 +1,11 @@
 import React from 'react';
+import ItemCard from '../Components/ItemCard';
 
 
 function DetailPage() {
   return (
     <div>
-      <h1>Hey this is a detail page</h1>
+    <ItemCard />
     </div>
   );
 }
