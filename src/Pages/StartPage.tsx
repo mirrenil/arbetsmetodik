@@ -5,10 +5,10 @@ import CategoryCard from '../Components/CategoryCard'
 import { getDocs, collection } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { db } from '../firebase';
-
-function StartPage() {
+import { Box, SxProps } from '@mui/material';
+const StartPage: React.FC = (props) => {
   const [categories, setCategories] = useState<any[]>([]);
-  const [categoriesId, setCategoriesId] = useState('')
+  
   useEffect(() => {
     const fetchCategories = async () => {
       let dataWithId: any[] = []
@@ -23,19 +23,24 @@ function StartPage() {
     }
     fetchCategories()
   }, [])
-console.log('categoriesId', categoriesId);
   return (
     < >
       {/* Header will go here from layout */}
      <StartPageHero/>
-     <CategoryCard {...[categories]} x={setCategoriesId}/>
+     <CategoryCard 
+     {...[categories]} 
+     />
      <RecentlyAdded/>
+     <Box sx={startPageInfoBox}>
      <StartPageInfo/>
+     </Box>
       {/* Footer will go here from layout */}
     </>
   );
 }
-
+const startPageInfoBox: SxProps = {
+  display: { xs: 'none', md:'block', lg: 'block', xl: 'block' },
+}
 
 
 export default StartPage;
