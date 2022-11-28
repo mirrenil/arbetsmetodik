@@ -4,23 +4,22 @@ import TextField from '@mui/material/TextField';
 import { Typography, Button, Alert } from '@mui/material';
 import { Facebook } from '@mui/icons-material';
 import '../Assets/FormStyle.css'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from "../authContext";
 import GoogleButton from 'react-google-button';
 
 
 function SignInPage() {
-	const { login, loginEmail, setLoginEmail, loginPassword, setLoginPassword, googleSignIn} = useAuth();
+	const { currentUser, login, loginEmail, setLoginEmail, loginPassword, setLoginPassword, googleSignIn} = useAuth();
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
-
 		try {
 		await login(loginEmail, loginPassword);
-		navigate("/profile");
+		navigate("/");
 		} catch (error) {
 			console.error("login failed" + error);
 			
@@ -33,7 +32,7 @@ function SignInPage() {
 		e.preventDefault();
 		try {
 			googleSignIn();
-			navigate("/profile");
+			navigate("/");
 		} catch (error) {
 			console.error(error);
 		}
@@ -44,7 +43,11 @@ function SignInPage() {
 			<Typography variant="h4" align="center" mb={5}>
 				Welcome to Chubby Dog
 			</Typography>
-			<Box
+			{ currentUser ? (
+				<p> Already logged in</p>
+				
+			): (
+				<Box
 				component="form"
 				className="box"
 				sx={{
@@ -86,7 +89,13 @@ function SignInPage() {
 					Continue with Facebook
 				</Button> 
 				<GoogleButton onClick={handleGoogleSignIn}/>
+				<Link to="/signup">
+				<Typography>Don't have an account? Sign up here!</Typography>
+				</Link>
+				
 			</Box>
+			)}
+			
 		</div>
 	);
 }

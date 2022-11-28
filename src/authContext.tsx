@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { auth } from "./firebase";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -12,18 +6,16 @@ import {
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
+  getAuth,
+  UserInfo,
 } from "firebase/auth";
-
-interface User {
-  displayName?: string;
-  email: string;
-}
+import { auth } from "./firebase";
 
 interface AuthContext {
   signup: (email: string, password: string) => Promise<any>;
   login: (email: string, password: string) => Promise<any>;
-  logout: () => void;
-  currentUser?: User;
+  logout: (value: boolean) => void;
+  currentUser?: UserInfo;
   registerEmail: string;
   setRegisterEmail: (email: string) => void;
   registerPassword: string;
@@ -40,7 +32,7 @@ interface AuthContext {
 export const AuthContext = createContext<AuthContext>({
   signup: async () => {},
   login: async () => {},
-  logout: () => {},
+  logout: (value: boolean) => {},
   currentUser: undefined,
   registerEmail: "",
   setRegisterEmail: () => Promise,
@@ -59,8 +51,8 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-export function AuthProvider(props: any) {
-  const [currentUser, setCurrentUser] = useState<User | null>();
+export function AuthProvider({ children }: any) {
+  const [currentUser, setCurrentUser] = useState<UserInfo>();
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -69,11 +61,11 @@ export function AuthProvider(props: any) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log(currentUser)
-      });
-      return unsubscribe;
-    }, [onAuthStateChanged]);
- 
+      setCurrentUser(currentUser as UserInfo);
+    });
+    return unsubscribe;
+  }, [onAuthStateChanged]);
+
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider);
@@ -86,6 +78,7 @@ export function AuthProvider(props: any) {
         registerEmail,
         registerPassword
       );
+      setCurrentUser(user.user);
     } catch (error) {
       console.error(error);
     }
@@ -93,25 +86,22 @@ export function AuthProvider(props: any) {
 
   const login = async () => {
     try {
-       await signInWithEmailAndPassword(
-        auth,
-        loginEmail,
-        loginPassword
-      );
-      setCurrentUser(auth.currentUser?.email)
+      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      setCurrentUser(currentUser);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const logout = async () => {
-    try {
-      await signOut(auth);
-      setCurrentUser(undefined);
-      console.log(currentUser)
-    } catch (error) {
-      console.error(error);
-    }
+  const logout = async (value: boolean) => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        setCurrentUser(undefined);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -134,7 +124,7 @@ export function AuthProvider(props: any) {
         setPasswordConfirmation,
       }}
     >
-       {props.children}
+      {children}
     </AuthContext.Provider>
   );
 }
