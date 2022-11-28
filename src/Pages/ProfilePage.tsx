@@ -8,9 +8,6 @@ function ProfilePage() {
   const [description, setDescription] = useState("");
   const { currentUser } = useAuth();
 
-  useEffect(() => {
-  }, [currentUser]);
-
   return (
     <Box
       sx={{
