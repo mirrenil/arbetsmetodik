@@ -1,20 +1,25 @@
-import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import React, { CSSProperties } from 'react';
-import test from '../Assets/Images/test.png';
+import { IlistItem } from '../Interfaces';
 
-const ItemCard = () => {
+interface Props {
+  item: IlistItem
+}
+
+const ItemCard = ({item}: Props) => {
+
 	return (
 		<>
 			<Card sx={boxStyle}>
 				<CardMedia
 					component="img"
-					src={test}
+					src={item.image}
 					height="100"
 					sx={{ borderRadius: '6px' }}
 				/>
-				<CardContent sx={{display: 'flex', justifyContent: 'space-between'}}>
-					<Typography>Test</Typography>
-					<Typography>149 kr</Typography>
+				<CardContent sx={{ display: 'flex', justifyContent: 'space-between' }}>
+					<Typography>{item.title}</Typography>
+					<Typography>{item.price} :-</Typography>
 				</CardContent>
 			</Card>
 		</>
@@ -23,7 +28,7 @@ const ItemCard = () => {
 const boxStyle: CSSProperties = {
 	width: '10rem',
 	height: '10rem',
-  padding: '.5rem'
+	padding: '.5rem',
 };
 
 export default ItemCard;
