@@ -1,51 +1,39 @@
-import { collection, getDocs } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
-import ItemCard from '../Components/ItemCard';
+import StartPageHero from '../Components/StartPageHero'
+import RecentlyAdded from '../Components/RecentlyAdded'
+import StartPageInfo from '../Components/StartPageInfo'
+import CategoryCard from '../Components/CategoryCard'
+import { getDocs, collection } from 'firebase/firestore';
+import { useState, useEffect } from 'react';
 import { db } from '../firebase';
-import { IlistItem } from '../Interfaces';
-
-function StartPage() {
-	const listingsRef = collection(db, 'listings');
-	const [listItems, setListItems] = useState([]);
-
-	const getItems = () => {
-		getDocs(listingsRef).then((data) => {
-			setListItems(
-				data.docs.map((item) => {
-					return {
-						...item.data(),
-						id: item.id,
-					};
-				}) as any
-			);
-		});
-	};
-
-	useEffect(() => {
-		getItems();
-	}, []);
-
-	return (
-		<div>
-			{/* Header will go here from layout */}
-
-			<div id="logoAndHeroText"></div>
-
-			<div id="starPageBigPic"></div>
-
-			<div id="categories"></div>
-
-			<div id="recentlyAdded">
-				{listItems.map((item: IlistItem) => {
-					return <ItemCard key={item.id} item={item} />;
-				})}
-			</div>
-
-			<div id="starPageInfoStuff"></div>
-
-			{/* Footer will go here from layout */}
-		</div>
-	);
+const StartPage: React.FC = (props) => {
+  const [categories, setCategories] = useState<any[]>([]);
+  
+  useEffect(() => {
+    const fetchCategories = async () => {
+      let dataWithId: any[] = []
+      const querySnapshot = await getDocs(collection(db, "categories"));
+      querySnapshot.forEach((doc) => {
+        let data = doc.data()
+        data['id'] = doc.id
+        // doc.data() is never undefined for query doc snapshots
+        dataWithId.push(data)
+        setCategories(dataWithId)
+      });
+    }
+    fetchCategories()
+  }, [])
+  return (
+    < >
+      {/* Header will go here from layout */}
+     <StartPageHero/>
+     <CategoryCard 
+     {...[categories]} 
+     />
+     <RecentlyAdded/>
+     <StartPageInfo/>
+      {/* Footer will go here from layout */}
+    </>
+  );
 }
 
 export default StartPage;

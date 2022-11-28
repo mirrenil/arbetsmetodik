@@ -66,7 +66,7 @@ function App() {
 								<Route path="/profile/:id" element={<ProfilePage />} />
 								<Route path="/newlisting" element={<NewListingPage />} />
 								<Route path="/requests" element={<RequestsPage />} />
-								<Route path="/howItWorks" element={<HowItWorks />} />
+								<Route path="/howitworks" element={<HowItWorks />} />
 							</Route>
 						</Routes>
 					</BrowserRouter>
