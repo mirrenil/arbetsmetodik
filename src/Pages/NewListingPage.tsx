@@ -4,6 +4,7 @@ import { Button, FormControl, FormGroup, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { useAuth } from '../authContext';
 
 const categories = [
   {
@@ -36,6 +37,7 @@ export default function NewListing() {
   const [image, setImage] = useState("");
   const listingsRef = collection(db, "listings");
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   const handleNewListing = async (event: FormEvent) => {
     event.preventDefault();
@@ -64,19 +66,19 @@ export default function NewListing() {
         margin: "auto",
       }}
     >
-      <h1>Create a listing</h1>
-      <Box
-        component="form"
-        onSubmit={handleNewListing}
-        sx={{
-          "& > :not(style)": { m: 1, width: "25ch" },
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-        noValidate
-        autoComplete="off"
-      >
+       {currentUser ? (
+        <><h1>Create a listing</h1><Box
+          component="form"
+          onSubmit={handleNewListing}
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          noValidate
+          autoComplete="off"
+        >
           <TextField
             sx={{ marginBottom: "1rem" }}
             id="outlined-select-category-native"
@@ -98,31 +100,27 @@ export default function NewListing() {
             id="outlined-basic"
             label="Title"
             variant="outlined"
-            onChange={(e) => setTitle(e.target.value)}
-          />
+            onChange={(e) => setTitle(e.target.value)} />
           <TextField
             sx={{ marginBottom: "1rem" }}
             id="outlined-multiline-static"
             multiline
             rows={4}
             label="Description"
-            onChange={(e) => setDescription(e.target.value)}
-          />
+            onChange={(e) => setDescription(e.target.value)} />
           <TextField
             sx={{ marginBottom: "1rem" }}
             type="number"
             id="outlined-basic"
             label="Price per day"
             variant="outlined"
-            onChange={(e) => setPrice(e.target.value)}
-          />
+            onChange={(e) => setPrice(e.target.value)} />
           <TextField
             sx={{ marginBottom: "1rem" }}
             id="outlined-basic"
             label="Image url"
             variant="outlined"
-            onChange={(e) => setImage(e.target.value)}
-          />
+            onChange={(e) => setImage(e.target.value)} />
           <Box
             sx={{
               backgroundColor: "#80CCFF",
@@ -143,7 +141,11 @@ export default function NewListing() {
           >
             Create listing
           </Button>
-      </Box>
+        </Box></>
+    ) : (
+      <h1>You need to be logged in to create a listing</h1>
+    )}
+      
     </Box>
   );
 }
