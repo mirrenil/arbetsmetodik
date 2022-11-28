@@ -32,8 +32,7 @@ console.log('props.categories', categories);
   return (
     <Box sx={categoriesContainer}>
     <button
-    onClick={ fetchCategoriesFromDb()
-    }
+    onClick={ ()}
     >ttt</button>
             <Box>
               <Typography sx={secTitle}>Explore our categories</Typography>
