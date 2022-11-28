@@ -1,13 +1,17 @@
 import { Box, SxProps, Typography } from '@mui/material';
 import { getDocs, collection } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import  {APIContext }  from "../Contexts/ItemContext";
+
 import { db } from '../firebase';
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 const RecentlyAdded = () => {
-  const [items, setItems] = useState<any>([]);
   const [id, setID] = useState('')
+  const ctx = useContext(APIContext);
+  const allItems = ctx.items
+  const items = allItems.slice(0, 6)
   console.log('itemId', id);
   
   useEffect(() => {
@@ -15,22 +19,7 @@ const RecentlyAdded = () => {
     AOS.refresh();
   }, []);
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      let dataWithId: any[] = []
-      const querySnapshot = await getDocs(collection(db, "listings"));
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        let data = doc.data()
-        data['id'] = doc.id
-        // doc.data() is never undefined for query doc snapshots
-        dataWithId.push(data)
-        setItems(dataWithId)
-      });
-    }
-    fetchItems()
-  }, [])
-  console.log('items', items);
+ 
   return (
     <div>
       

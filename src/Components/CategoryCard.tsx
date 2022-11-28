@@ -1,23 +1,23 @@
 import { Box, SxProps, Typography } from '@mui/material';
-import {  useState, useEffect } from 'react'
+import {  useState, useEffect, useContext } from 'react'
 import AOS from "aos";
 import { Category } from '../Interfaces'
-import { useItems } from "../Contexts/ItemContext";
+import  {APIContext }  from "../Contexts/ItemContext";
 
-interface Props{ 
-  categories: Category
-}
+
 const CategoryCard = () => {
-  const { categories, fetchCategoriesFromDb } = useItems();
-console.log('props.categories', categories);
+  // const { categories, fetchCategoriesFromDb } = useState();
   const [showMore, setShowMore] = useState(false);
-  const [categoriesId, setCategoriesId] = useState<any>()
-  const categoriesToDisplay = categories
-  const dataForDisplay = showMore ? categoriesToDisplay : categoriesToDisplay.slice(0, 4)
+  const [categoryId, setCategoryId] = useState<any>()
   
-  console.log('categories',typeof categories );
+  const ctx = useContext(APIContext);
+  console.log('ctx: ', ctx);
+  const categories = ctx.categories
+  console.log('categories', categories);
+  const slicedCategories = showMore ? categories : categories.slice(0, 4)
+  
   const test = (id: string) => {
-    setCategoriesId(id)
+    setCategoryId(id)
   }
 
   useEffect(() => {
@@ -25,17 +25,13 @@ console.log('props.categories', categories);
       AOS.refresh();
     }, []);
 
-  //   fetchCategoriesFromDb()
-  // useEffect(() => {
-  //   }, []);
-
   return (
     <Box sx={categoriesContainer}>
             <Box>
               <Typography sx={secTitle}>Explore our categories</Typography>
             </Box>
             <Box sx={categoriesDiv}>
-              {dataForDisplay?.map((category: any) =>
+              {slicedCategories?.map((category: any) =>
                 <Box 
                 sx={categoryDiv} 
                 key={category.id} 
@@ -69,7 +65,7 @@ console.log('props.categories', categories);
                 </Typography>
             </Box>
             <Box sx={categoriesDivDisk}>
-              {categoriesToDisplay?.map((category: any) =>
+              {categories?.map((category: any) =>
                 <Box 
                 sx={categoryDiv} 
                 key={category.id} 
