@@ -19,21 +19,16 @@ import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import backGroundImg from "../Assets/Images/DiskTopHeaderBackground.png";
 import logoImg from "../Assets/Images/logo.png";
-import { getAuth, signOut } from "firebase/auth";
 import { useAuth } from "../authContext";
+
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { logout, currentUser } = useAuth();
-
-
-
-
+  const { logout } = useAuth();
 
   useEffect(() => {
     AOS.init();
     AOS.refresh();
-    console.log(currentUser)
   }, []);
 
   return (
@@ -43,7 +38,7 @@ const Header = () => {
           <Avatar alt="Logo" src={logoImg} sx={logoImgStyle} />
         </Box>
         <Box>
-          <Box sx={naveItems}>
+          <Box sx={navItems}>
             <Link to="/newlisting" style={{ textDecoration: "none" }}>
               <AddCircleOutlineIcon
                 sx={{
@@ -64,7 +59,6 @@ const Header = () => {
                 }}
               />
             </Link>
-             <Typography>{currentUser ? (<p>Det finns</p>) : (<p>Finns inte</p>)}</Typography>
             <MenuIcon
               onClick={() =>
                 menuOpen ? setMenuOpen(false) : setMenuOpen(true)
@@ -89,45 +83,45 @@ const Header = () => {
                   data-aos-offset="200"
                   data-aos-duration="1000"
                 >
-                  <Link to="/" style={{ textDecoration: "none" }}>
-                    <Box sx={naveItem}>
+                  <Link to="/newlisting" style={{ textDecoration: "none" }}>
+                    <Box sx={navItem}>
                       <AddCircleOutlineIcon sx={navMenuIcon} />
-                      <Typography sx={naveItemText}>List an Item</Typography>
+                      <Typography sx={navItemText}>List an Item</Typography>
                     </Box>
                   </Link>
-                  <Link to="/" style={{ textDecoration: "none" }}>
-                    <Box sx={naveItem}>
+                  <Link to="/signin" style={{ textDecoration: "none" }}>
+                    <Box sx={navItem}>
                       <LoginIcon sx={navMenuIcon} />
-                      <Typography sx={naveItemText}>Login</Typography>
+                      <Typography sx={navItemText}>Login</Typography>
                     </Box>
                   </Link>
-                  <Link to="/" style={{ textDecoration: "none" }}>
-                    <Box sx={naveItem}>
+                  <Link to="/signup" style={{ textDecoration: "none" }}>
+                    <Box sx={navItem}>
                       <SensorOccupiedIcon sx={navMenuIcon} />
-                      <Typography sx={naveItemText}>Sign Up</Typography>
+                      <Typography sx={navItemText}>Sign Up</Typography>
                     </Box>
                   </Link>
-                  <Link to="/" style={{ textDecoration: "none" }}>
-                    <Box sx={naveItem}>
+                  <Link to="/howitworks" style={{ textDecoration: "none" }}>
+                    <Box sx={navItem}>
                       <HelpOutlineIcon sx={navMenuIcon} />
-                      <Typography sx={naveItemText}>How it works?</Typography>
+                      <Typography sx={navItemText}>How it works?</Typography>
                     </Box>
                   </Link>
                   <Link to="/" style={{ textDecoration: "none" }}>
-                    <Box sx={naveItem}>
+                    <Box sx={navItem}>
                       <GavelIcon sx={navMenuIcon} />
-                      <Typography sx={naveItemText}>Terms of use</Typography>
+                      <Typography sx={navItemText}>Terms of use</Typography>
                     </Box>
                   </Link>
                   <Link to="/" style={{ textDecoration: "none" }}>
-                    <Box sx={naveItem}>
+                    <Box sx={navItem}>
                       <ContactPhoneIcon sx={navMenuIcon} />
-                      <Typography sx={naveItemText}>Contact</Typography>
+                      <Typography sx={navItemText}>Contact</Typography>
                     </Box>
                   </Link>
-                  <Box sx={naveItem} onClick={logout}>
+                  <Box sx={navItem} onClick={() => logout(false)}>
                     <MeetingRoomIcon sx={navMenuIcon} />
-                    <Typography sx={naveItemText}>Log Out</Typography>
+                    <Typography sx={navItemText}>Log Out</Typography>
                   </Box>
                 </ul>
               </Box>
@@ -237,7 +231,7 @@ const navBoxInnerMobile: SxProps = {
   justifyContent: "space-between",
   borderBottom: "1px solid black",
 };
-const naveItems: SxProps = {
+const navItems: SxProps = {
   width: "150px",
   alignItems: "center",
   justifyContent: "space-between",
@@ -263,7 +257,7 @@ const mobileMenuList: SxProps = {
   top: "100px",
   borderLeft: "1px solid black",
 };
-const naveItem: SxProps = {
+const navItem: SxProps = {
   marginTop: "1em",
   cursor: "pointer",
   display: "flex",
@@ -271,7 +265,7 @@ const naveItem: SxProps = {
   justifyContent: "",
   width: "200px",
 };
-const naveItemText: SxProps = {
+const navItemText: SxProps = {
   fontWeight: "bold",
   color: "#000",
   marginLeft: "1em",
