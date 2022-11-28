@@ -1,11 +1,20 @@
 import { Box, Button, SxProps, Typography } from '@mui/material'
+import AOS from "aos";
+import { useEffect } from 'react';
 
 import startPageInfoImg from '../Assets/Images/startPageInfoImg.png'
 import infoSecImg from '../Assets/Images/infoSecImg.png'
 
 const StartPageInfo = () => {
+  useEffect(() => {
+    AOS.init();
+    AOS.refresh();
+  }, []);
   return (
-    <Box sx={mainPageInfoBox}>
+    <Box sx={mainPageInfoBox}
+      data-aos="fade-left"
+      data-aos-offset="200"
+      data-aos-duration="500">
       <Box sx={imgBox}>
           <Box
             component="img"
@@ -17,7 +26,12 @@ const StartPageInfo = () => {
             src={startPageInfoImg}
           />
       </Box>
-      <Box sx={infoMainTextBox}>
+      <Box 
+      sx={infoMainTextBox}
+      data-aos="fade-right"
+      data-aos-offset="200"
+      data-aos-duration="500"
+      >
         <Box >
           <Typography sx={{fontSize: { xs: 'none', md:'30px', lg: '50px', xl: '50px' }}}>Share your stuff, earn cash</Typography>
           <Box sx={infoMainParagraph}>
@@ -40,7 +54,11 @@ const StartPageInfo = () => {
      
       <Box sx={infoSecTextBox}>
         <Box sx={infoSecText}>
-          <Box>
+          <Box
+            data-aos="fade-right"
+            data-aos-offset="200"
+            data-aos-duration="500"
+          >
             <Box
               component="img"
               sx={{
@@ -51,7 +69,12 @@ const StartPageInfo = () => {
               src={infoSecImg}
             />
           </Box>
-          <Box sx={shareTextBox}>
+          <Box 
+          sx={shareTextBox}
+          data-aos="fade-left"
+          data-aos-offset="200"
+          data-aos-duration="500"
+          >
               <Typography sx={{fontSize: { xs: 'none', md:'30px', lg: '50px', xl: '50px' }}}>We have everything for <br /> you</Typography>
             <Box sx={infoSecParagraph}>
               <Typography sx={{fontSize: { xs: 'none', md:'14px', lg: '16px', xl: '16px' }}}>

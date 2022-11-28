@@ -80,6 +80,7 @@ const searchBox: SxProps = {
 
 const diskTopBox: SxProps = {
   display: { xs: 'none', md:'block', lg: 'block', xl: 'block' },
+  userSelect: 'none',
 }
 const DiskTopMainHeroImgDiv: SxProps = {
   // float: 'right',
