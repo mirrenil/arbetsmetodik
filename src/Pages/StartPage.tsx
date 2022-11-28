@@ -36,6 +36,4 @@ const StartPage: React.FC = (props) => {
   );
 }
 
-
-
 export default StartPage;
