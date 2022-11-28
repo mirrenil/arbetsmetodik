@@ -27,7 +27,6 @@ const StartPage: React.FC = (props) => {
       {/* Header will go here from layout */}
      <StartPageHero/>
      <CategoryCard 
-     {...[categories]} 
      />
      <RecentlyAdded/>
      <StartPageInfo/>

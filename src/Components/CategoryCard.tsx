@@ -1,11 +1,18 @@
 import { Box, SxProps, Typography } from '@mui/material';
 import {  useState, useEffect } from 'react'
 import AOS from "aos";
+import { Category } from '../Interfaces'
+import { useItems } from "../Contexts/ItemContext";
 
-const CategoryCard = (categories: any[]) => {
+interface Props{ 
+  categories: Category
+}
+const CategoryCard = () => {
+  const { categories, fetchCategoriesFromDb } = useItems();
+console.log('props.categories', categories);
   const [showMore, setShowMore] = useState(false);
   const [categoriesId, setCategoriesId] = useState<any>()
-  const categoriesToDisplay = categories[0]
+  const categoriesToDisplay = categories
   const dataForDisplay = showMore ? categoriesToDisplay : categoriesToDisplay.slice(0, 4)
   
   console.log('categories',typeof categories );
@@ -18,8 +25,16 @@ const CategoryCard = (categories: any[]) => {
       AOS.refresh();
     }, []);
 
+  //   fetchCategoriesFromDb()
+  // useEffect(() => {
+  //   }, []);
+
   return (
     <Box sx={categoriesContainer}>
+    <button
+    onClick={ fetchCategoriesFromDb()
+    }
+    >ttt</button>
             <Box>
               <Typography sx={secTitle}>Explore our categories</Typography>
             </Box>

@@ -7,7 +7,9 @@ import "aos/dist/aos.css";
 
 const RecentlyAdded = () => {
   const [items, setItems] = useState<any>([]);
- 
+  const [id, setID] = useState('')
+  console.log('itemId', id);
+  
   useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -45,7 +47,7 @@ const RecentlyAdded = () => {
                 <Box 
                 sx={itemDiv} 
                 key={item.id}
-               
+                onClick={() => setID(item.id) }
                 >
                   <Box sx={imgBox}>
                   <Box
@@ -95,6 +97,7 @@ const itemDiv: SxProps = {
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: '10px',
+  cursor: 'pointer',
   mb: 2,
 }
 const imgBox: SxProps = {
