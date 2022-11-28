@@ -1,6 +1,5 @@
-import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import React, { CSSProperties } from 'react';
-import test from '../Assets/Images/test.png';
 import { IlistItem } from '../Interfaces';
 
 interface Props {
@@ -8,7 +7,6 @@ interface Props {
 }
 
 const ItemCard = ({item}: Props) => {
-  console.log(item)
 
 	return (
 		<>
@@ -21,7 +19,7 @@ const ItemCard = ({item}: Props) => {
 				/>
 				<CardContent sx={{ display: 'flex', justifyContent: 'space-between' }}>
 					<Typography>{item.title}</Typography>
-					<Typography>{item.price}</Typography>
+					<Typography>{item.price} :-</Typography>
 				</CardContent>
 			</Card>
 		</>

@@ -1,5 +1,4 @@
-import { query } from 'express';
-import { collection, doc, getDocs, orderBy } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import ItemCard from '../Components/ItemCard';
 import { db } from '../firebase';
