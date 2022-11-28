@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import { Button, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
@@ -30,11 +30,11 @@ const categories = [
 ];
 
 export default function NewListing() {
-  const [category, setCategory] = useState("Select Category");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [image, setImage] = useState("");
+  const [category, setCategory] = useState<string>("Select Category");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [price, setPrice] = useState<string>("");
+  const [image, setImage] = useState<string>("");
   const listingsRef = collection(db, "listings");
   const navigate = useNavigate();
   const { currentUser } = useAuth();
@@ -42,7 +42,7 @@ export default function NewListing() {
   const handleNewListing = async (event: FormEvent) => {
     event.preventDefault();
     try {
-      await addDoc(listingsRef, {
+      const docRef = await addDoc(listingsRef, {
         category,
         title,
         description,

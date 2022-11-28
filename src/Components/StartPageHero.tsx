@@ -45,7 +45,7 @@ const StartPageHero = () => {
       </Box>
       <Box sx={desktopBox}>
       <Box sx={DesktopMainHeroImgDiv}>
-            <img src={DesktopMainHeroImg} alt="" style={{width: '100%', height: '100%', margin: 'auto'}} />
+            <img src={DesktopMainHeroImg} alt="Hero image" style={{width: '100%', height: '100%', margin: 'auto'}} />
       </Box>
         </Box>
    

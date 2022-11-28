@@ -58,7 +58,7 @@ const RecentlyAdded = () => {
                   </Box>
                       <Box sx={infoBox}>
                         <Typography>  {item.title}</Typography>
-                        <Typography>{item.price + '/day'}</Typography>
+                        <Typography>{item.price} :-</Typography>
                       </Box>   
                 </Box>
               )}
