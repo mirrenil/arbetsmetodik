@@ -1,4 +1,5 @@
 import React from 'react';
+import ItemCard from '../Components/ItemCard';
 
 
 function StartPage() {
@@ -13,7 +14,9 @@ function StartPage() {
 
       <div id='categories'></div>
 
-      <div id='recentlyAdded'></div>
+      <div id='recentlyAdded'>
+        <ItemCard />
+      </div>
 
       <div id='starPageInfoStuff'></div>
 
