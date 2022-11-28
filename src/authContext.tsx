@@ -64,7 +64,7 @@ export function AuthProvider({ children }: any) {
       setCurrentUser(currentUser as UserInfo);
     });
     return unsubscribe;
-  }, [onAuthStateChanged]);
+  }, [onAuthStateChanged, auth, currentUser]);
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();

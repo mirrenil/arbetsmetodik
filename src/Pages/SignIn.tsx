@@ -44,8 +44,7 @@ function SignInPage() {
 				Welcome to Chubby Dog
 			</Typography>
 			{ currentUser ? (
-				<p> Already logged in</p>
-				
+				<Typography variant='h5'> You are lready signed in</Typography>
 			): (
 				<Box
 				component="form"

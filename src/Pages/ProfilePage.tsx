@@ -2,10 +2,14 @@ import { Box, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../authContext";
+import { useEffect } from 'react';
 
 function ProfilePage() {
   const [description, setDescription] = useState("");
   const { currentUser } = useAuth();
+
+  useEffect(() => {
+  }, [currentUser]);
 
   return (
     <Box
