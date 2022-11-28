@@ -11,10 +11,9 @@ const StartPageInfo = () => {
     AOS.refresh();
   }, []);
   return (
-    <Box sx={mainPageInfoBox}
-      data-aos="fade-left"
-      data-aos-offset="200"
-      data-aos-duration="500">
+    <Box 
+    sx={mainPageInfoBox}
+     >
       <Box sx={imgBox}>
           <Box
             component="img"
