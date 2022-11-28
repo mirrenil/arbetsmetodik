@@ -15,6 +15,7 @@ import {
 } from "firebase/auth";
 
 interface User {
+  displayName?: string;
   email: string;
 }
 
@@ -59,7 +60,7 @@ export function useAuth() {
 }
 
 export function AuthProvider(props: any) {
-  const [currentUser, setCurrentUser] = useState<User>();
+  const [currentUser, setCurrentUser] = useState<User | null>();
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -68,7 +69,7 @@ export function AuthProvider(props: any) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      return setCurrentUser(currentUser as User);
+      console.log(currentUser)
       });
       return unsubscribe;
     }, [onAuthStateChanged]);
@@ -92,12 +93,12 @@ export function AuthProvider(props: any) {
 
   const login = async () => {
     try {
-      const user = await signInWithEmailAndPassword(
+       await signInWithEmailAndPassword(
         auth,
         loginEmail,
         loginPassword
       );
-      setCurrentUser(currentUser);
+      setCurrentUser(auth.currentUser?.email)
     } catch (error) {
       console.error(error);
     }
@@ -107,6 +108,7 @@ export function AuthProvider(props: any) {
     try {
       await signOut(auth);
       setCurrentUser(undefined);
+      console.log(currentUser)
     } catch (error) {
       console.error(error);
     }
