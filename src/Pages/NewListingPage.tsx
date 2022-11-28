@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
@@ -151,7 +151,7 @@ export default function NewListing() {
         </>
       ) : (
         <>
-          <h1>You need to be logged in to create a listing</h1>
+          <Typography variant="h5">You need to be logged in to create a listing</Typography>
           <Link to="/signin">Sign in now!</Link>
         </>
       )}
