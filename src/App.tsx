@@ -12,6 +12,7 @@ import StartPage from './Pages/StartPage';
 import { createTheme, colors, ThemeProvider, Typography } from '@mui/material';
 import { TestComponent } from './MuiResponsiveness';
 import AuthProvider from './authContext';
+import ItemsContextProvide from './Contexts/ItemContext';
 import HowItWorks from './Pages/HowItWorks';
 
 const theme = createTheme({
@@ -54,6 +55,7 @@ function App() {
 	return (
 		<div>
 			<AuthProvider>
+				<ItemsContextProvide>
 				<ThemeProvider theme={theme}>
 					<BrowserRouter>
 						<Routes>
@@ -71,6 +73,7 @@ function App() {
 						</Routes>
 					</BrowserRouter>
 				</ThemeProvider>
+				</ItemsContextProvide>
 			</AuthProvider>
 		</div>
 	);
