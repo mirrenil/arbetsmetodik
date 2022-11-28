@@ -1,29 +1,52 @@
-import React from 'react';
+import { query } from 'express';
+import { collection, doc, getDocs, orderBy } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import ItemCard from '../Components/ItemCard';
-
+import { db } from '../firebase';
+import { IlistItem } from '../Interfaces';
 
 function StartPage() {
-  return (
-    <div >
-      
-      {/* Header will go here from layout */}
+	const listingsRef = collection(db, 'listings');
+	const [listItems, setListItems] = useState([]);
 
-      <div id='logoAndHeroText'></div>
+	const getItems = () => {
+		getDocs(listingsRef).then((data) => {
+			setListItems(
+				data.docs.map((item) => {
+					return {
+						...item.data(),
+						id: item.id,
+					};
+				}) as any
+			);
+		});
+	};
 
-      <div id='starPageBigPic'></div>
+	useEffect(() => {
+		getItems();
+	}, []);
 
-      <div id='categories'></div>
+	return (
+		<div>
+			{/* Header will go here from layout */}
 
-      <div id='recentlyAdded'>
-        <ItemCard />
-      </div>
+			<div id="logoAndHeroText"></div>
 
-      <div id='starPageInfoStuff'></div>
+			<div id="starPageBigPic"></div>
 
-      {/* Footer will go here from layout */}
-      
-    </div>
-  );
+			<div id="categories"></div>
+
+			<div id="recentlyAdded">
+				{listItems.map((item: IlistItem) => {
+					return <ItemCard key={item.id} item={item} />;
+				})}
+			</div>
+
+			<div id="starPageInfoStuff"></div>
+
+			{/* Footer will go here from layout */}
+		</div>
+	);
 }
 
 export default StartPage;
