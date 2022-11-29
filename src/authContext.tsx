@@ -1,9 +1,5 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+/* eslint-disable @typescript-eslint/no-empty-function */
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "./firebase";
 import {
   createUserWithEmailAndPassword,
@@ -69,10 +65,11 @@ export function AuthProvider(props: any) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       return setCurrentUser(currentUser as User);
-      });
-      return unsubscribe;
-    }, [onAuthStateChanged]);
- 
+    });
+    return unsubscribe;
+  }, []);
+  // }, [onAuthStateChanged]);
+
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider);
@@ -80,7 +77,7 @@ export function AuthProvider(props: any) {
 
   const signup = async () => {
     try {
-      const user = await createUserWithEmailAndPassword(
+      await createUserWithEmailAndPassword(
         auth,
         registerEmail,
         registerPassword
@@ -92,11 +89,7 @@ export function AuthProvider(props: any) {
 
   const login = async () => {
     try {
-      const user = await signInWithEmailAndPassword(
-        auth,
-        loginEmail,
-        loginPassword
-      );
+      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
       setCurrentUser(currentUser);
     } catch (error) {
       console.error(error);
@@ -132,7 +125,7 @@ export function AuthProvider(props: any) {
         setPasswordConfirmation,
       }}
     >
-       {props.children}
+      {props.children}
     </AuthContext.Provider>
   );
 }

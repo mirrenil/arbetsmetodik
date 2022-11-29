@@ -1,5 +1,5 @@
 import { getDocs, collection } from "firebase/firestore";
-import { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { db } from "../firebase";
 import { ListItem, Category } from "../Interfaces";
 
@@ -18,6 +18,7 @@ const ItemsContext = createContext<ItemContext>({
   fetchItemsFromDb: () => [],
   fetchCategoriesFromDb: () => [],
   categoryId: "",
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSelectedCategoryId: () => {},
 });
 
@@ -27,11 +28,11 @@ export default function ItemProvider(props: any) {
   const [categoryId, setCategoryId] = useState("");
 
   const fetchItemsFromDb = async () => {
-    let itemDataWithId: any[] = [];
+    const itemDataWithId: any[] = [];
     const querySnapshot = await getDocs(collection(db, "listings"));
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      let data = doc.data();
+      const data = doc.data();
       data["id"] = doc.id;
       // doc.data() is never undefined for query doc snapshots
       itemDataWithId.push(data);
@@ -40,10 +41,10 @@ export default function ItemProvider(props: any) {
   };
 
   const fetchCategoriesFromDb = async () => {
-    let categoryDataWithId: any[] = [];
+    const categoryDataWithId: any[] = [];
     const querySnapshot = await getDocs(collection(db, "categories"));
     querySnapshot.forEach((doc) => {
-      let data = doc.data();
+      const data = doc.data();
       data["id"] = doc.id;
       // doc.data() is never undefined for query doc snapshots
       categoryDataWithId.push(data);

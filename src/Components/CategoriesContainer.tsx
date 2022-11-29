@@ -1,5 +1,5 @@
 import { Box, SxProps, Typography } from "@mui/material";
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import AOS from "aos";
 import { Category } from "../Interfaces";
 import { useItems } from "../Contexts/ItemContext";

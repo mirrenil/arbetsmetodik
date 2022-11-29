@@ -8,9 +8,9 @@ function DetailPage() {
   const { id } = useParams();
 
   useEffect(() => {
-    const docRef = doc(db, "listings", "DUEZxUzc7qySNggrJZHK");
+    const docRef = doc(db, "listings", `${id}`);
     getDoc(docRef).then((doc) => {
-      console.log(doc.data);
+      console.log(doc.data());
     });
   }, []);
 

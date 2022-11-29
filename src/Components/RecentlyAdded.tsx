@@ -29,8 +29,8 @@ const RecentlyAdded = () => {
           data-aos-delay="100"
         >
           {items.map((item) => (
-            <Link to={`/items/${item.id}`}>
-              <ItemCard key={item.id} item={item} />
+            <Link to={`/items/${item.id}`} key={item.id}>
+              <ItemCard item={item} />
             </Link>
           ))}
         </Box>
