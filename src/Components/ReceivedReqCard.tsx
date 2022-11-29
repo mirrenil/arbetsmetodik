@@ -48,9 +48,7 @@ const ReceivedReqCard = () => {
 				projector for a couple of days. Cheers!{' '}
 			</Typography>
 			<div style={buttonsContainer}>
-				<Button sx={[button, decline]}>
-					Decline
-				</Button>
+				<Button sx={[button, decline]}>Decline</Button>
 				<Button variant="contained" sx={button}>
 					Accept
 				</Button>
