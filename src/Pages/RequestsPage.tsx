@@ -1,10 +1,10 @@
 import React from 'react';
-
+import ReceivedReqCard from '../Components/ReceivedReqCard'
 
 function RequestsPage() {
   return (
     <div>
-      <h1>sho</h1>
+      <ReceivedReqCard />
     </div>
   );
 }
