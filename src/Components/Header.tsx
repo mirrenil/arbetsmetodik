@@ -69,6 +69,11 @@ const Header = () => {
                     <AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>List an Item</Typography>
                   </Box>
                 </Link>
+                <Link to='/requests' style={{textDecoration: 'none'}}>
+                  <Box sx={navItem}>
+                    <AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>My requests</Typography>
+                  </Box>
+                </Link>
                 <Link to='/signin' style={{textDecoration: 'none'}}>
                   <Box sx={navItem}>
                     <LoginIcon sx={navMenuIcon}/><Typography sx={navItemText}>Login</Typography>
@@ -137,6 +142,9 @@ const Header = () => {
             </Link>
             <Link to="/" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>List an item</Typography>
+            </Link>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <Typography sx={itemsDesk}>My requests</Typography>
             </Link>
             <Link to="/signin" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>LogIn/SingUp</Typography>
