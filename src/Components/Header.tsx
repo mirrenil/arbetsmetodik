@@ -1,7 +1,7 @@
 import { Box, SxProps } from "@mui/material";
 import { Avatar, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { FormEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Paper from "@mui/material/Paper";
@@ -24,13 +24,25 @@ import { useAuth } from "../authContext";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { logout } = useAuth();
+  const {
+    currentUser,
+		logout
+  } = useAuth();
 
   useEffect(() => {
     AOS.init();
     AOS.refresh();
   }, []);
+  const navigate = useNavigate();
 
+	const handleSubmit = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+		logout()
+      navigate("/");
+    
+  };
+  console.log('currentUser', currentUser);
+  
   return (
     <Box sx={navBox}>
       <Box sx={navBoxInnerMobile}>
@@ -44,9 +56,15 @@ const Header = () => {
         <Link to='/newlisting' style={{textDecoration: 'none'}}>
           <AddCircleOutlineIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}} />
         </Link>
+        {currentUser ? <Box>
+          <Link to='/profile/:id' style={{textDecoration: 'none'}}>
+          <AccountCircleIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}}  />          
+        </Link>
+        </Box> : 
         <Link to='/profile/:id' style={{textDecoration: 'none'}}>
           <AccountCircleIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}}  />          
         </Link>
+        }
           <MenuIcon
             onClick={() => menuOpen ? setMenuOpen(false) : setMenuOpen(true)}
             sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}}
@@ -64,39 +82,50 @@ const Header = () => {
               data-aos-offset="200"
               data-aos-duration="1000"
               >
-                <Link to='/newlisting' style={{textDecoration: 'none'}}>
-                  <Box sx={navItem}>
-                    <AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>List an Item</Typography>
-                  </Box>
-                </Link>
-                <Link to='/signin' style={{textDecoration: 'none'}}>
-                  <Box sx={navItem}>
-                    <LoginIcon sx={navMenuIcon}/><Typography sx={navItemText}>Login</Typography>
-                  </Box>
-                </Link>
-                <Link to='/signup' style={{textDecoration: 'none'}}>
-                  <Box sx={navItem}>
-                   <SensorOccupiedIcon sx={navMenuIcon}/><Typography sx={navItemText}>Sign Up</Typography>
-                  </Box>
-                 </Link>
-                 <Link to='/' style={{textDecoration: 'none'}}>
-                  <Box sx={navItem}>
-                    <HelpOutlineIcon sx={navMenuIcon} /><Typography sx={navItemText}>How it works?</Typography>
-                  </Box>
-                 </Link>
-                 <Link to='/' style={{textDecoration: 'none'}}>
-                  <Box sx={navItem}>
-                  <GavelIcon sx={navMenuIcon} /><Typography sx={navItemText}>Terms of use</Typography>
-                  </Box>
-                 </Link>
+                 
+                  <Link to='/signup' style={{textDecoration: 'none'}}>
+                    <Box sx={navItem}>
+                    <SensorOccupiedIcon sx={navMenuIcon}/><Typography sx={navItemText}>Sign Up</Typography>
+                    </Box>
+                  </Link>
                   <Link to='/' style={{textDecoration: 'none'}}>
-                  <Box sx={navItem}>
-                  <ContactPhoneIcon sx={navMenuIcon} /><Typography sx={navItemText}>Contact</Typography>
-                  </Box>
-                 </Link>
-                   <Box sx={navItem} onClick={() => logout(false)}>
-                   <MeetingRoomIcon sx={navMenuIcon} /><Typography sx={navItemText}>Log Out</Typography>
-                  </Box>
+                    <Box sx={navItem}>
+                      <HelpOutlineIcon sx={navMenuIcon} /><Typography sx={navItemText}>How it works?</Typography>
+                    </Box>
+                  </Link>
+                  <Link to='/' style={{textDecoration: 'none'}}>
+                    <Box sx={navItem}>
+                    <GavelIcon sx={navMenuIcon} /><Typography sx={navItemText}>Terms of use</Typography>
+                    </Box>
+                  </Link>
+                    <Link to='/' style={{textDecoration: 'none'}}>
+                    <Box sx={navItem}>
+                    <ContactPhoneIcon sx={navMenuIcon} /><Typography sx={navItemText}>Contact</Typography>
+                    </Box>
+                  </Link>
+									{currentUser ?  
+										<Link to='/newlisting' style={{textDecoration: 'none'}}>
+											<Box sx={navItem}>
+												<AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>List an Item</Typography>
+											</Box>
+                    </Link>
+											: null	
+										}
+                    {currentUser ? 
+                    <>
+                    
+                        <Box sx={navItem}
+													onClick={handleSubmit}
+												>
+                          <LoginIcon sx={navMenuIcon}/><Typography sx={navItemText}>Logout</Typography>
+                        </Box>
+                    </>  :
+                      <Link to='/signin' style={{textDecoration: 'none'}}>
+                        <Box sx={navItem}>
+                          <LoginIcon sx={navMenuIcon}/><Typography sx={navItemText}>Login</Typography>
+                        </Box>
+                      </Link>
+                      }
                 </ul>
               </Box>
             ) : null}
@@ -131,16 +160,30 @@ const Header = () => {
               Chubby Dog
             </Typography>
           </Link>
-          <Box sx={navItemsDesk}>
+          <Box sx= {currentUser ? navItemsDesk : navItemsDesk2 }>
             <Link to="/howItWorks" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>How it works</Typography>
             </Link>
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <Typography sx={itemsDesk}>List an item</Typography>
-            </Link>
-            <Link to="/signin" style={{ textDecoration: "none" }}>
-              <Typography sx={itemsDesk}>LogIn/SingUp</Typography>
-            </Link>
+						{currentUser ?  
+										<Link to='/newlisting' style={{textDecoration: 'none'}}>
+												<Typography sx={itemsDesk}>List an Item</Typography>
+                    </Link>
+											: null	
+										}
+            {currentUser ? 
+                  <>
+											<Box 
+												onClick={handleSubmit}
+											>
+												<Typography sx={itemsDesk}>Logout</Typography>
+											</Box>
+                  </>  :
+                    <Link to='/signin' style={{textDecoration: 'none'}}>
+                      <Box >
+                       <Typography sx={itemsDesk}>Login</Typography>
+                      </Box>
+                    </Link>
+                }
           </Box>
         </Box>
         <Box sx={searchBox}>
@@ -263,6 +306,14 @@ const navItemsDesk: SxProps = {
   alignItems: "center",
   justifyContent: "space-between",
   width: "450px",
+  marginRight: "4em",
+};
+const navItemsDesk2: SxProps = {
+  zIndex: "1",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  width: "200px",
   marginRight: "4em",
 };
 const itemsDesk: SxProps = {

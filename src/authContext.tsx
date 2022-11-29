@@ -15,7 +15,7 @@ import { auth } from "./firebase";
 interface AuthContext {
   signup: (email: string, password: string) => Promise<any>;
   login: (email: string, password: string) => Promise<any>;
-  logout: (value: boolean) => void;
+  logout: () => void;
   currentUser?: UserInfo;
   registerEmail: string;
   setRegisterEmail: (email: string) => void;
@@ -33,7 +33,7 @@ interface AuthContext {
 export const AuthContext = createContext<AuthContext>({
   signup: async () => {},
   login: async () => {},
-  logout: (value: boolean) => {},
+  logout: () => {},
   currentUser: undefined,
   registerEmail: "",
   setRegisterEmail: () => Promise,
@@ -94,7 +94,7 @@ export function AuthProvider({ children }: any) {
     }
   };
 
-  const logout = async (value: boolean) => {
+  const logout = async () => {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
