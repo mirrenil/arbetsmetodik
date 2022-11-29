@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
-
 import mobileMainHeroImage from "../Assets/Images/mobileMainHeroImage.png";
 import MobileHeader from "../Assets/Images/mobileHeader.png";
 import DesktopMainHeroImg from "../Assets/Images/DesktopMainHeroImg.png";
@@ -123,7 +122,6 @@ const desktopBox: SxProps = {
   userSelect: "none",
 };
 const DesktopMainHeroImgDiv: SxProps = {
-  // float: 'right',
   width: "90%",
   margin: "auto",
 };

@@ -1,13 +1,16 @@
 import { Box, SxProps, Typography } from "@mui/material";
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import { useItems } from "../Contexts/ItemContext";
 import ItemCard from "../Components/ItemCard";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { deleteDoc, doc } from "firebase/firestore";
+import { ListItem } from "../Interfaces";
+import { db } from "../firebase";
 
 const RecentlyAdded = () => {
-  const { categories, fetchItemsFromDb, items } = useItems();
+  const { fetchItemsFromDb, items } = useItems();
 
   useEffect(() => {
     fetchItemsFromDb();
@@ -15,6 +18,12 @@ const RecentlyAdded = () => {
     AOS.refresh();
   }, []);
   items.length = 4;
+
+  const deleteListing = async (id: string) => {
+    const itemToRemove = doc(db, "listings", id);
+    await deleteDoc(itemToRemove);
+    alert("Listing with id " + id + " has been deleted");
+  };
 
   return (
     <div>
@@ -27,7 +36,7 @@ const RecentlyAdded = () => {
           data-aos-duration="1000"
           data-aos-delay="100"
         >
-          {items.map((item) => (
+          {items.map((item: ListItem) => (
             <Link to={`/items/${item.id}`} key={item.id}>
               <ItemCard item={item} />
             </Link>

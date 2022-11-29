@@ -2,6 +2,7 @@ import { Box, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../authContext";
+import RecentlyAdded from "../Components/RecentlyAdded";
 
 function ProfilePage() {
   const [description, setDescription] = useState("");
@@ -41,6 +42,7 @@ function ProfilePage() {
           <Typography variant="h2" component="h2" sx={{ marginTop: "2rem" }}>
             Your listings
           </Typography>
+          <RecentlyAdded />
         </>
       ) : (
         <>
