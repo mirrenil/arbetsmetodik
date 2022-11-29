@@ -151,7 +151,9 @@ export default function NewListing() {
         </>
       ) : (
         <>
-          <Typography variant="h5">You need to be logged in to create a listing</Typography>
+          <Typography variant="h5">
+            You need to be signed in to create a listing
+          </Typography>
           <Link to="/signin">Sign in now!</Link>
         </>
       )}
