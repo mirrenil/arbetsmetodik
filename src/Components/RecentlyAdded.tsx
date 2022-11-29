@@ -28,7 +28,7 @@ const RecentlyAdded = () => {
           data-aos-delay="100"
         >
           {items.map((item) => (
-            <Link to={`/items/${item.id}`} key={item.id}>
+            <Link to={`/items/${item.id}`} key={item.id} style={{textDecoration: 'none'}}>
               <ItemCard item={item} />
             </Link>
           ))}
@@ -44,12 +44,13 @@ const MainItemsContainer: SxProps = {
 };
 const itemsContainer: SxProps = {
   display: "flex",
-  width: { xs: "100%", md: "90%", lg: "80%", xl: "80%" },
+  width: { xs: "90%", md: "90%", lg: "90%", xl: "90%" },
   minHeight: { xs: "170px", md: "250px", lg: "250px", xl: "250px" },
   flexWrap: { xs: "wrap", md: "no-wrap", lg: "no-wrap", xl: "no-wrap" },
   margin: "auto",
   position: "relative",
   userSelect: "none",
+  justifyContent: "space-between"
 };
 const itemDiv: SxProps = {
   width: { xs: "45%", md: "150px", lg: "200px", xl: "250px" },
