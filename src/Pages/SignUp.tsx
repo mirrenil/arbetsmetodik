@@ -101,10 +101,6 @@ function SignUpPage() {
         <Typography variant="body1" align="center">
           OR
         </Typography>
-        <Button className="buttonStyle" variant="contained">
-          <Facebook className="iconStyle" />
-          Continue with Facebook
-        </Button>
         <GoogleButton onClick={handleGoogleSignIn} />
       </Box>
     </div>

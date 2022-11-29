@@ -8,7 +8,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 const RecentlyAdded = () => {
   const { categories, fetchItemsFromDb, items } = useItems();
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchItemsFromDb();

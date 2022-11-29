@@ -1,9 +1,10 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
-import { Button, FormControl, FormGroup, TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Button, TextField, Typography } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { useAuth } from "../authContext";
 
 const categories = [
   {
@@ -29,13 +30,14 @@ const categories = [
 ];
 
 export default function NewListing() {
-  const [category, setCategory] = useState("Select Category");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [image, setImage] = useState("");
+  const [category, setCategory] = useState<string>("Select Category");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [price, setPrice] = useState<string>("");
+  const [image, setImage] = useState<string>("");
   const listingsRef = collection(db, "listings");
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   const handleNewListing = async (event: FormEvent) => {
     event.preventDefault();
@@ -64,86 +66,98 @@ export default function NewListing() {
         margin: "auto",
       }}
     >
-      <h1>Create a listing</h1>
-      <Box
-        component="form"
-        onSubmit={handleNewListing}
-        sx={{
-          "& > :not(style)": { m: 1, width: "25ch" },
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField
-          sx={{ marginBottom: "1rem" }}
-          id="outlined-select-category-native"
-          select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          SelectProps={{
-            native: true,
-          }}
-        >
-          {categories.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </TextField>
-        <TextField
-          sx={{ marginBottom: "1rem" }}
-          id="outlined-basic"
-          label="Title"
-          variant="outlined"
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <TextField
-          sx={{ marginBottom: "1rem" }}
-          id="outlined-multiline-static"
-          multiline
-          rows={4}
-          label="Description"
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <TextField
-          sx={{ marginBottom: "1rem" }}
-          type="number"
-          id="outlined-basic"
-          label="Price per day"
-          variant="outlined"
-          onChange={(e) => setPrice(e.target.value)}
-        />
-        <TextField
-          sx={{ marginBottom: "1rem" }}
-          id="outlined-basic"
-          label="Image url"
-          variant="outlined"
-          onChange={(e) => setImage(e.target.value)}
-        />
-        <Box
-          sx={{
-            backgroundColor: "#80CCFF",
-            borderRadius: "6px",
-            opacity: "60%",
-            marginBottom: "1rem",
-          }}
-        >
-          <h5 style={{ margin: "1rem" }}>
-            By adding this listing you agree with Chubby Dog&apos;s terms of use
-          </h5>
-        </Box>
-        <Button
-          sx={{ background: "#00C4BA" }}
-          type="submit"
-          variant="contained"
-          size="large"
-        >
-          Create listing
-        </Button>
-      </Box>
+      {currentUser ? (
+        <>
+          <h1>Create a listing</h1>
+          <Box
+            component="form"
+            onSubmit={handleNewListing}
+            sx={{
+              "& > :not(style)": { m: 1, width: "25ch" },
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              sx={{ marginBottom: "1rem" }}
+              id="outlined-select-category-native"
+              select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              SelectProps={{
+                native: true,
+              }}
+            >
+              {categories.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
+            <TextField
+              sx={{ marginBottom: "1rem" }}
+              id="outlined-basic"
+              label="Title"
+              variant="outlined"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <TextField
+              sx={{ marginBottom: "1rem" }}
+              id="outlined-multiline-static"
+              multiline
+              rows={4}
+              label="Description"
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <TextField
+              sx={{ marginBottom: "1rem" }}
+              type="number"
+              id="outlined-basic"
+              label="Price per day"
+              variant="outlined"
+              onChange={(e) => setPrice(e.target.value)}
+            />
+            <TextField
+              sx={{ marginBottom: "1rem" }}
+              id="outlined-basic"
+              label="Image url"
+              variant="outlined"
+              onChange={(e) => setImage(e.target.value)}
+            />
+            <Box
+              sx={{
+                backgroundColor: "#80CCFF",
+                borderRadius: "6px",
+                opacity: "60%",
+                marginBottom: "1rem",
+              }}
+            >
+              <h5 style={{ margin: "1rem" }}>
+                By adding this listing you agree with Chubby Dog&apos;s terms of
+                use
+              </h5>
+            </Box>
+            <Button
+              sx={{ background: "#00C4BA" }}
+              type="submit"
+              variant="contained"
+              size="large"
+            >
+              Create listing
+            </Button>
+          </Box>
+        </>
+      ) : (
+        <>
+          <Typography variant="h5">
+            You need to be signed in to create a listing
+          </Typography>
+          <Link to="/signin">Sign in now!</Link>
+        </>
+      )}
     </Box>
   );
 }

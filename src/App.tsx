@@ -10,7 +10,6 @@ import SignInPage from "./Pages/SignIn";
 import SignUpPage from "./Pages/SignUp";
 import StartPage from "./Pages/StartPage";
 import { createTheme, colors, ThemeProvider, Typography } from "@mui/material";
-import { TestComponent } from "./MuiResponsiveness";
 import AuthProvider from "./authContext";
 import ItemsContextProvide from "./Contexts/ItemContext";
 import HowItWorks from "./Pages/HowItWorks";
@@ -68,7 +67,7 @@ function App() {
                   <Route path="/profile/:id" element={<ProfilePage />} />
                   <Route path="/newlisting" element={<NewListingPage />} />
                   <Route path="/requests" element={<RequestsPage />} />
-                  <Route path="/howItWorks" element={<HowItWorks />} />
+                  <Route path="/howitworks" element={<HowItWorks />} />
                 </Route>
               </Routes>
             </BrowserRouter>
