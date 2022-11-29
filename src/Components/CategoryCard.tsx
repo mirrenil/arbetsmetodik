@@ -8,7 +8,6 @@ const CategoryCard = (categories: any[]) => {
   const categoriesToDisplay = categories[0]
   const dataForDisplay = showMore ? categoriesToDisplay : categoriesToDisplay.slice(0, 4)
   
-  console.log('categories',typeof categories );
   const test = (id: string) => {
     setCategoriesId(id)
   }
@@ -57,7 +56,7 @@ const CategoryCard = (categories: any[]) => {
                           {showMore ? 'View Less' : 'View more...'} 
                 </Typography>
             </Box>
-            <Box sx={categoriesDivDisk}>
+            <Box sx={categoriesDivDesk}>
               {categoriesToDisplay?.map((category: any) =>
                 <Box 
                 sx={categoryDiv} 
@@ -105,7 +104,7 @@ const categoriesDiv: SxProps = {
   position: 'relative',
   userSelect: 'none',
 }
-const categoriesDivDisk: SxProps = {
+const categoriesDivDesk: SxProps = {
   display: { xs: 'none', md:'flex', lg: 'flex', xl: 'flex' },
   width: {xs: '100%',md: '90%',  lg: '80%', xl: '80%'},
   minHeight: '400px',

@@ -18,17 +18,14 @@ const RecentlyAdded = () => {
       let dataWithId: any[] = []
       const querySnapshot = await getDocs(collection(db, "listings"));
       querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
         let data = doc.data()
         data['id'] = doc.id
-        // doc.data() is never undefined for query doc snapshots
         dataWithId.push(data)
         setItems(dataWithId)
       });
     }
     fetchItems()
   }, [])
-  console.log('items', items);
   return (
     <div>
       
@@ -61,7 +58,7 @@ const RecentlyAdded = () => {
                   </Box>
                       <Box sx={infoBox}>
                         <Typography>  {item.title}</Typography>
-                        <Typography>{item.price + '/day'}</Typography>
+                        <Typography>{item.price} :-</Typography>
                       </Box>   
                 </Box>
               )}

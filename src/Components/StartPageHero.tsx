@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import mobileMainHeroImage from '../Assets/Images/mobileMainHeroImage.png'
 import MobileHeader from '../Assets/Images/mobileHeader.png'
-import DiskTopMainHeroImg from '../Assets/Images/DiskTopMainHeroImg.png'
+import DesktopMainHeroImg from '../Assets/Images/DesktopMainHeroImg.png'
 
 const StartPageHero = () => {
   return (
@@ -43,9 +43,9 @@ const StartPageHero = () => {
         </Box>
       </Box>
       </Box>
-      <Box sx={diskTopBox}>
-      <Box sx={DiskTopMainHeroImgDiv}>
-            <img src={DiskTopMainHeroImg} alt="" style={{width: '100%', height: '100%', margin: 'auto'}} />
+      <Box sx={desktopBox}>
+      <Box sx={DesktopMainHeroImgDiv}>
+            <img src={DesktopMainHeroImg} alt="Hero image" style={{width: '100%', height: '100%', margin: 'auto'}} />
       </Box>
         </Box>
    
@@ -78,11 +78,11 @@ const searchBox: SxProps = {
 }
 
 
-const diskTopBox: SxProps = {
+const desktopBox: SxProps = {
   display: { xs: 'none', md:'block', lg: 'block', xl: 'block' },
   userSelect: 'none',
 }
-const DiskTopMainHeroImgDiv: SxProps = {
+const DesktopMainHeroImgDiv: SxProps = {
   // float: 'right',
   width: '90%',
   margin: 'auto'
