@@ -1,3 +1,4 @@
+import { UUID } from "bson"
 
 export interface IlistItem {
     title: string,
@@ -6,4 +7,13 @@ export interface IlistItem {
     price: number,
     category: string,
     id: string
+}
+
+export interface IRequest {
+    accepted: boolean,
+    createdAt: Date,
+    formUser: string,
+    toUser: string,
+    itemId: string,
+    priceTotal: number,
 }
