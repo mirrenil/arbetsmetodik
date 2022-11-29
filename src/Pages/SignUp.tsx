@@ -1,21 +1,31 @@
-import { Facebook } from '@mui/icons-material';
-import { Typography, Box, TextField, Button, Alert } from '@mui/material';
-import React, { FormEvent, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../Assets/FormStyle.css';
-import { useAuth } from '../authContext';
-import GoogleButton from 'react-google-button';
+import { Facebook } from "@mui/icons-material";
+import { Typography, Box, TextField, Button, Alert } from "@mui/material";
+import React, { FormEvent, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../Assets/FormStyle.css";
+import { useAuth } from "../authContext";
+import GoogleButton from "react-google-button";
 
 function SignUpPage() {
-  const { signup, registerEmail, setRegisterEmail, registerPassword, setRegisterPassword, googleSignIn, passwordConfirmation, setPasswordConfirmation } = useAuth();
+  const {
+    signup,
+    registerEmail,
+    setRegisterEmail,
+    registerPassword,
+    setRegisterPassword,
+    googleSignIn,
+    passwordConfirmation,
+    setPasswordConfirmation,
+  } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-	const handleSubmit = async (e: FormEvent) => {
-		e.preventDefault();
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
 
-	if (registerPassword !== passwordConfirmation)  return setError("Passwords do not match");
+    if (registerPassword !== passwordConfirmation)
+      return setError("Passwords do not match");
 
     try {
       setError("");
@@ -28,15 +38,15 @@ function SignUpPage() {
     setLoading(false);
   };
 
-	const handleGoogleSignIn = (e: FormEvent) => {
-		e.preventDefault();
-		try {
-			googleSignIn();
-			navigate('/profile');
-		} catch (error) {
-			console.error(error);
-		}
-	};
+  const handleGoogleSignIn = (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      googleSignIn();
+      navigate("/profile");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -49,7 +59,7 @@ function SignUpPage() {
         sx={{
           "& > :not(style)": { m: 1, width: "30ch" },
         }}
-		onSubmit={handleSubmit}
+        onSubmit={handleSubmit}
         noValidate
         autoComplete="off"
       >
@@ -70,7 +80,7 @@ function SignUpPage() {
           required
           onChange={(e) => setRegisterPassword(e.target.value)}
         />
-		<TextField
+        <TextField
           id="outlined-basic"
           label="Password confirmation"
           variant="outlined"
@@ -78,7 +88,7 @@ function SignUpPage() {
           required
           onChange={(e) => setPasswordConfirmation(e.target.value)}
         />
-		  {error && <Alert severity="error">{error}</Alert>}
+        {error && <Alert severity="error">{error}</Alert>}
         <Button
           type="submit"
           color="primary"
@@ -91,11 +101,7 @@ function SignUpPage() {
         <Typography variant="body1" align="center">
           OR
         </Typography>
-        <Button className="buttonStyle" variant="contained">
-          <Facebook className="iconStyle" />
-          Continue with Facebook
-        </Button>
-        <GoogleButton onClick={handleGoogleSignIn}/>
+        <GoogleButton onClick={handleGoogleSignIn} />
       </Box>
     </div>
   );
