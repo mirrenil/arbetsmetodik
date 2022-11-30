@@ -35,7 +35,7 @@ function DetailPage() {
       return setItem(listingProvided);
     }
     setDocumentData();
-  }, [setItem]);
+  }, []);
 
   return (
     <Box sx={wrapper}>
