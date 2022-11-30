@@ -7,27 +7,14 @@ import { db } from '../firebase';
 import { IRequest } from '../Interfaces';
 
 function RequestsPage() {
-	const [myRequests, setMyRequests] = useState<IRequest[]>();
-	const { currentUser } = useAuth();
-	console.log(currentUser?.uid);
-
-	const getAllData = async () => {
-		const data = query(
-			collection(db, 'requests'),
-			where('toUser', '==', `${currentUser?.uid}`)
-		);
-		const req = await getDocs(data);
-		req.forEach((doc) => {
-			//set myRequest
-		});
-	};
-
-	getAllData();
+	const { currentUser, usersRequests } = useAuth();
 
 	return (
 		<div>
 			<Typography>Recieved requests:</Typography>
-			<ReceivedReqCard />
+			{usersRequests.map((req) => {
+				return <ReceivedReqCard key={req.itemId + req.fromUser} request={req} user={currentUser}/>;
+			})}
 		</div>
 	);
 }
