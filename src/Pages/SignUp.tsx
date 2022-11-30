@@ -70,8 +70,6 @@ function SignUpPage() {
           required
           onChange={(e) => setRegisterEmail(e.target.value)}
         />
-        <TextField id="outlined-basic" label="First name" variant="outlined" />
-        <TextField id="outlined-basic" label="Last name" variant="outlined" />
         <TextField
           id="outlined-basic"
           label="Password"
