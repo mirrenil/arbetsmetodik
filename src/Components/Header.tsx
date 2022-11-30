@@ -32,10 +32,9 @@ const Header = () => {
   }, []);
   const navigate = useNavigate();
 
-	const handleSubmit = async () => {
-    // e.preventDefault();
+	const handleSubmit = () => {
 		logout()
-      navigate("/");
+    navigate("/");
     
   };
   
@@ -59,7 +58,7 @@ const Header = () => {
 							<Box
 							component="img"
 							src={userImg}
-							alt={userName?.charAt(0)}
+							alt={userName}
 							sx={{
 								cursor: 'pointer', 
 								width: '30px', 

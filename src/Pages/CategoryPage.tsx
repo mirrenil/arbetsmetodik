@@ -7,7 +7,6 @@ import { ListItem } from "../Interfaces";
 
 function CategoryPage() {
   const { name } = useParams();
-  console.log("name", name);
   const {
     items,
     categories,
@@ -22,9 +21,6 @@ function CategoryPage() {
   const chosenCategory = categories.find(c => c.title === name)
   const chosenCategoryImg: any = chosenCategory?.img
   const CategoryItems = items.filter((item) => item.category.toLowerCase() === chosenCategory?.title)
-  console.log('chosenCategory', chosenCategory);
-  console.log('items', items);
-  console.log('CategoryItems', CategoryItems);
   
   return (
     <Box sx={{mt: { xs: 0, md: 40, lg: 40, xl: 40}, minHeight: 1000}}>
