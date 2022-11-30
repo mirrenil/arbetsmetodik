@@ -70,6 +70,7 @@ const StartPageInfo = () => {
             data-aos="fade-right"
             data-aos-offset="200"
             data-aos-duration="500"
+            data-aos-delay="200"
           >
             <Box
               component="img"
