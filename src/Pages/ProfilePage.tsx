@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useAuth } from "../authContext";
+import { useAuth } from "../Contexts/authContext";
 import { useItems } from "../Contexts/ItemContext";
 import ItemCard from "../Components/ItemCard";
 import { ListItem } from "../Interfaces";

@@ -3,7 +3,7 @@ import { Typography, Box, TextField, Button, Alert } from "@mui/material";
 import React, { FormEvent, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Assets/FormStyle.css";
-import { useAuth } from "../authContext";
+import { useAuth } from "../Contexts/authContext";
 import GoogleButton from "react-google-button";
 
 function SignUpPage() {

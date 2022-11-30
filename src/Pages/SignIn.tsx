@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import { Typography, Button, Alert } from "@mui/material";
 import "../Assets/FormStyle.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../authContext";
+import { useAuth } from "../Contexts/authContext";
 import GoogleButton from "react-google-button";
 
 function SignInPage() {

@@ -10,7 +10,7 @@ import SignInPage from "./Pages/SignIn";
 import SignUpPage from "./Pages/SignUp";
 import StartPage from "./Pages/StartPage";
 import { createTheme, colors, ThemeProvider, Typography } from "@mui/material";
-import AuthProvider from "./authContext";
+import AuthProvider from "./Contexts/authContext";
 import ItemsContextProvide from "./Contexts/ItemContext";
 import HowItWorks from "./Pages/HowItWorks";
 

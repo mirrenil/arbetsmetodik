@@ -11,7 +11,6 @@ import {
   Typography,
   Button,
   SxProps,
-  IconButton,
 } from "@mui/material";
 import { CSSProperties } from "@mui/styled-engine";
 import Dave from "../Assets/Images/Dave.png";
@@ -40,22 +39,34 @@ function DetailPage() {
   return (
     <Box sx={wrapper}>
       <Card sx={itemContainer}>
-        <CardMedia
-          component="img"
-          image={item?.image}
-          alt={item?.image}
-          sx={itemImage}
-        />
-        <CardContent sx={cardHeaders}>
-          <Box sx={titlePrice}>
-            <Typography gutterBottom variant="h5" component="div">
+        <Box sx={imageContainer}>
+          <CardMedia
+            component="img"
+            image={item?.image}
+            alt={item?.image}
+            sx={itemImage}
+          />
+        </Box>
+        <CardContent sx={infoContainer}>
+          <Box sx={cardHeaders}>
+            <Typography
+              sx={titlePrice}
+              gutterBottom
+              variant="h5"
+              component="div"
+            >
               {item?.title}
             </Typography>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography
+              sx={titlePrice}
+              gutterBottom
+              variant="h5"
+              component="div"
+            >
               {item?.price}:- per day
             </Typography>
           </Box>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.primary">
             {item?.description}
           </Typography>
         </CardContent>
@@ -96,6 +107,8 @@ function DetailPage() {
 }
 
 const wrapper: SxProps = {
+  position: { xs: "static", md: "relative", lg: "relative", xl: "relative" },
+  top: { xs: "0", md: "150px", lg: "150px", xl: "150px" },
   width: "100%",
   height: "100%",
   display: "flex",
@@ -111,21 +124,31 @@ const itemContainer: SxProps = {
   height: "50%",
   boxShadow: "none",
 };
-const cardHeaders: CSSProperties = {
+
+const imageContainer: SxProps = {
+  display: "flex",
+  alignItems: "center",
+  maxHeight: "600px",
+  maxWidth: "600px",
+};
+
+const infoContainer: CSSProperties = {
   display: "flex",
   flexDirection: "column",
+  justifyContent: "space-between",
+  width: "95%",
+};
+const cardHeaders: CSSProperties = {
+  display: "flex",
   justifyContent: "space-between",
   width: "100%",
 };
 const titlePrice: CSSProperties = {
-  display: "flex",
-  justifyContent: "space-between",
-  width: "100%",
+  color: "rgba(51, 51, 51, 0.7)",
 };
 
 const itemImage: CSSProperties = {
-  height: "40%",
-  width: "100%",
+  objectFit: "fill",
 };
 
 const lessorCard: SxProps = {
@@ -144,6 +167,7 @@ const lessorCardLeftInfo: SxProps = {
 
 const lessorPic: SxProps = {
   width: { xs: "25%", md: "12%", lg: "12%", xl: "12%" },
+  marginRight: { xs: "0", md: "1rem", lg: "1rem", xl: "1rem" },
 };
 
 const button: SxProps = {
