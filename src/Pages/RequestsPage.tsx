@@ -1,8 +1,5 @@
 import { Box, SxProps, Typography } from '@mui/material';
-import { CSSProperties } from '@mui/styled-engine';
-import React from 'react';
-import { useAuth } from '../authContext';
-import ReceivedReqCard from '../Components/ReceivedReqCard';
+import { useAuth } from '../Contexts/AuthContext';
 
 function RequestsPage() {
 	const { currentUser } = useAuth();
