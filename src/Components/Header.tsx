@@ -74,11 +74,9 @@ const Header = () => {
 								borderRadius: '50px',
 							}}
 						>
-
 							<Typography sx={{color: '#000'}}>{userName?.charAt(0)}</Typography>
 						</Box>
 					}
-						
           </Link>
         </Box> : 
         <Link to='/profile/:id' style={{textDecoration: 'none'}}>
@@ -119,6 +117,16 @@ const Header = () => {
                       <HelpOutlineIcon sx={navMenuIcon} /><Typography sx={navItemText}>How it works?</Typography>
                     </Box>
                   </Link>
+                  {currentUser ? 
+                   <Link to='/requests' style={{textDecoration: 'none'}}>
+                    <Box sx={navItem}>
+                      <AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>My requests</Typography>
+                   </Box>
+                  </Link>
+                  :
+                  null
+                  }
+                 
                   <Link to='/' style={{textDecoration: 'none'}}>
 									<Box 
 										sx={navItem}
