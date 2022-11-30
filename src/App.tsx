@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
 import CategoryPage from './Pages/CategoryPage';
@@ -9,8 +8,7 @@ import RequestsPage from './Pages/RequestsPage';
 import SignInPage from './Pages/SignIn';
 import SignUpPage from './Pages/SignUp';
 import StartPage from './Pages/StartPage';
-import { createTheme, colors, ThemeProvider, Typography } from '@mui/material';
-import { TestComponent } from './MuiResponsiveness';
+import { createTheme, colors, ThemeProvider } from '@mui/material';
 import AuthProvider from './authContext';
 import HowItWorks from './Pages/HowItWorks';
 
