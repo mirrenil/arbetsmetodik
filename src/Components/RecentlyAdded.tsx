@@ -15,7 +15,7 @@ const RecentlyAdded = () => {
     AOS.init();
     AOS.refresh();
   }, []);
-  items.length = 4;
+  items.length = 6;
 
   return (
     <div>
@@ -29,7 +29,11 @@ const RecentlyAdded = () => {
           data-aos-delay="100"
         >
           {items.map((item: ListItem) => (
-            <Link to={`/items/${item.id}`} key={item.id} style={{textDecoration: 'none'}}>
+            <Link
+              to={`/items/${item.id}`}
+              key={item.id}
+              style={{ textDecoration: "none" }}
+            >
               <ItemCard item={item} />
             </Link>
           ))}
@@ -51,7 +55,7 @@ const itemsContainer: SxProps = {
   margin: "auto",
   position: "relative",
   userSelect: "none",
-  justifyContent: "space-between"
+  justifyContent: "space-between",
 };
 const secTitle: SxProps = {
   fontSize: { xs: "12px", md: "20px", lg: "20px", xl: "20px" },
