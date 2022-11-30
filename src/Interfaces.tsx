@@ -22,3 +22,9 @@ export interface IUser {
     email: string,
     id: string
 }
+
+export interface Category {
+    img: string, 
+    title: string, 
+    id: string,
+}
