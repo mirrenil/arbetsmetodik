@@ -119,6 +119,11 @@ const Header = () => {
                       <HelpOutlineIcon sx={navMenuIcon} /><Typography sx={navItemText}>How it works?</Typography>
                     </Box>
                   </Link>
+                  <Link to='/requests' style={{textDecoration: 'none'}}>
+                    <Box sx={navItem}>
+                      <AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>My requests</Typography>
+                   </Box>
+                  </Link>
                   <Link to='/' style={{textDecoration: 'none'}}>
 									<Box 
 										sx={navItem}
