@@ -21,7 +21,7 @@ function CategoryPage() {
   }, [])
   const chosenCategory = categories.find(c => c.title === name)
   const chosenCategoryImg: any = chosenCategory?.img
-  const CategoryItems = items.filter((item) => item.category === chosenCategory?.title)
+  const CategoryItems = items.filter((item) => item.category.toLowerCase() === chosenCategory?.title)
   console.log('chosenCategory', chosenCategory);
   console.log('items', items);
   console.log('CategoryItems', CategoryItems);
@@ -45,7 +45,7 @@ function CategoryPage() {
             <Box
               component="img"
               sx={{
-                width: { xs: "150px", md: "500px", lg: "700px", xl: "550px" },
+                width: { xs: "150px", md: "500px", lg: "700px", xl: "700px" },
                 height: { xs: "100px", md: "400px", lg: "450px", xl: "500px" },
                 borderRadius: "10px",
               }}
