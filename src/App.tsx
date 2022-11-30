@@ -41,7 +41,7 @@ const theme = createTheme({
 		},
 		h2: {
 			fontFamily: 'Inter, Arial',
-			fontSize: 18,
+			fontSize: 24,
 		},
 	},
 	shape: {
