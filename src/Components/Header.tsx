@@ -18,7 +18,7 @@ import GavelIcon from "@mui/icons-material/Gavel";
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import backGroundImg from "../Assets/Images/DesktopHeaderBackground.png";
 import logoImg from "../Assets/Images/logo.png";
-import { useAuth } from "../Contexts/authContext";
+import { useAuth } from "../Contexts/AuthContext";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);

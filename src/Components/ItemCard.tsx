@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { CSSProperties, useContext } from "react";
-import { useAuth } from "../Contexts/authContext";
+import { useAuth } from "../Contexts/AuthContext";
 import { ListItem } from "../Interfaces";
 import ClearIcon from "@mui/icons-material/Clear";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
