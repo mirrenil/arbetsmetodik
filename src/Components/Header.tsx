@@ -170,29 +170,18 @@ const Header = () => {
               }}
               aria-label="search"
             >
-              <SearchIcon />
+              <SearchIcon sx={{fill: '#FFFFFF'}}/>
             </IconButton>
           </Paper>
         </Box>
-        <Box sx={mainLogoDiv}>
-          <Box sx={deskMainLogo}>
-            <Avatar alt="Logo" src={logoImg} sx={mainLogo} />
-            <Typography sx={mainDeskText}>
-              Lorem impsum dolor sit amet bla{" "}
-            </Typography>
-            <Typography sx={deskText}>
-              Borrow almost anything from people nearby for jobs at home, fun
-              experiences or work.
-            </Typography>
-          </Box>
-        </Box>
+      
       </Box>
     </Box>
   );
 };
 
 const navBox: SxProps = {
-  height: { xs: '100px', md: '100px', lg: '200px', xl: '500px' },
+  height: { xs: '100px', md: '100px', lg: '200px', xl: '200px' },
   width: '100%',
   display: 'flex',
   alignItems: 'center',
@@ -287,32 +276,6 @@ const searchBox: SxProps = {
   top: "6em",
 };
 
-const mainLogoDiv: SxProps = {
-  // width: '1
-  display: { xs: 'none', md:'flex', lg: 'flex', xl: 'flex' },
-  position: 'absolute',
-  top: '200px',
-  left: '50%',
-  textAlign: 'center',
-}
-const deskMainLogo: SxProps = {
- 
-}
-const mainLogo: SxProps = {
-  width: "200px",
-  height: "200px",
-  transform: "translateX(-50%)",
-};
-const mainDeskText: SxProps = {
-  color: "black",
-  transform: "translateX(-50%)",
-  marginTop: "1em",
-  fontSize: "1.5em",
-  fontweight: "bold",
-};
-const deskText: SxProps = {
-  color: "black",
-  transform: "translateX(-50%)",
-};
+
 
 export default Header;
