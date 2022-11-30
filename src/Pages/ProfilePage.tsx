@@ -6,7 +6,7 @@ import "aos/dist/aos.css";
 import { useAuth } from "../Contexts/AuthContext";
 import { useItems } from "../Contexts/ItemContext";
 import ItemCard from "../Components/ItemCard";
-import { ListItem } from "../Interfaces";
+import { IListItem } from "../Interfaces";
 
 function ProfilePage() {
   const [description, setDescription] = useState<string>("");
@@ -64,7 +64,7 @@ function ProfilePage() {
               justifyContent: "space-evenly",
             }}
           >
-            {items.map((item: ListItem) => (
+            {items.map((item: IListItem) => (
               <ItemCard key={item.id} item={item} />
             ))}
           </Box>

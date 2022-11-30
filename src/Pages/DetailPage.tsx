@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
-import { ListItem } from "../Interfaces";
+import { IListItem } from "../Interfaces";
 import {
   Box,
   Card,
@@ -18,7 +18,7 @@ import Dave from "../Assets/Images/Dave.png";
 function DetailPage() {
   const listingCollection = collection(db, "listings");
   const { id } = useParams();
-  const [item, setItem] = useState<ListItem>();
+  const [item, setItem] = useState<IListItem>();
   useEffect(() => {
     async function setDocumentData() {
       const documents: any = await getDocs(listingCollection);

@@ -1,10 +1,10 @@
 import { getDocs, collection } from "firebase/firestore";
 import React, { createContext, useContext, useState } from "react";
 import { db } from "../firebase";
-import { ListItem, Category } from "../Interfaces";
+import { IListItem, Category } from "../Interfaces";
 
 interface ItemContext {
-  items: ListItem[];
+  items: IListItem[];
   categories: Category[];
   fetchItemsFromDb: () => void;
   fetchCategoriesFromDb: () => void;
@@ -23,7 +23,7 @@ const ItemsContext = createContext<ItemContext>({
 });
 
 export default function ItemProvider(props: any) {
-  const [items, setItems] = useState<ListItem[]>([]);
+  const [items, setItems] = useState<IListItem[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useState("");
 

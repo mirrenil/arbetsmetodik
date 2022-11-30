@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ItemCard from "../Components/ItemCard";
 import { useItems } from "../Contexts/ItemContext";
-import { ListItem } from "../Interfaces";
+import { IListItem } from "../Interfaces";
 
 function CategoryPage() {
   const { name } = useParams();
@@ -55,7 +55,7 @@ function CategoryPage() {
             data-aos-offset="200"
             data-aos-duration="1000"
           >
-          {CategoryItems?.map((item: ListItem) =>
+          {CategoryItems?.map((item: IListItem) =>
               <ItemCard key={item.id} item={item}/>
           )}
           </Box>
