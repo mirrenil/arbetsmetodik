@@ -66,7 +66,7 @@ const Header = () => {
                     <Box
                       component="img"
                       src={userImg}
-                      alt={userName?.charAt(0)}
+                      alt={userName}
                       sx={{
                         cursor: "pointer",
                         width: "30px",
@@ -83,9 +83,7 @@ const Header = () => {
                         borderRadius: "50px",
                       }}
                     >
-                      <Typography sx={{ color: "#000" }}>
-                        {userName?.charAt(0)}
-                      </Typography>
+                      <Typography sx={{ color: "#000" }}>{userName}</Typography>
                     </Box>
                   )}
                 </Link>
@@ -220,7 +218,7 @@ const Header = () => {
                       <Box
                         component="img"
                         src={userImg}
-                        alt={userName?.charAt(0)}
+                        alt={userName}
                         sx={{
                           cursor: "pointer",
                           width: "30px",
@@ -238,7 +236,7 @@ const Header = () => {
                         }}
                       >
                         <Typography sx={{ color: "#000" }}>
-                          {userName?.charAt(0)}
+                          {userName}
                         </Typography>
                       </Box>
                     )}
