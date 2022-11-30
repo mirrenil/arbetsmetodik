@@ -33,7 +33,7 @@ const Footer = () => {
           <img
             src={footer2Img}
             alt=""
-            style={{ width: "100vw", height: "auto" }}
+            style={{ width: "100%", height: "auto" }}
           />
         </Box>
         <Box sx={desktopTextAlign}>
@@ -84,6 +84,7 @@ const imgAlign: SxProps = {
 };
 const desktopAlign: SxProps = {
   display: { xs: "none", md: "flex", lg: "flex", xl: "flex" },
+  width: '100%'
 };
 const iconAlign: SxProps = {
   display: "flex",
