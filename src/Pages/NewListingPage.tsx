@@ -1,10 +1,10 @@
-import { FormEvent, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import { Button, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
-import { useAuth } from "../authContext";
+import { useAuth } from "../Contexts/AuthContext";
 
 const categories = [
   {
@@ -136,7 +136,8 @@ export default function NewListing() {
               }}
             >
               <h5 style={{ margin: "1rem" }}>
-                By adding this listing you agree with Chubby Dog's terms of use
+                By adding this listing you agree with Chubby Dog&apos;s terms of
+                use
               </h5>
             </Box>
             <Button

@@ -1,11 +1,10 @@
-import { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Typography, Button, Alert } from "@mui/material";
-import { Facebook } from "@mui/icons-material";
 import "../Assets/FormStyle.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../authContext";
+import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
 
 function SignInPage() {
@@ -93,7 +92,7 @@ function SignInPage() {
 
           <GoogleButton onClick={handleGoogleSignIn} />
           <Link to="/signup">
-            <Typography>Don't have an account? Sign up here!</Typography>
+            <Typography>Don&apos;t have an account? Sign up here!</Typography>
           </Link>
         </Box>
       )}
