@@ -37,13 +37,12 @@ const Header = () => {
   }, []);
   const navigate = useNavigate();
 
-	const handleSubmit = async (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
+	const handleSubmit = async () => {
+    // e.preventDefault();
 		logout()
       navigate("/");
     
   };
-  console.log('currentUser', currentUser);
   
   return (
     <Box sx={navBox}>
@@ -111,40 +110,61 @@ const Header = () => {
               >
                  
                   <Link to='/signup' style={{textDecoration: 'none'}}>
-                    <Box sx={navItem}>
+                    <Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
                     <SensorOccupiedIcon sx={navMenuIcon}/><Typography sx={navItemText}>Sign Up</Typography>
                     </Box>
                   </Link>
                   <Link to='/' style={{textDecoration: 'none'}}>
-                    <Box sx={navItem}>
+									<Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
                       <HelpOutlineIcon sx={navMenuIcon} /><Typography sx={navItemText}>How it works?</Typography>
                     </Box>
                   </Link>
                   <Link to='/' style={{textDecoration: 'none'}}>
-                    <Box sx={navItem}>
+									<Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
                     <GavelIcon sx={navMenuIcon} /><Typography sx={navItemText}>Terms of use</Typography>
                     </Box>
                   </Link>
                     <Link to='/' style={{textDecoration: 'none'}}>
-                    <Box sx={navItem}>
+										<Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
                     <ContactPhoneIcon sx={navMenuIcon} /><Typography sx={navItemText}>Contact</Typography>
                     </Box>
                   </Link>
 										<Link to='/newlisting' style={{textDecoration: 'none'}}>
-											<Box sx={navItem}>
+										<Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
 												<AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>List an Item</Typography>
 											</Box>
                     </Link>
                     {currentUser ? 
                     <>
                         <Box sx={navItem}
-													onClick={handleSubmit}
+												onClick={ () =>{ 
+													setMenuOpen(false)
+													handleSubmit()
+													}}
 												>
                           <LoginIcon sx={navMenuIcon}/><Typography sx={navItemText}>Logout</Typography>
                         </Box>
                     </>  :
                       <Link to='/signin' style={{textDecoration: 'none'}}>
-                        <Box sx={navItem}>
+                       <Box 
+												sx={navItem}
+												onClick={ () => setMenuOpen(false)}
+												>
                           <LoginIcon sx={navMenuIcon}/><Typography sx={navItemText}>Login</Typography>
                         </Box>
                       </Link>
