@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const SentReqCard = () => {
-  return (
-    <div>SentReqCard</div>
-  )
-}
+  return <div>SentReqCard</div>;
+};
 
-export default SentReqCard
+export default SentReqCard;

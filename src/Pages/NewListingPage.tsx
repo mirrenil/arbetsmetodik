@@ -4,7 +4,7 @@ import { Button, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
-import { useAuth } from "../authContext";
+import { useAuth } from "../Contexts/AuthContext";
 
 const categories = [
   {
