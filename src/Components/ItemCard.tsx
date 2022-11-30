@@ -43,7 +43,7 @@ const ItemCard = ({ item }: Props) => {
         sx={{ borderRadius: "6px", cursor: "pointer" }}
         onClick={() => navigate(`/items/'${item.id}`)}
       />
-      <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
+      <CardContent sx={{ display: "flex", justifyContent: "space-between", marginTop: "15px"}}>
         <Typography>{item.title}</Typography>
         <Typography>{item.price} :-</Typography>
       </CardContent>
@@ -51,8 +51,8 @@ const ItemCard = ({ item }: Props) => {
   );
 };
 
-const boxStyle: CSSProperties = {
-  width: "10rem",
+const boxStyle: SxProps = {
+  width: "10rem" ,
   height: "10rem",
   padding: "1rem",
 };
