@@ -214,8 +214,38 @@ const Header = () => {
             </Link>
             {currentUser ? (
               <>
-                <Box onClick={handleSubmit}>
-                  <Typography sx={itemsDesk}>Logout</Typography>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Link to="/profile/:id" style={{ textDecoration: "none" }}>
+                    {userImg ? (
+                      <Box
+                        component="img"
+                        src={userImg}
+                        alt={userName?.charAt(0)}
+                        sx={{
+                          cursor: "pointer",
+                          width: "30px",
+                          height: "30px",
+                          borderRadius: "50px",
+                        }}
+                      />
+                    ) : (
+                      <Box
+                        sx={{
+                          cursor: "pointer",
+                          width: "30px",
+                          height: "30px",
+                          borderRadius: "50px",
+                        }}
+                      >
+                        <Typography sx={{ color: "#000" }}>
+                          {userName?.charAt(0)}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Link>
+                  <Box sx={{ marginLeft: "1rem" }} onClick={handleSubmit}>
+                    <Typography sx={itemsDesk}>Logout</Typography>
+                  </Box>
                 </Box>
               </>
             ) : (
