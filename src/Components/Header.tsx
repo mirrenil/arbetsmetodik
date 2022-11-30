@@ -27,7 +27,10 @@ const Header = () => {
     currentUser,
 		logout
   } = useAuth();
+	const userImg: any = currentUser?.photoURL
+	const userName: any = currentUser?.displayName
 
+	
   useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -55,10 +58,35 @@ const Header = () => {
         <Link to='/newlisting' style={{textDecoration: 'none'}}>
           <AddCircleOutlineIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}} />
         </Link>
-        {currentUser ? <Box>
+        {currentUser ? 
+				<Box>
           <Link to='/profile/:id' style={{textDecoration: 'none'}}>
-          <AccountCircleIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}}  />          
-        </Link>
+						{userImg ? 
+							<Box
+							component="img"
+							src={userImg}
+							alt={userName?.charAt(0)}
+							sx={{
+								cursor: 'pointer', 
+								width: '30px', 
+								height: '30px', 
+								borderRadius: '50px',
+							}}
+						/> : 
+						<Box
+							sx={{
+								cursor: 'pointer', 
+								width: '30px', 
+								height: '30px', 
+								borderRadius: '50px',
+							}}
+						>
+
+							<Typography sx={{color: '#000'}}>{userName?.charAt(0)}</Typography>
+						</Box>
+					}
+						
+          </Link>
         </Box> : 
         <Link to='/profile/:id' style={{textDecoration: 'none'}}>
           <AccountCircleIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}}  />          
@@ -107,12 +135,8 @@ const Header = () => {
 												<AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>List an Item</Typography>
 											</Box>
                     </Link>
-									{/* {currentUser ?  
-											: null	
-										} */}
                     {currentUser ? 
                     <>
-                    
                         <Box sx={navItem}
 													onClick={handleSubmit}
 												>
