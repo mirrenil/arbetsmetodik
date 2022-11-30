@@ -1,6 +1,6 @@
 import { Box, SxProps } from "@mui/material";
 import { Avatar, Typography } from "@mui/material";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -16,7 +16,6 @@ import SensorOccupiedIcon from "@mui/icons-material/SensorOccupied";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import GavelIcon from "@mui/icons-material/Gavel";
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
-import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import backGroundImg from "../Assets/Images/DesktopHeaderBackground.png";
 import logoImg from "../Assets/Images/logo.png";
 import { useAuth } from "../authContext";
@@ -103,14 +102,14 @@ const Header = () => {
                     <ContactPhoneIcon sx={navMenuIcon} /><Typography sx={navItemText}>Contact</Typography>
                     </Box>
                   </Link>
-									{currentUser ?  
 										<Link to='/newlisting' style={{textDecoration: 'none'}}>
 											<Box sx={navItem}>
 												<AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>List an Item</Typography>
 											</Box>
                     </Link>
+									{/* {currentUser ?  
 											: null	
-										}
+										} */}
                     {currentUser ? 
                     <>
                     
@@ -160,16 +159,13 @@ const Header = () => {
               Chubby Dog
             </Typography>
           </Link>
-          <Box sx= {currentUser ? navItemsDesk : navItemsDesk2 }>
+          <Box sx= {navItemsDesk}>
             <Link to="/howItWorks" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>How it works</Typography>
             </Link>
-						{currentUser ?  
-										<Link to='/newlisting' style={{textDecoration: 'none'}}>
+						<Link to='/newlisting' style={{textDecoration: 'none'}}>
 												<Typography sx={itemsDesk}>List an Item</Typography>
                     </Link>
-											: null	
-										}
             {currentUser ? 
                   <>
 											<Box 
@@ -308,14 +304,7 @@ const navItemsDesk: SxProps = {
   width: "450px",
   marginRight: "4em",
 };
-const navItemsDesk2: SxProps = {
-  zIndex: "1",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  width: "200px",
-  marginRight: "4em",
-};
+
 const itemsDesk: SxProps = {
   color: "#F1F1F1",
   cursor: "pointer",
