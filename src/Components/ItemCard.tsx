@@ -1,6 +1,13 @@
-import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  SxProps,
+  Typography,
+} from "@mui/material";
 import React, { CSSProperties, useContext } from "react";
-import { useAuth } from "../authContext";
+import { useAuth } from "../Contexts/AuthContext";
 import { ListItem } from "../Interfaces";
 import ClearIcon from "@mui/icons-material/Clear";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
@@ -14,15 +21,19 @@ const ItemCard = ({ item }: Props) => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
-  const deleteListing = async (id: string) => {
-    const itemToRemove = doc(db, "listings", id);
-    await deleteDoc(itemToRemove);
-    alert("Listing with id " + id + " has been deleted");
-  };
+  // This will be added back in when the listings are connected to a user
+
+  // const deleteListing = async (id: string) => {
+  //   const itemToRemove = doc(db, "listings", id);
+  //   await deleteDoc(itemToRemove);
+  //   alert("Listing with id " + id + " has been deleted");
+  // };
 
   return (
     <Card sx={boxStyle}>
-      {currentUser && (
+      {/* This will be added back in when the listings are connected to a user */}
+
+      {/* {currentUser && (
         <Box>
           <button
             style={{
@@ -35,7 +46,7 @@ const ItemCard = ({ item }: Props) => {
             <ClearIcon />
           </button>
         </Box>
-      )}
+      )} */}
       <CardMedia
         component="img"
         src={item.image}
@@ -43,7 +54,13 @@ const ItemCard = ({ item }: Props) => {
         sx={{ borderRadius: "6px", cursor: "pointer" }}
         onClick={() => navigate(`/items/'${item.id}`)}
       />
-      <CardContent sx={{ display: "flex", justifyContent: "space-between", marginTop: "15px"}}>
+      <CardContent
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: "15px",
+        }}
+      >
         <Typography>{item.title}</Typography>
         <Typography>{item.price} :-</Typography>
       </CardContent>
@@ -52,7 +69,7 @@ const ItemCard = ({ item }: Props) => {
 };
 
 const boxStyle: SxProps = {
-  width: "10rem" ,
+  width: "10rem",
   height: "10rem",
   padding: "1rem",
 };
