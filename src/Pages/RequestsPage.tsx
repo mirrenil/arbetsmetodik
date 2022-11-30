@@ -1,4 +1,5 @@
 import { Box, SxProps, Typography } from '@mui/material';
+import React from 'react';
 import { useAuth } from '../Contexts/AuthContext';
 
 function RequestsPage() {
