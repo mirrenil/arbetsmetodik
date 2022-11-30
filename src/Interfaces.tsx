@@ -9,7 +9,7 @@ export interface ListItem {
 }
 
 export interface Category {
-    image: string, 
+    img: string, 
     title: string, 
     id: string,
 }

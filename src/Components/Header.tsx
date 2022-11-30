@@ -32,143 +32,137 @@ const Header = () => {
   }, []);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    logout();
+	const handleSubmit = () => {
+		logout()
     navigate("/");
+    
   };
-  console.log("currentUser", currentUser);
-
+  
   return (
     <Box sx={navBox}>
       <Box sx={navBoxInnerMobile}>
-        <Box sx={logo}>
-          <Link to="/">
-            <Avatar alt="Logo" src={logoImg} sx={logoImgStyle} />
+      <Box sx={logo}>
+        <Link to='/'>
+        <Avatar alt="Logo" src={logoImg} sx={logoImgStyle}/>
+        </Link>
+      </Box>
+      <Box>
+        <Box sx={navItems}>
+        <Link to='/newlisting' style={{textDecoration: 'none'}}>
+          <AddCircleOutlineIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}} />
+        </Link>
+        {currentUser ? 
+				<Box>
+          <Link to='/profile/:id' style={{textDecoration: 'none'}}>
+						{userImg ? 
+							<Box
+							component="img"
+							src={userImg}
+							alt={userName}
+							sx={{
+								cursor: 'pointer', 
+								width: '30px', 
+								height: '30px', 
+								borderRadius: '50px',
+							}}
+						/> : 
+						<Box
+							sx={{
+								cursor: 'pointer', 
+								width: '30px', 
+								height: '30px', 
+								borderRadius: '50px',
+							}}
+						>
+
+							<Typography sx={{color: '#000'}}>{userName?.charAt(0)}</Typography>
+						</Box>
+					}
+						
           </Link>
-        </Box>
-        <Box>
-          <Box sx={navItems}>
-            <Link to="/newlisting" style={{ textDecoration: "none" }}>
-              <AddCircleOutlineIcon
-                sx={{
-                  cursor: "pointer",
-                  width: "30px",
-                  height: "30px",
-                  fill: "#000",
-                }}
-              />
-            </Link>
-            {currentUser ? (
-              <Box>
-                <Link to="/profile/:id" style={{ textDecoration: "none" }}>
-                  {userImg ? (
-                    <Box
-                      component="img"
-                      src={userImg}
-                      alt={userName}
-                      sx={{
-                        cursor: "pointer",
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "50px",
-                      }}
-                    />
-                  ) : (
-                    <Box
-                      sx={{
-                        cursor: "pointer",
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "50px",
-                      }}
-                    >
-                      <Typography sx={{ color: "#000" }}>{userName}</Typography>
-                    </Box>
-                  )}
-                </Link>
-              </Box>
-            ) : (
-              <Link to="/profile/:id" style={{ textDecoration: "none" }}>
-                <AccountCircleIcon
-                  sx={{
-                    cursor: "pointer",
-                    width: "30px",
-                    height: "30px",
-                    fill: "#000",
-                  }}
-                />
-              </Link>
-            )}
-            <MenuIcon
-              onClick={() =>
-                menuOpen ? setMenuOpen(false) : setMenuOpen(true)
-              }
-              sx={{
-                cursor: "pointer",
-                width: "30px",
-                height: "30px",
-                fill: "#000",
-              }}
-            />
-            {menuOpen ? (
-              <Box
-                sx={mobileMenuList}
-                data-aos="fade-left"
-                data-aos-offset="200"
-                data-aos-duration="1000"
+        </Box> : 
+        <Link to='/profile/:id' style={{textDecoration: 'none'}}>
+          <AccountCircleIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}}  />          
+        </Link>
+        }
+          <MenuIcon
+            onClick={() => menuOpen ? setMenuOpen(false) : setMenuOpen(true)}
+            sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}}
+          />
+          {menuOpen ? (
+            <Box 
+            sx={mobileMenuList}
+            data-aos="fade-left"
+            data-aos-offset="200"
+            data-aos-duration="1000"
+            >
+              <ul 
+              style={{listStyle: 'none', marginTop: '4em'}}
+              data-aos="fade-left"
+              data-aos-offset="200"
+              data-aos-duration="1000"
               >
-                <ul
-                  style={{ listStyle: "none", marginTop: "4em" }}
-                  data-aos="fade-left"
-                  data-aos-offset="200"
-                  data-aos-duration="1000"
-                >
-                  <Link to="/signup" style={{ textDecoration: "none" }}>
-                    <Box sx={navItem}>
-                      <SensorOccupiedIcon sx={navMenuIcon} />
-                      <Typography sx={navItemText}>Sign Up</Typography>
+                 
+                  <Link to='/signup' style={{textDecoration: 'none'}}>
+                    <Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
+                    <SensorOccupiedIcon sx={navMenuIcon}/><Typography sx={navItemText}>Sign Up</Typography>
                     </Box>
                   </Link>
-                  <Link to="/" style={{ textDecoration: "none" }}>
-                    <Box sx={navItem}>
-                      <HelpOutlineIcon sx={navMenuIcon} />
-                      <Typography sx={navItemText}>How it works?</Typography>
+                  <Link to='/' style={{textDecoration: 'none'}}>
+									<Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
+                      <HelpOutlineIcon sx={navMenuIcon} /><Typography sx={navItemText}>How it works?</Typography>
                     </Box>
                   </Link>
-                  <Link to="/" style={{ textDecoration: "none" }}>
-                    <Box sx={navItem}>
-                      <GavelIcon sx={navMenuIcon} />
-                      <Typography sx={navItemText}>Terms of use</Typography>
+                  <Link to='/' style={{textDecoration: 'none'}}>
+									<Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
+                    <GavelIcon sx={navMenuIcon} /><Typography sx={navItemText}>Terms of use</Typography>
                     </Box>
                   </Link>
-                  <Link to="/" style={{ textDecoration: "none" }}>
-                    <Box sx={navItem}>
-                      <ContactPhoneIcon sx={navMenuIcon} />
-                      <Typography sx={navItemText}>Contact</Typography>
+                    <Link to='/' style={{textDecoration: 'none'}}>
+										<Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
+                    <ContactPhoneIcon sx={navMenuIcon} /><Typography sx={navItemText}>Contact</Typography>
                     </Box>
                   </Link>
-                  <Link to="/newlisting" style={{ textDecoration: "none" }}>
-                    <Box sx={navItem}>
-                      <AddCircleOutlineIcon sx={navMenuIcon} />
-                      <Typography sx={navItemText}>List an Item</Typography>
-                    </Box>
-                  </Link>
-                  {currentUser ? (
-                    <>
-                      <Box sx={navItem} onClick={handleSubmit}>
-                        <LoginIcon sx={navMenuIcon} />
-                        <Typography sx={navItemText}>Logout</Typography>
-                      </Box>
-                    </>
-                  ) : (
-                    <Link to="/signin" style={{ textDecoration: "none" }}>
-                      <Box sx={navItem}>
-                        <LoginIcon sx={navMenuIcon} />
-                        <Typography sx={navItemText}>Login</Typography>
-                      </Box>
+										<Link to='/newlisting' style={{textDecoration: 'none'}}>
+										<Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
+												<AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>List an Item</Typography>
+											</Box>
                     </Link>
-                  )}
+                    {currentUser ? 
+                    <>
+                        <Box sx={navItem}
+												onClick={ () =>{ 
+													setMenuOpen(false)
+													handleSubmit()
+													}}
+												>
+                          <LoginIcon sx={navMenuIcon}/><Typography sx={navItemText}>Logout</Typography>
+                        </Box>
+                    </>  :
+                      <Link to='/signin' style={{textDecoration: 'none'}}>
+                       <Box 
+												sx={navItem}
+												onClick={ () => setMenuOpen(false)}
+												>
+                          <LoginIcon sx={navMenuIcon}/><Typography sx={navItemText}>Login</Typography>
+                        </Box>
+                      </Link>
+                      }
                 </ul>
               </Box>
             ) : null}
