@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, SxProps, Typography } from "@mui/material";
 import React, { CSSProperties, useContext } from "react";
 import { useAuth } from "../authContext";
 import { ListItem } from "../Interfaces";
