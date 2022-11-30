@@ -1,9 +1,9 @@
 import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import React, { CSSProperties } from 'react';
-import { IlistItem } from '../Interfaces';
+import { IListItem } from '../Interfaces';
 
 interface Props {
-  item: IlistItem
+  item: IListItem
 }
 
 const ItemCard = ({item}: Props) => {
