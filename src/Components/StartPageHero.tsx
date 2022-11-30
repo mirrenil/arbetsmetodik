@@ -10,7 +10,6 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import logoImg from "../Assets/Images/logo.png";
-
 import mobileMainHeroImage from "../Assets/Images/mobileMainHeroImage.png";
 import MobileHeader from "../Assets/Images/mobileHeader.png";
 import DesktopMainHeroImg from "../Assets/Images/DesktopMainHeroImg.png";
@@ -171,7 +170,6 @@ const deskText: SxProps = {
   color: "black",
 };
 const DesktopMainHeroImgDiv: SxProps = {
-  // float: 'right',
   width: "50%",
   margin: "auto",
   mt: '2em',

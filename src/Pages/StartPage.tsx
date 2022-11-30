@@ -5,8 +5,9 @@ import CategoryCard from "../Components/CategoriesContainer";
 import { getDocs, collection } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
-const StartPage: React.FC = (props) => {
-  const [categories, setCategories] = useState<any[]>([]);
+
+const StartPage = () => {
+  const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
