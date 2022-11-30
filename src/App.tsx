@@ -1,18 +1,18 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from './Layout';
-import CategoryPage from './Pages/CategoryPage';
-import DetailPage from './Pages/DetailPage';
-import NewListingPage from './Pages/NewListingPage';
-import ProfilePage from './Pages/ProfilePage';
-import RequestsPage from './Pages/RequestsPage';
-import SignInPage from './Pages/SignIn';
-import SignUpPage from './Pages/SignUp';
-import StartPage from './Pages/StartPage';
-import { createTheme, colors, ThemeProvider, Typography } from '@mui/material';
-import { TestComponent } from './MuiResponsiveness';
-import AuthProvider from './authContext';
-import HowItWorks from './Pages/HowItWorks';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./Layout";
+import CategoryPage from "./Pages/CategoryPage";
+import DetailPage from "./Pages/DetailPage";
+import NewListingPage from "./Pages/NewListingPage";
+import ProfilePage from "./Pages/ProfilePage";
+import RequestsPage from "./Pages/RequestsPage";
+import SignInPage from "./Pages/SignIn";
+import SignUpPage from "./Pages/SignUp";
+import StartPage from "./Pages/StartPage";
+import { createTheme, colors, ThemeProvider, Typography } from "@mui/material";
+import AuthProvider from "./Contexts/AuthContext";
+import ItemsContextProvide from "./Contexts/ItemContext";
+import HowItWorks from "./Pages/HowItWorks";
 
 const theme = createTheme({
 	status: {
@@ -51,29 +51,31 @@ const theme = createTheme({
 });
 
 function App() {
-	return (
-		<div>
-			<AuthProvider>
-				<ThemeProvider theme={theme}>
-					<BrowserRouter>
-						<Routes>
-							<Route path="/" element={<Layout />}>
-								<Route index element={<StartPage />} />
-								<Route path="/detail/:id" element={<DetailPage />} />
-								<Route path="/category/:d" element={<CategoryPage />} />
-								<Route path="/signup" element={<SignUpPage />} />
-								<Route path="/signin" element={<SignInPage />} />
-								<Route path="/profile/:id" element={<ProfilePage />} />
-								<Route path="/newlisting" element={<NewListingPage />} />
-								<Route path="/requests" element={<RequestsPage />} />
-								<Route path="/howitworks" element={<HowItWorks />} />
-							</Route>
-						</Routes>
-					</BrowserRouter>
-				</ThemeProvider>
-			</AuthProvider>
-		</div>
-	);
+  return (
+    <div>
+      <AuthProvider>
+        <ItemsContextProvide>
+          <ThemeProvider theme={theme}>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<StartPage />} />
+                  <Route path="/items/:id" element={<DetailPage />} />
+                  <Route path="/category/:name" element={<CategoryPage />} />
+                  <Route path="/signup" element={<SignUpPage />} />
+                  <Route path="/signin" element={<SignInPage />} />
+                  <Route path="/profile/:id" element={<ProfilePage />} />
+                  <Route path="/newlisting" element={<NewListingPage />} />
+                  <Route path="/requests" element={<RequestsPage />} />
+                  <Route path="/howitworks" element={<HowItWorks />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+          </ThemeProvider>
+        </ItemsContextProvide>
+      </AuthProvider>
+    </div>
+  );
 }
 
 export default App;

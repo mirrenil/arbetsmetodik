@@ -1,7 +1,7 @@
 import { Box, SxProps } from "@mui/material";
 import { Avatar, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Paper from "@mui/material/Paper";
@@ -16,21 +16,28 @@ import SensorOccupiedIcon from "@mui/icons-material/SensorOccupied";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import GavelIcon from "@mui/icons-material/Gavel";
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
-import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import backGroundImg from "../Assets/Images/DesktopHeaderBackground.png";
 import logoImg from "../Assets/Images/logo.png";
-import { useAuth } from "../authContext";
-
+import { useAuth } from "../Contexts/AuthContext";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { logout } = useAuth();
+  const { currentUser, logout } = useAuth();
+  const userImg: any = currentUser?.photoURL;
+  const userName: any = currentUser?.displayName;
 
   useEffect(() => {
     AOS.init();
     AOS.refresh();
   }, []);
+  const navigate = useNavigate();
 
+	const handleSubmit = () => {
+		logout()
+    navigate("/");
+    
+  };
+  
   return (
     <Box sx={navBox}>
       <Box sx={navBoxInnerMobile}>
@@ -44,9 +51,40 @@ const Header = () => {
         <Link to='/newlisting' style={{textDecoration: 'none'}}>
           <AddCircleOutlineIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}} />
         </Link>
+        {currentUser ? 
+				<Box>
+          <Link to='/profile/:id' style={{textDecoration: 'none'}}>
+						{userImg ? 
+							<Box
+							component="img"
+							src={userImg}
+							alt={userName}
+							sx={{
+								cursor: 'pointer', 
+								width: '30px', 
+								height: '30px', 
+								borderRadius: '50px',
+							}}
+						/> : 
+						<Box
+							sx={{
+								cursor: 'pointer', 
+								width: '30px', 
+								height: '30px', 
+								borderRadius: '50px',
+							}}
+						>
+
+							<Typography sx={{color: '#000'}}>{userName?.charAt(0)}</Typography>
+						</Box>
+					}
+						
+          </Link>
+        </Box> : 
         <Link to='/profile/:id' style={{textDecoration: 'none'}}>
           <AccountCircleIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}}  />          
         </Link>
+        }
           <MenuIcon
             onClick={() => menuOpen ? setMenuOpen(false) : setMenuOpen(true)}
             sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}}
@@ -64,39 +102,67 @@ const Header = () => {
               data-aos-offset="200"
               data-aos-duration="1000"
               >
-                <Link to='/newlisting' style={{textDecoration: 'none'}}>
-                  <Box sx={navItem}>
-                    <AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>List an Item</Typography>
-                  </Box>
-                </Link>
-                <Link to='/signin' style={{textDecoration: 'none'}}>
-                  <Box sx={navItem}>
-                    <LoginIcon sx={navMenuIcon}/><Typography sx={navItemText}>Login</Typography>
-                  </Box>
-                </Link>
-                <Link to='/signup' style={{textDecoration: 'none'}}>
-                  <Box sx={navItem}>
-                   <SensorOccupiedIcon sx={navMenuIcon}/><Typography sx={navItemText}>Sign Up</Typography>
-                  </Box>
-                 </Link>
-                 <Link to='/' style={{textDecoration: 'none'}}>
-                  <Box sx={navItem}>
-                    <HelpOutlineIcon sx={navMenuIcon} /><Typography sx={navItemText}>How it works?</Typography>
-                  </Box>
-                 </Link>
-                 <Link to='/' style={{textDecoration: 'none'}}>
-                  <Box sx={navItem}>
-                  <GavelIcon sx={navMenuIcon} /><Typography sx={navItemText}>Terms of use</Typography>
-                  </Box>
-                 </Link>
+                 
+                  <Link to='/signup' style={{textDecoration: 'none'}}>
+                    <Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
+                    <SensorOccupiedIcon sx={navMenuIcon}/><Typography sx={navItemText}>Sign Up</Typography>
+                    </Box>
+                  </Link>
                   <Link to='/' style={{textDecoration: 'none'}}>
-                  <Box sx={navItem}>
-                  <ContactPhoneIcon sx={navMenuIcon} /><Typography sx={navItemText}>Contact</Typography>
-                  </Box>
-                 </Link>
-                   <Box sx={navItem} onClick={() => logout(false)}>
-                   <MeetingRoomIcon sx={navMenuIcon} /><Typography sx={navItemText}>Log Out</Typography>
-                  </Box>
+									<Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
+                      <HelpOutlineIcon sx={navMenuIcon} /><Typography sx={navItemText}>How it works?</Typography>
+                    </Box>
+                  </Link>
+                  <Link to='/' style={{textDecoration: 'none'}}>
+									<Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
+                    <GavelIcon sx={navMenuIcon} /><Typography sx={navItemText}>Terms of use</Typography>
+                    </Box>
+                  </Link>
+                    <Link to='/' style={{textDecoration: 'none'}}>
+										<Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
+                    <ContactPhoneIcon sx={navMenuIcon} /><Typography sx={navItemText}>Contact</Typography>
+                    </Box>
+                  </Link>
+										<Link to='/newlisting' style={{textDecoration: 'none'}}>
+										<Box 
+										sx={navItem}
+										onClick={ () => setMenuOpen(false)}
+										>
+												<AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>List an Item</Typography>
+											</Box>
+                    </Link>
+                    {currentUser ? 
+                    <>
+                        <Box sx={navItem}
+												onClick={ () =>{ 
+													setMenuOpen(false)
+													handleSubmit()
+													}}
+												>
+                          <LoginIcon sx={navMenuIcon}/><Typography sx={navItemText}>Logout</Typography>
+                        </Box>
+                    </>  :
+                      <Link to='/signin' style={{textDecoration: 'none'}}>
+                       <Box 
+												sx={navItem}
+												onClick={ () => setMenuOpen(false)}
+												>
+                          <LoginIcon sx={navMenuIcon}/><Typography sx={navItemText}>Login</Typography>
+                        </Box>
+                      </Link>
+                      }
                 </ul>
               </Box>
             ) : null}
@@ -135,12 +201,52 @@ const Header = () => {
             <Link to="/howItWorks" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>How it works</Typography>
             </Link>
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <Typography sx={itemsDesk}>List an item</Typography>
+            <Link to="/newlisting" style={{ textDecoration: "none" }}>
+              <Typography sx={itemsDesk}>List an Item</Typography>
             </Link>
-            <Link to="/signin" style={{ textDecoration: "none" }}>
-              <Typography sx={itemsDesk}>LogIn/SingUp</Typography>
-            </Link>
+            {currentUser ? (
+              <>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Link to="/profile/:id" style={{ textDecoration: "none" }}>
+                    {userImg ? (
+                      <Box
+                        component="img"
+                        src={userImg}
+                        alt={userName}
+                        sx={{
+                          cursor: "pointer",
+                          width: "30px",
+                          height: "30px",
+                          borderRadius: "50px",
+                        }}
+                      />
+                    ) : (
+                      <Box
+                        sx={{
+                          cursor: "pointer",
+                          width: "30px",
+                          height: "30px",
+                          borderRadius: "50px",
+                        }}
+                      >
+                        <Typography sx={{ color: "#000" }}>
+                          {userName}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Link>
+                  <Box sx={{ marginLeft: "1rem" }} onClick={handleSubmit}>
+                    <Typography sx={itemsDesk}>Logout</Typography>
+                  </Box>
+                </Box>
+              </>
+            ) : (
+              <Link to="/signin" style={{ textDecoration: "none" }}>
+                <Box>
+                  <Typography sx={itemsDesk}>Login</Typography>
+                </Box>
+              </Link>
+            )}
           </Box>
         </Box>
         <Box sx={searchBox}>
@@ -170,21 +276,9 @@ const Header = () => {
               }}
               aria-label="search"
             >
-              <SearchIcon />
+              <SearchIcon sx={{ fill: "#FFFFFF" }} />
             </IconButton>
           </Paper>
-        </Box>
-        <Box sx={mainLogoDiv}>
-          <Box sx={deskMainLogo}>
-            <Avatar alt="Logo" src={logoImg} sx={mainLogo} />
-            <Typography sx={mainDeskText}>
-              Lorem impsum dolor sit amet bla{" "}
-            </Typography>
-            <Typography sx={deskText}>
-              Borrow almost anything from people nearby for jobs at home, fun
-              experiences or work.
-            </Typography>
-          </Box>
         </Box>
       </Box>
     </Box>
@@ -192,28 +286,27 @@ const Header = () => {
 };
 
 const navBox: SxProps = {
-  height: { xs: '100px', md: '100px', lg: '200px', xl: '500px' },
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  userSelect: 'none',
-}
+  height: { xs: "100px", md: "100px", lg: "200px", xl: "200px" },
+  width: "100%",
+  display: "flex",
+  alignItems: "center",
+  userSelect: "none",
+};
 const navBoxInnerMobile: SxProps = {
-  width: '100%',
-  display: { xs: 'flex', md:'none', lg: 'none', xl: 'none' },
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  zIndex: '3',
-  backgroundColor: '#ffffff'
-
-}
+  width: "100%",
+  display: { xs: "flex", md: "none", lg: "none", xl: "none" },
+  alignItems: "center",
+  justifyContent: "space-between",
+  zIndex: "3",
+  backgroundColor: "#ffffff",
+};
 const navItems: SxProps = {
-  width: '150px',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  mr: '1em',
-  display: { xs: 'flex', md:'none', lg: 'none', xl: 'none' },
-}
+  width: "150px",
+  alignItems: "center",
+  justifyContent: "space-between",
+  mr: "1em",
+  display: { xs: "flex", md: "none", lg: "none", xl: "none" },
+};
 const logo: SxProps = {
   width: "100px",
   height: "100px",
@@ -223,30 +316,30 @@ const logo: SxProps = {
 };
 const logoImgStyle: SxProps = {};
 const mobileMenuList: SxProps = {
-  width: '250px',
-  height: '100vh',
-  display: 'flex',
-  alignItems: 'flex-start',
-  justifyContent: 'flex-start',
-  position: 'absolute',
-  right: '0',
-  top: '100px',
-  borderLeft: '1px solid black',
-  backgroundColor: '#ffffff'
-}
+  width: "250px",
+  height: "100vh",
+  display: "flex",
+  alignItems: "flex-start",
+  justifyContent: "flex-start",
+  position: "absolute",
+  right: "0",
+  top: "100px",
+  borderLeft: "1px solid black",
+  backgroundColor: "#ffffff",
+};
 const navItem: SxProps = {
- marginTop: '1em',
- cursor: 'pointer',
- display: 'flex',
- alignItems: 'center',
- justifyContent: '',
- width: '200px',
-}
+  marginTop: "1em",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "",
+  width: "200px",
+};
 const navItemText: SxProps = {
-  fontWeight:"bold",
-  color: '#000',
-  marginLeft: '1em',
-}
+  fontWeight: "bold",
+  color: "#000",
+  marginLeft: "1em",
+};
 const navMenuIcon: SxProps = {
   color: "#000",
 };
@@ -276,6 +369,7 @@ const navItemsDesk: SxProps = {
   width: "450px",
   marginRight: "4em",
 };
+
 const itemsDesk: SxProps = {
   color: "#F1F1F1",
   cursor: "pointer",
@@ -285,34 +379,6 @@ const searchBox: SxProps = {
   position: "absolute",
   left: "2em",
   top: "6em",
-};
-
-const mainLogoDiv: SxProps = {
-  // width: '1
-  display: { xs: 'none', md:'flex', lg: 'flex', xl: 'flex' },
-  position: 'absolute',
-  top: '200px',
-  left: '50%',
-  textAlign: 'center',
-}
-const deskMainLogo: SxProps = {
- 
-}
-const mainLogo: SxProps = {
-  width: "200px",
-  height: "200px",
-  transform: "translateX(-50%)",
-};
-const mainDeskText: SxProps = {
-  color: "black",
-  transform: "translateX(-50%)",
-  marginTop: "1em",
-  fontSize: "1.5em",
-  fontweight: "bold",
-};
-const deskText: SxProps = {
-  color: "black",
-  transform: "translateX(-50%)",
 };
 
 export default Header;

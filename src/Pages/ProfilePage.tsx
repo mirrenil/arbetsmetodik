@@ -1,11 +1,23 @@
 import { Box, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../authContext";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useAuth } from "../Contexts/AuthContext";
+import { useItems } from "../Contexts/ItemContext";
+import ItemCard from "../Components/ItemCard";
+import { ListItem } from "../Interfaces";
 
 function ProfilePage() {
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState<string>("");
+  const { fetchItemsFromDb, items } = useItems();
   const { currentUser } = useAuth();
+
+  useEffect(() => {
+    fetchItemsFromDb();
+    AOS.init();
+    AOS.refresh();
+  }, []);
 
   return (
     <Box
@@ -38,9 +50,24 @@ function ProfilePage() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <Typography variant="h2" component="h2" sx={{ marginTop: "2rem" }}>
+          <Typography
+            variant="h2"
+            component="h2"
+            sx={{ marginTop: "2rem", marginBottom: "2rem" }}
+          >
             Your listings
           </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-evenly",
+            }}
+          >
+            {items.map((item: ListItem) => (
+              <ItemCard key={item.id} item={item} />
+            ))}
+          </Box>
         </>
       ) : (
         <>
