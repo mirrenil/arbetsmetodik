@@ -10,9 +10,10 @@ import SignInPage from "./Pages/SignIn";
 import SignUpPage from "./Pages/SignUp";
 import StartPage from "./Pages/StartPage";
 import { createTheme, colors, ThemeProvider, Typography } from "@mui/material";
-import AuthProvider from "./Contexts/AuthContext";
+import { AuthProvider } from "./Contexts/AuthContext";
 import ItemsContextProvide from "./Contexts/ItemContext";
 import HowItWorks from "./Pages/HowItWorks";
+import UserProvider from "./Contexts/UserContext";
 
 const theme = createTheme({
   status: {
@@ -54,6 +55,7 @@ function App() {
   return (
     <div>
       <AuthProvider>
+        <UserProvider>
         <ItemsContextProvide>
           <ThemeProvider theme={theme}>
             <BrowserRouter>
@@ -73,6 +75,7 @@ function App() {
             </BrowserRouter>
           </ThemeProvider>
         </ItemsContextProvide>
+        </UserProvider>
       </AuthProvider>
     </div>
   );

@@ -10,13 +10,17 @@ import {
   getAuth,
   UserInfo,
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { query } from "express";
+import { collection, where, getDocs } from "firebase/firestore";
+import { IRequest } from "../Interfaces";
 
 interface AuthContext {
   signup: (email: string, password: string) => Promise<any>;
   login: (email: string, password: string) => Promise<any>;
   logout: () => void;
   currentUser?: UserInfo;
+  usersRequests: IRequest[];
   registerEmail: string;
   setRegisterEmail: (email: string) => void;
   registerPassword: string;
@@ -35,6 +39,7 @@ export const AuthContext = createContext<AuthContext>({
   login: async () => {},
   logout: () => {},
   currentUser: undefined,
+  usersRequests: [],
   registerEmail: "",
   setRegisterEmail: () => Promise,
   registerPassword: "",
@@ -54,6 +59,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }: any) {
   const [currentUser, setCurrentUser] = useState<UserInfo>();
+  const [usersRequests, setUsersRequests] = useState<IRequest[]>([]);
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -66,6 +72,35 @@ export function AuthProvider({ children }: any) {
     });
     return unsubscribe;
   }, [onAuthStateChanged, auth, currentUser]);
+
+  	// // MOVE THIS SECTION TO USER CONTEXT
+    //   useEffect(() => {
+    //     getUserRequests();
+    //   }, [currentUser]);
+
+    //   const getUserRequests = async () => {
+
+    //     const data = query(
+    //       collection(db, 'requests'),
+    //       where('toUser', '==', `${currentUser?.id}`)
+    //     );
+
+    //     const req = await getDocs(data);
+    //     req.forEach((doc) => {
+    //       let newRequest = {
+    //         accepted: doc.data().accepted,
+    //         createdAt: doc.data().createdAt,
+    //         fromUser: doc.data().fromUser,
+    //         toUser: doc.data().toUser,
+    //         itemId: doc.data().itemId,
+    //         priceTotal: doc.data().priceTotal,
+    //       };
+    //       setUsersRequests((reqs) => [...reqs, newRequest]);
+    //     });
+    //   };
+    //   // END OF SECTION
+
+
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
@@ -112,6 +147,7 @@ export function AuthProvider({ children }: any) {
         login,
         logout,
         currentUser,
+        usersRequests,
         registerEmail,
         setRegisterEmail,
         registerPassword,
