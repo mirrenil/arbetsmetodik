@@ -235,9 +235,6 @@ const Header = () => {
             <Link to="/requests" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>My requests</Typography>
             </Link>
-            <Link to="/requests" style={{ textDecoration: "none" }}>
-              <Typography sx={itemsDesk}>My requests</Typography>
-            </Link>
             <Link to="/newlisting" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>List an Item</Typography>
             </Link>
