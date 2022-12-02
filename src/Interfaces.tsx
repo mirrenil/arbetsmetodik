@@ -16,11 +16,13 @@ export interface IRequest {
     toUser: string,
     itemId: string,
     priceTotal: number,
+    id: string
 }
 
 export interface IUser {
     email: string,
-    id: string
+    displayName: string,
+    id: string,
 }
 
 export interface Category {
