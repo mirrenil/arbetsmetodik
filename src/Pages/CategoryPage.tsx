@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import ItemCard from "../Components/ItemCard";
 import { useItems } from "../Contexts/ItemContext";
-import { ListItem } from "../Interfaces";
+import { IListItem } from "../Interfaces";
 
 function CategoryPage() {
   const { name } = useParams();
@@ -38,7 +38,7 @@ function CategoryPage() {
           </Typography>
         </Box>
         <Box sx={itemsContainer}>
-          {CategoryItems?.map((item: ListItem) => (
+          {CategoryItems?.map((item: IListItem) => (
             <Link
               to={`/items/${item.id}`}
               key={item.id}

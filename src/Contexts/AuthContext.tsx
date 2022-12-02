@@ -11,7 +11,10 @@ import {
   User,
   UserInfo,
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { query } from "express";
+import { collection, where, getDocs } from "firebase/firestore";
+import { IRequest } from "../Interfaces";
 
 interface AuthContext {
   signup: (email: string, password: string) => Promise<any>;
@@ -32,9 +35,9 @@ interface AuthContext {
 }
 
 export const AuthContext = createContext<AuthContext>({
-  signup: async () => {},
-  login: async () => {},
-  logout: () => {},
+  signup: async () => { },
+  login: async () => { },
+  logout: () => { },
   currentUser: undefined,
   registerEmail: "",
   setRegisterEmail: () => Promise,
@@ -63,10 +66,15 @@ export function AuthProvider({ children }: any) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setCurrentUser(currentUser as User);
     });
+    if (auth.currentUser) {
+      setCurrentUser(auth.currentUser)
+    } else {
+      setCurrentUser(undefined)
+    }
+
     return unsubscribe;
-  }, [onAuthStateChanged, auth, currentUser]);
+  }, [onAuthStateChanged, currentUser]);
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
@@ -90,7 +98,11 @@ export function AuthProvider({ children }: any) {
   const login = async () => {
     try {
       await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      setCurrentUser(currentUser);
+      if (auth.currentUser) {
+        setCurrentUser(auth.currentUser)
+      } else {
+        setCurrentUser(undefined)
+      }
     } catch (error) {
       console.error(error);
     }

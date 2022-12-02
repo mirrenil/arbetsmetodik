@@ -5,7 +5,7 @@ import ItemCard from "../Components/ItemCard";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Link } from "react-router-dom";
-import { ListItem } from "../Interfaces";
+import { IListItem } from "../Interfaces";
 
 const RecentlyAdded = () => {
   const { fetchItemsFromDb, items } = useItems();
@@ -28,7 +28,7 @@ const RecentlyAdded = () => {
           data-aos-duration="1000"
           data-aos-delay="100"
         >
-          {items.map((item: ListItem) => (
+          {items.map((item: IListItem) => (
             <Link
               to={`/items/${item.id}`}
               key={item.id}
