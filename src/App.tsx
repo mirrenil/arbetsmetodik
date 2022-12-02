@@ -13,41 +13,42 @@ import { createTheme, colors, ThemeProvider, Typography } from "@mui/material";
 import AuthProvider from "./Contexts/AuthContext";
 import ItemsContextProvide from "./Contexts/ItemContext";
 import HowItWorks from "./Pages/HowItWorks";
+import NotFound from "./NotFound";
 
 const theme = createTheme({
-	status: {
-		danger: '#ff0000',
-	},
-	palette: {
-		primary: {
-			main: colors.teal[200],
-			darker: colors.teal[300],
-		},
-		secondary: {
-			main: colors.amber[600],
-		},
-		neutral: {
-			main: colors.grey[700],
-		},
-	},
-	typography: {
-		body1: {
-			fontFamily: 'Inter, Arial',
-			fontSize: 14,
-		},
-		h1: {
-			fontFamily: 'Roboto, Arial',
-			fontSize: 20,
-		},
-		h2: {
-			fontFamily: 'Inter, Arial',
-			fontSize: 24,
-		},
-	},
-	shape: {
-		buttonBorderRadius: '6px',
-		inputBorderRaduis: '6px',
-	},
+  status: {
+    danger: "#ff0000",
+  },
+  palette: {
+    primary: {
+      main: colors.teal[200],
+      darker: colors.teal[300],
+    },
+    secondary: {
+      main: colors.amber[600],
+    },
+    neutral: {
+      main: colors.grey[700],
+    },
+  },
+  typography: {
+    body1: {
+      fontFamily: "Inter, Arial",
+      fontSize: 14,
+    },
+    h1: {
+      fontFamily: "Roboto, Arial",
+      fontSize: 20,
+    },
+    h2: {
+      fontFamily: "Inter, Arial",
+      fontSize: 24,
+    },
+  },
+  shape: {
+    buttonBorderRadius: "6px",
+    inputBorderRaduis: "6px",
+  },
 });
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
                   <Route path="/newlisting" element={<NewListingPage />} />
                   <Route path="/requests" element={<RequestsPage />} />
                   <Route path="/howitworks" element={<HowItWorks />} />
+                  <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
             </BrowserRouter>
