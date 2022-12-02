@@ -10,11 +10,11 @@ function RequestsPage() {
 		<>
 			<Typography>Recieved requests:</Typography>
 			{myReceivedRequests.map((req) => {
-				return <ReceivedReqCard key={req.id} request={req}/>;
+				return <ReceivedReqCard key={req.id} request={req} isMySentRequest={false}/>;
 			})}
 			<Typography>Sent requests:</Typography>
 			{mySentRequests.map((req) => {
-				return <ReceivedReqCard key={req.id} request={req}/>;
+				return <ReceivedReqCard key={req.id} request={req} isMySentRequest={true}/>;
 			})}
 		</>
 	);
