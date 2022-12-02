@@ -15,9 +15,5 @@ function RequestsPage() {
 		</div>
 	);
 }
-const wrapper: SxProps = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center'
-}
+
 export default RequestsPage;
