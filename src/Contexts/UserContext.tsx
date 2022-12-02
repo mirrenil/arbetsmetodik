@@ -25,16 +25,7 @@ export function UserProvider({ children }: any) {
 
       useEffect(() => {
         getUserRequests();
-        getAll()
       }, [currentUser]);
-
-  
-      const getAll = async () => {
-        const data = query(collection(db, 'requests'));
-        const req = await getDocs(data);
-        req.forEach((doc) => {
-        });
-      }
 
       const getUserRequests = async () => {
           const data = query(
