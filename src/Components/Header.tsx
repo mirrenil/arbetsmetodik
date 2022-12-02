@@ -33,12 +33,11 @@ const Header = () => {
   }, []);
   const navigate = useNavigate();
 
-	const handleSubmit = () => {
-		logout()
+  const handleSubmit = () => {
+    logout();
     navigate("/");
-    
   };
-  
+
   return (
     <Box sx={navBox}>
       <Box sx={headerBackground}>
@@ -116,77 +115,66 @@ const Header = () => {
               data-aos-offset="200"
               data-aos-duration="1000"
               >
-                 
-                  <Link to='/signup' style={{textDecoration: 'none'}}>
-                    <Box 
-										sx={navItem}
-										onClick={ () => setMenuOpen(false)}
-										>
-                    <SensorOccupiedIcon sx={navMenuIcon}/><Typography sx={navItemText}>Sign Up</Typography>
+                  <Link to="/signup" style={{ textDecoration: "none" }}>
+                    <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                      <SensorOccupiedIcon sx={navMenuIcon} />
+                      <Typography sx={navItemText}>Sign Up</Typography>
                     </Box>
                   </Link>
-                  <Link to='/' style={{textDecoration: 'none'}}>
-									<Box 
-										sx={navItem}
-										onClick={ () => setMenuOpen(false)}
-										>
-                      <HelpOutlineIcon sx={navMenuIcon} /><Typography sx={navItemText}>How it works?</Typography>
+                  <Link to="/" style={{ textDecoration: "none" }}>
+                    <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                      <HelpOutlineIcon sx={navMenuIcon} />
+                      <Typography sx={navItemText}>How it works?</Typography>
                     </Box>
                   </Link>
-                  {currentUser ? 
-                   <Link to='/requests' style={{textDecoration: 'none'}}>
-                    <Box sx={navItem}>
-                      <AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>My requests</Typography>
-                   </Box>
-                  </Link>
-                  :
-                  null
-                  }
-                 
-                  <Link to='/' style={{textDecoration: 'none'}}>
-									<Box 
-										sx={navItem}
-										onClick={ () => setMenuOpen(false)}
-										>
-                    <GavelIcon sx={navMenuIcon} /><Typography sx={navItemText}>Terms of use</Typography>
-                    </Box>
-                  </Link>
-                    <Link to='/' style={{textDecoration: 'none'}}>
-										<Box 
-										sx={navItem}
-										onClick={ () => setMenuOpen(false)}
-										>
-                    <ContactPhoneIcon sx={navMenuIcon} /><Typography sx={navItemText}>Contact</Typography>
-                    </Box>
-                  </Link>
-										<Link to='/newlisting' style={{textDecoration: 'none'}}>
-										<Box 
-										sx={navItem}
-										onClick={ () => setMenuOpen(false)}
-										>
-												<AddCircleOutlineIcon sx={navMenuIcon}/><Typography sx={navItemText}>List an Item</Typography>
-											</Box>
+                  {currentUser ? (
+                    <Link to="/requests" style={{ textDecoration: "none" }}>
+                      <Box sx={navItem}>
+                        <AddCircleOutlineIcon sx={navMenuIcon} />
+                        <Typography sx={navItemText}>My requests</Typography>
+                      </Box>
                     </Link>
-                    {currentUser ? 
+                  ) : null}
+
+                  <Link to="/" style={{ textDecoration: "none" }}>
+                    <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                      <GavelIcon sx={navMenuIcon} />
+                      <Typography sx={navItemText}>Terms of use</Typography>
+                    </Box>
+                  </Link>
+                  <Link to="/" style={{ textDecoration: "none" }}>
+                    <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                      <ContactPhoneIcon sx={navMenuIcon} />
+                      <Typography sx={navItemText}>Contact</Typography>
+                    </Box>
+                  </Link>
+                  <Link to="/newlisting" style={{ textDecoration: "none" }}>
+                    <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                      <AddCircleOutlineIcon sx={navMenuIcon} />
+                      <Typography sx={navItemText}>List an Item</Typography>
+                    </Box>
+                  </Link>
+                  {currentUser ? (
                     <>
-                        <Box sx={navItem}
-												onClick={ () =>{ 
-													setMenuOpen(false)
-													handleSubmit()
-													}}
-												>
-                          <LoginIcon sx={navMenuIcon}/><Typography sx={navItemText}>Logout</Typography>
-                        </Box>
-                    </>  :
-                      <Link to='/signin' style={{textDecoration: 'none'}}>
-                       <Box 
-												sx={navItem}
-												onClick={ () => setMenuOpen(false)}
-												>
-                          <LoginIcon sx={navMenuIcon}/><Typography sx={navItemText}>Login</Typography>
-                        </Box>
-                      </Link>
-                      }
+                      <Box
+                        sx={navItem}
+                        onClick={() => {
+                          setMenuOpen(false);
+                          handleSubmit();
+                        }}
+                      >
+                        <LoginIcon sx={navMenuIcon} />
+                        <Typography sx={navItemText}>Logout</Typography>
+                      </Box>
+                    </>
+                  ) : (
+                    <Link to="/signin" style={{ textDecoration: "none" }}>
+                      <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                        <LoginIcon sx={navMenuIcon} />
+                        <Typography sx={navItemText}>Login</Typography>
+                      </Box>
+                    </Link>
+                  )}
                 </ul>
                 </Box>
               </Box>
@@ -222,6 +210,9 @@ const Header = () => {
           <Box sx={navItemsDesk}>
             <Link to="/howItWorks" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>How it works</Typography>
+            </Link>
+            <Link to="/requests" style={{ textDecoration: "none" }}>
+              <Typography sx={itemsDesk}>My requests</Typography>
             </Link>
             <Link to="/newlisting" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>List an Item</Typography>

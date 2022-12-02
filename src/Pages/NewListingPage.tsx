@@ -35,9 +35,10 @@ export default function NewListing() {
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<string>("");
   const [image, setImage] = useState<string>("");
+  const { currentUser } = useAuth();
+  const [authorID, setAuthorID] = useState(currentUser?.uid);
   const listingsRef = collection(db, "listings");
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
 
   const handleNewListing = async (event: FormEvent) => {
     event.preventDefault();
@@ -48,6 +49,7 @@ export default function NewListing() {
         description,
         price,
         image,
+        authorID,
         createdAt: Timestamp.now(),
       });
       navigate("/");
