@@ -64,6 +64,7 @@ export default function NewListing() {
         alignItems: "center",
         height: "100vh",
         margin: "auto",
+        mt:{xs: 4, md: 10, lg: 12, xl: 10}
       }}
     >
       {currentUser ? (
@@ -152,10 +153,14 @@ export default function NewListing() {
         </>
       ) : (
         <>
+        <Box
+          sx={{width: "70%", m: 'auto, 0'}}
+        >
           <Typography variant="h5">
             You need to be signed in to create a listing
           </Typography>
-          <Link to="/signin">Sign in now!</Link>
+          <Link to="/signin" style={{ textDecoration: "none"}}>Sign in now!</Link>
+        </Box>
         </>
       )}
     </Box>
