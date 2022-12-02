@@ -8,6 +8,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   getAuth,
+  User,
   UserInfo,
 } from "firebase/auth";
 import { auth } from "../firebase";
@@ -53,7 +54,7 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }: any) {
-  const [currentUser, setCurrentUser] = useState<UserInfo>();
+  const [currentUser, setCurrentUser] = useState<User>();
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -62,13 +63,14 @@ export function AuthProvider({ children }: any) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setCurrentUser(currentUser as UserInfo);
+      setCurrentUser(currentUser as User);
     });
     return unsubscribe;
   }, [onAuthStateChanged, auth, currentUser]);
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
+
     signInWithPopup(auth, provider);
   };
 
@@ -79,7 +81,7 @@ export function AuthProvider({ children }: any) {
         registerEmail,
         registerPassword
       );
-      setCurrentUser(user.user);
+      setCurrentUser(currentUser);
     } catch (error) {
       console.error(error);
     }
