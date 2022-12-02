@@ -65,6 +65,7 @@ const ItemCard = ({ item }: Props) => {
 };
 
 const boxStyle: SxProps = {
+
   width: { xs: "8rem", md: "10rem", lg: "10rem", xl: "10rem" },
   height: "10rem",
   padding: "1rem",

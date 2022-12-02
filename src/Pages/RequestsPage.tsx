@@ -15,5 +15,13 @@ function RequestsPage() {
 		</div>
 	);
 }
-
+      <Typography variant="h2">Sent requests:</Typography>
+		</Box>
+	);
+}
+const wrapper: SxProps = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center'
+}
 export default RequestsPage;

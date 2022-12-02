@@ -14,6 +14,7 @@ import { AuthProvider } from "./Contexts/AuthContext";
 import ItemsContextProvide from "./Contexts/ItemContext";
 import HowItWorks from "./Pages/HowItWorks";
 import UserProvider from "./Contexts/UserContext";
+import NotFound from "./NotFound";
 
 const theme = createTheme({
   status: {
@@ -42,7 +43,7 @@ const theme = createTheme({
     },
     h2: {
       fontFamily: "Inter, Arial",
-      fontSize: 18,
+      fontSize: 24,
     },
   },
   shape: {
@@ -70,6 +71,7 @@ function App() {
                   <Route path="/newlisting" element={<NewListingPage />} />
                   <Route path="/requests" element={<RequestsPage />} />
                   <Route path="/howitworks" element={<HowItWorks />} />
+                  <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
             </BrowserRouter>
