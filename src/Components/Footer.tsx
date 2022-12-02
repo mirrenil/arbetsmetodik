@@ -1,10 +1,11 @@
-import { Box, SxProps } from "@mui/material";
+import { Box, SxProps, Typography } from "@mui/material";
 import React from "react";
 import footerImg from "../Assets/Images/footer.png";
 import footer2Img from "../Assets/Images/footer2.png";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -18,33 +19,45 @@ const Footer = () => {
       </Box>
       <Box sx={mobileContainer}>
         <Box sx={mobileTextAlign}>
-          <Box>About Chubby Dog</Box>
-          <Box>How it works</Box>
-          <Box>Terms and conditions</Box>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Typography sx={textStyleMobile}>About Chubby Dog</Typography>
+          </Link>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Typography sx={textStyleMobile}>How it works</Typography>
+          </Link>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Typography sx={textStyleMobile}>Terms and Conditions</Typography>
+          </Link>
         </Box>
         <Box sx={iconAlign}>
-          <TwitterIcon />
-          <InstagramIcon />
-          <FacebookIcon />
+          <TwitterIcon sx={iconStyleMobile} />
+          <InstagramIcon sx={iconStyleMobile} />
+          <FacebookIcon sx={iconStyleMobile} />
         </Box>
       </Box>
       <Box sx={desktopContainer}>
         <Box sx={desktopAlign}>
           <img
             src={footer2Img}
-            alt=""
+            alt="footer background image"
             style={{ width: "100%", height: "auto" }}
           />
         </Box>
         <Box sx={desktopTextAlign}>
-          <Box sx={textStyle}>About Chubby Dog</Box>
-          <Box sx={textStyle}>How it works</Box>
-          <Box sx={textStyle}>Terms and conditions</Box>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Typography sx={textStyle}>About Chubby Dog</Typography>
+          </Link>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Typography sx={textStyle}>How it works</Typography>
+          </Link>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Typography sx={textStyle}>Terms and Conditions</Typography>
+          </Link>
         </Box>
         <Box sx={iconAlignDesktop}>
-          <TwitterIcon sx={iconStyle} />
-          <InstagramIcon sx={iconStyle} />
-          <FacebookIcon sx={iconStyle} />
+          <TwitterIcon sx={iconStyleDesktop} />
+          <InstagramIcon sx={iconStyleDesktop} />
+          <FacebookIcon sx={iconStyleDesktop} />
         </Box>
       </Box>
     </Box>
@@ -55,8 +68,24 @@ const desktopContainer: SxProps = {
   position: "relative",
   display: { xs: "none", md: "flex", lg: "flex", xl: "flex" },
 };
+const textStyleMobile: SxProps = {
+  marginBottom: "30px",
+  color: "00C4BA",
+  fontWeight: "bold",
+  "a:visted": {
+    color: "#00C4BA",
+  },
+};
 const textStyle: SxProps = {
   marginBottom: "30px",
+  color: "white",
+  fontWeight: "bold",
+  "&:hover": {
+    color: "#FEBF00",
+  },
+  "a:visted": {
+    color: "#00C4BA",
+  },
 };
 const mobileContainer: SxProps = {
   display: { xs: "flex", md: "none", lg: "none", xl: "none" },
@@ -84,7 +113,7 @@ const imgAlign: SxProps = {
 };
 const desktopAlign: SxProps = {
   display: { xs: "none", md: "flex", lg: "flex", xl: "flex" },
-  width: '100%'
+  width: "100%",
 };
 const iconAlign: SxProps = {
   display: "flex",
@@ -100,7 +129,17 @@ const iconAlignDesktop: SxProps = {
   bottom: "30px",
   right: { xs: "none", md: "200px", lg: "200px", xl: "300px" },
 };
-const iconStyle: SxProps = {
+const iconStyleDesktop: SxProps = {
   fontSize: { xs: "none", md: "60px", lg: "70px", xl: "70px" },
+  color: "white",
+  cursor: "pointer",
+  "&:hover": {
+    color: "#FEBF00",
+  },
+};
+
+const iconStyleMobile: SxProps = {
+  fontSize: { xs: "none", md: "60px", lg: "70px", xl: "70px" },
+  color: "#00C4BA",
 };
 export default Footer;
