@@ -8,14 +8,15 @@ import {
 } from "@mui/material";
 import React, { CSSProperties, useContext } from "react";
 import { useAuth } from "../Contexts/AuthContext";
-import { ListItem } from "../Interfaces";
+import { IListItem } from "../Interfaces";
 import ClearIcon from "@mui/icons-material/Clear";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { fontWeight, margin } from "@mui/system";
+
 interface Props {
-  item: ListItem;
+  item: IListItem;
 }
 
 const ItemCard = ({ item }: Props) => {

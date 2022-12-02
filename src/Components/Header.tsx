@@ -60,7 +60,12 @@ const Header = () => {
                   {userImg ? (
                     <Box
                       component="img"
-                      src={userImg}
+
+                      src={
+                        currentUser.photoURL
+                          ? userImg
+                          : "https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
+                      }
                       alt={userName}
                       sx={{
                         cursor: "pointer",
@@ -71,17 +76,18 @@ const Header = () => {
                     />
                   ) : (
                     <Box
+                      component="img"
+                      src={
+                        "https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
+                      }
+                      alt={userName}
                       sx={{
                         cursor: "pointer",
                         width: "30px",
                         height: "30px",
                         borderRadius: "50px",
                       }}
-                    >
-                      <Typography sx={{ color: "#000" }}>
-                        {userName?.charAt(0)}
-                      </Typography>
-                    </Box>
+                    />
                   )}
                 </Link>
               </Box>
@@ -218,6 +224,10 @@ const Header = () => {
           <Box sx={navItemsDesk}>
             <Link to="/howItWorks" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>How it works</Typography>
+            </Link>
+
+            <Link to="/requests" style={{ textDecoration: "none" }}>
+              <Typography sx={itemsDesk}>My requests</Typography>
             </Link>
 
             <Link to="/newlisting" style={{ textDecoration: "none" }}>

@@ -8,9 +8,13 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   getAuth,
+  User,
   UserInfo,
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { query } from "express";
+import { collection, where, getDocs } from "firebase/firestore";
+import { IRequest } from "../Interfaces";
 
 interface AuthContext {
   signup: (email: string, password: string) => Promise<any>;
@@ -31,9 +35,9 @@ interface AuthContext {
 }
 
 export const AuthContext = createContext<AuthContext>({
-  signup: async () => {},
-  login: async () => {},
-  logout: () => {},
+  signup: async () => { },
+  login: async () => { },
+  logout: () => { },
   currentUser: undefined,
   registerEmail: "",
   setRegisterEmail: () => Promise,
@@ -53,7 +57,7 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }: any) {
-  const [currentUser, setCurrentUser] = useState<UserInfo>();
+  const [currentUser, setCurrentUser] = useState<User>();
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -62,13 +66,19 @@ export function AuthProvider({ children }: any) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setCurrentUser(currentUser as UserInfo);
     });
+    if (auth.currentUser) {
+      setCurrentUser(auth.currentUser)
+    } else {
+      setCurrentUser(undefined)
+    }
+
     return unsubscribe;
-  }, [onAuthStateChanged, auth, currentUser]);
+  }, [onAuthStateChanged, currentUser]);
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
+
     signInWithPopup(auth, provider);
   };
 
@@ -79,7 +89,7 @@ export function AuthProvider({ children }: any) {
         registerEmail,
         registerPassword
       );
-      setCurrentUser(user.user);
+      setCurrentUser(currentUser);
     } catch (error) {
       console.error(error);
     }
@@ -88,7 +98,11 @@ export function AuthProvider({ children }: any) {
   const login = async () => {
     try {
       await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      setCurrentUser(currentUser);
+      if (auth.currentUser) {
+        setCurrentUser(auth.currentUser)
+      } else {
+        setCurrentUser(undefined)
+      }
     } catch (error) {
       console.error(error);
     }

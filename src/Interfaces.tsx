@@ -1,11 +1,27 @@
 
-export interface ListItem {
+export interface IListItem {
     title: string,
     description: string,
     image: string,
     price: number,
     category: string,
     id: string
+}
+
+export interface IRequest {
+    accepted: boolean,
+    createdAt: Date,
+    fromUser: string,
+    toUser: string,
+    itemId: string,
+    priceTotal: number,
+    id: string
+}
+
+export interface IUser {
+    email: string,
+    displayName: string,
+    id: string,
 }
 
 export interface Category {
