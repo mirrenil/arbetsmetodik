@@ -19,6 +19,7 @@ import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import backGroundImg from "../Assets/Images/DesktopHeaderBackground.png";
 import logoImg from "../Assets/Images/logo.png";
 import { useAuth } from "../Contexts/AuthContext";
+import MobileHeader from "../Assets/Images/MobileHeader.png";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -40,6 +41,14 @@ const Header = () => {
   
   return (
     <Box sx={navBox}>
+      <Box sx={headerBackground}>
+          <Box
+            component="img"
+            src={MobileHeader}
+            alt=""
+            sx={{height: '150px', }}
+          />
+        </Box>
       <Box sx={navBoxInnerMobile}>
       <Box sx={logo}>
         <Link to='/'>
@@ -49,7 +58,7 @@ const Header = () => {
       <Box>
         <Box sx={navItems}>
         <Link to='/newlisting' style={{textDecoration: 'none'}}>
-          <AddCircleOutlineIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}} />
+          <AddCircleOutlineIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#ffffff'}} />
         </Link>
         {currentUser ? 
 				<Box>
@@ -66,34 +75,41 @@ const Header = () => {
 								borderRadius: '50px',
 							}}
 						/> : 
+				
 						<Box
+							component="img"
+							src='https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg'
+							alt={userName}
 							sx={{
 								cursor: 'pointer', 
 								width: '30px', 
 								height: '30px', 
 								borderRadius: '50px',
 							}}
-						>
-							<Typography sx={{color: '#000'}}>{userName?.charAt(0)}</Typography>
-						</Box>
+              />
 					}
           </Link>
         </Box> : 
         <Link to='/profile/:id' style={{textDecoration: 'none'}}>
-          <AccountCircleIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}}  />          
+          <AccountCircleIcon sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#ffffff'}}  />          
         </Link>
         }
           <MenuIcon
             onClick={() => menuOpen ? setMenuOpen(false) : setMenuOpen(true)}
-            sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#000'}}
+            sx={{cursor: 'pointer', width: '30px', height: '30px', fill: '#ffffff'}}
           />
-          {menuOpen ? (
+        
+          </Box>
+        </Box>
+      </Box>
+      {menuOpen ? (
             <Box 
             sx={mobileMenuList}
             data-aos="fade-left"
             data-aos-offset="200"
             data-aos-duration="1000"
             >
+              <Box sx={UlDiv}>
               <ul 
               style={{listStyle: 'none', marginTop: '4em'}}
               data-aos="fade-left"
@@ -172,11 +188,9 @@ const Header = () => {
                       </Link>
                       }
                 </ul>
+                </Box>
               </Box>
             ) : null}
-          </Box>
-        </Box>
-      </Box>
       <Box sx={navBoxDesk}>
         <Box>
           <img
@@ -306,7 +320,17 @@ const navBoxInnerMobile: SxProps = {
   alignItems: "center",
   justifyContent: "space-between",
   zIndex: "3",
-  backgroundColor: "#ffffff",
+  position: "absolute",
+  top: "-15px",
+};
+const headerBackground: SxProps = {
+  display: { xs: "block", md: "none", lg: "none", xl: "none" },
+  position: "absolute",
+  top: "-5px",
+  width: "100%",
+  zIndex: "2",
+  // height: "100px", 
+  overflowX: 'hidden'
 };
 const navItems: SxProps = {
   width: "150px",
@@ -314,6 +338,7 @@ const navItems: SxProps = {
   justifyContent: "space-between",
   mr: "1em",
   display: { xs: "flex", md: "none", lg: "none", xl: "none" },
+ 
 };
 const logo: SxProps = {
   width: "100px",
@@ -321,19 +346,29 @@ const logo: SxProps = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  zIndex: "3",
+
 };
 const logoImgStyle: SxProps = {};
+
 const mobileMenuList: SxProps = {
   width: "250px",
-  height: "100vh",
-  display: "flex",
+  height: "400px",
+  display: { xs: "flex", md: "none", lg: "none", xl: "none" },  
   alignItems: "flex-start",
-  justifyContent: "flex-start",
+  justifyContent: "center",
   position: "absolute",
   right: "0",
   top: "100px",
-  borderLeft: "1px solid black",
-  backgroundColor: "#ffffff",
+  // borderLeft: "1px solid black",
+  // borderBottom: "1px solid black",
+  backgroundColor: "rgb(255, 255, 255)",
+  borderRadius: "5px",
+  zIndex: '1'
+};
+const UlDiv: SxProps = {
+  backgroundColor: "rgb(255, 255, 255)",
+  mt: '20%',
 };
 const navItem: SxProps = {
   marginTop: "1em",
@@ -342,6 +377,7 @@ const navItem: SxProps = {
   alignItems: "center",
   justifyContent: "",
   width: "200px",
+ 
 };
 const navItemText: SxProps = {
   fontWeight: "bold",
