@@ -1,21 +1,19 @@
-import { Box, SxProps, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import React from 'react';
-import { useAuth } from '../Contexts/AuthContext';
+import ReceivedReqCard from '../Components/ReceivedReqCard';
+import { useUser } from '../Contexts/UserContext';
 
 function RequestsPage() {
-	const { currentUser } = useAuth();
-
+	const { usersRequests } = useUser();
+	
 	return (
-		<Box sx={wrapper}>
-			<Typography variant="h2">Recieved requests:</Typography>
-
-      <Typography variant="h2">Sent requests:</Typography>
-		</Box>
+		<div>
+			<Typography>Recieved requests:</Typography>
+			{usersRequests.map((req) => {
+				return <ReceivedReqCard key={req.id} request={req}/>;
+			})}
+		</div>
 	);
 }
-const wrapper: SxProps = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center'
-}
+
 export default RequestsPage;
