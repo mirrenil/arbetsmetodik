@@ -18,8 +18,8 @@ interface Props {
 }
 
 const ReceivedReqCard = ({ request, isMySentRequest }: Props) => {
-  const [sender, setSender] = useState<IUser>({});
-  const [receiver, setReceiver] = useState<IUser>({});
+  const [sender, setSender] = useState<IUser>();
+  const [receiver, setReceiver] = useState<IUser>();
   const [item, setItem] = useState<IListItem>();
   const theme = useTheme();
 
