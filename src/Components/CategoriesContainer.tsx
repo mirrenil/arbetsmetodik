@@ -63,7 +63,7 @@ const CategoryCard = () => {
         {categories?.map((category: any) => (
           <Box
             sx={categoryDiv}
-            key={category.name}
+            key={category.id}
             onClick={() => {
               navigate(`/category/${category.title}`);
               test(category.id);
