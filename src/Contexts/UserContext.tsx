@@ -1,16 +1,18 @@
-import { query } from "express";
-import { collection, where, getDocs } from "firebase/firestore";
-import { createContext, useContext, useEffect } from "react";
+import { collection, where, getDocs, query } from "firebase/firestore";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { db } from "../firebase";
+import { IRequest } from "../Interfaces";
 import { useAuth } from './AuthContext';
 
 
 interface UserContextValue {
-
+  usersRequests: IRequest[],
+  setUsersRequests?: () => void,
 }
 
 export const UserContext = createContext<UserContextValue>({
-
+  usersRequests: [],
+  setUsersRequests: () => Promise,
 })
 
 export function useUser() {
@@ -18,37 +20,50 @@ export function useUser() {
 }
 
 export function UserProvider({ children }: any) { 
+  const [usersRequests, setUsersRequests] = useState<IRequest[]>([])
   const { currentUser } = useAuth();
 
       useEffect(() => {
-        // getUserRequests();
-        console.log(currentUser)
-      }, []);
+        getUserRequests();
+        getAll()
+      }, [currentUser]);
 
-      // const getUserRequests = async () => {
-      //   const data = query(
-      //     collection(db, 'requests'),
-      //     where('toUser', '==', `${currentUser?.id}`)
-      //   );
+  
+      const getAll = async () => {
+        const data = query(collection(db, 'requests'));
+        const req = await getDocs(data);
+        req.forEach((doc) => {
+        });
+      }
 
-      //   const req = await getDocs(data);
-      //   req.forEach((doc) => {
-      //     let newRequest = {
-      //       accepted: doc.data().accepted,
-      //       createdAt: doc.data().createdAt,
-      //       fromUser: doc.data().fromUser,
-      //       toUser: doc.data().toUser,
-      //       itemId: doc.data().itemId,
-      //       priceTotal: doc.data().priceTotal,
-      //     };
-      //     setUsersRequests((reqs) => [...reqs, newRequest]);
-      //   });
-      // };
+      const getUserRequests = async () => {
+          const data = query(
+          collection(db, 'requests'),
+          where('toUser', '==', `${currentUser?.uid}`)
+        );
+        const req = await getDocs(data);
+
+        req.forEach((doc) => {
+          const newRequest = {
+            accepted: doc.data().accepted,
+            createdAt: doc.data().createdAt,
+            fromUser: doc.data().fromUser,
+            toUser: doc.data().toUser,
+            itemId: doc.data().itemId,
+            priceTotal: doc.data().priceTotal,
+            id: doc.id
+          };
+          setUsersRequests((reqs) => [...reqs, newRequest]);
+        });
+      };
+
 
 
     return (
         <UserContext.Provider
-          value={{ }}
+          value={{ 
+            usersRequests,
+          }}
         >
           {children}
         </UserContext.Provider>

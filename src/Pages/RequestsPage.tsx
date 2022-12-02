@@ -1,21 +1,18 @@
 import { Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import ReceivedReqCard from '../Components/ReceivedReqCard';
 import { useAuth } from '../Contexts/AuthContext';
-import { getDocs, collection, where, query } from 'firebase/firestore';
-import { db } from '../firebase';
-import { IRequest } from '../Interfaces';
+import { useUser } from '../Contexts/UserContext';
 
 function RequestsPage() {
-	const { currentUser, usersRequests } = useAuth();
+	const { usersRequests } = useUser();
 	
-
 	return (
 		<div>
 			<Typography>Recieved requests:</Typography>
-			{/* {usersRequests.map((req) => {
-				return <ReceivedReqCard key={req.itemId + req.fromUser} request={req} user={currentUser}/>;
-			})} */}
+			{usersRequests.map((req) => {
+				return <ReceivedReqCard key={req.id} request={req}/>;
+			})}
 		</div>
 	);
 }

@@ -20,7 +20,6 @@ interface AuthContext {
   login: (email: string, password: string) => Promise<any>;
   logout: () => void;
   currentUser?: UserInfo;
-  usersRequests: IRequest[];
   registerEmail: string;
   setRegisterEmail: (email: string) => void;
   registerPassword: string;
@@ -35,11 +34,10 @@ interface AuthContext {
 }
 
 export const AuthContext = createContext<AuthContext>({
-  signup: async () => {},
-  login: async () => {},
-  logout: () => {},
+  signup: async () => { },
+  login: async () => { },
+  logout: () => { },
   currentUser: undefined,
-  usersRequests: [],
   registerEmail: "",
   setRegisterEmail: () => Promise,
   registerPassword: "",
@@ -59,7 +57,6 @@ export function useAuth() {
 
 export function AuthProvider({ children }: any) {
   const [currentUser, setCurrentUser] = useState<UserInfo>();
-  const [usersRequests, setUsersRequests] = useState<IRequest[]>([]);
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -68,39 +65,15 @@ export function AuthProvider({ children }: any) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setCurrentUser(currentUser as UserInfo);
     });
+    if (auth.currentUser) {
+      setCurrentUser(auth.currentUser)
+    } else {
+      setCurrentUser(undefined)
+    }
+
     return unsubscribe;
-  }, [onAuthStateChanged, auth, currentUser]);
-
-  	// // MOVE THIS SECTION TO USER CONTEXT
-    //   useEffect(() => {
-    //     getUserRequests();
-    //   }, [currentUser]);
-
-    //   const getUserRequests = async () => {
-
-    //     const data = query(
-    //       collection(db, 'requests'),
-    //       where('toUser', '==', `${currentUser?.id}`)
-    //     );
-
-    //     const req = await getDocs(data);
-    //     req.forEach((doc) => {
-    //       let newRequest = {
-    //         accepted: doc.data().accepted,
-    //         createdAt: doc.data().createdAt,
-    //         fromUser: doc.data().fromUser,
-    //         toUser: doc.data().toUser,
-    //         itemId: doc.data().itemId,
-    //         priceTotal: doc.data().priceTotal,
-    //       };
-    //       setUsersRequests((reqs) => [...reqs, newRequest]);
-    //     });
-    //   };
-    //   // END OF SECTION
-
-
+  }, [onAuthStateChanged, currentUser]);
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
@@ -123,7 +96,11 @@ export function AuthProvider({ children }: any) {
   const login = async () => {
     try {
       await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      setCurrentUser(currentUser);
+      if (auth.currentUser) {
+        setCurrentUser(auth.currentUser)
+      } else {
+        setCurrentUser(undefined)
+      }
     } catch (error) {
       console.error(error);
     }
@@ -147,7 +124,6 @@ export function AuthProvider({ children }: any) {
         login,
         logout,
         currentUser,
-        usersRequests,
         registerEmail,
         setRegisterEmail,
         registerPassword,

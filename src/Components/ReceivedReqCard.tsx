@@ -2,7 +2,6 @@ import { CSSPropertiesWithMultiValues } from '@emotion/serialize';
 import {
 	Box,
 	CardMedia,
-	SxProps,
 	Typography,
 	useTheme,
 	Button,
@@ -15,10 +14,9 @@ import { db } from '../firebase';
 
 interface Props {
 	request: IRequest;
-	user: IUser;
 }
 
-const ReceivedReqCard = ({ request, user }: Props) => {
+const ReceivedReqCard = ({ request }: Props) => {
 	const [sender, setSender] = useState<IUser>();
 	const [item, setItem] = useState<IListItem>();
 	const theme = useTheme();
@@ -33,7 +31,13 @@ const ReceivedReqCard = ({ request, user }: Props) => {
 		const req = await getDocs(data);
 		req.forEach((doc) => {
 			if (doc.id == request.fromUser) {
-				setSender({ email: doc.data().email, id: doc.id });
+				
+				const sender = {
+					email: doc.data().email,
+					displayName: doc.data().displayName,
+					id: doc.id
+				}
+				setSender(sender);
 			}
 		});
 	};
@@ -71,8 +75,7 @@ const ReceivedReqCard = ({ request, user }: Props) => {
 		>
 			<CardMedia sx={[imgStyle, grid.pic]} component="img" src={camera} />
 			<Typography sx={[textContainer, grid.reqFrom]}>
-				<span style={titleStyle}>Request from: </span>
-				{sender ? sender.email : 'No sender found'}
+				<span style={titleStyle}>Request from: </span>{sender?.email ? sender.email : 'no name'}
 			</Typography>
 			<Typography sx={[textContainer, grid.reqFor]}>
 				<span style={titleStyle}>Request for: </span> {item ? item.title : 'no item'}
