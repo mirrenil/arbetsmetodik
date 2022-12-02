@@ -4,15 +4,19 @@ import ReceivedReqCard from '../Components/ReceivedReqCard';
 import { useUser } from '../Contexts/UserContext';
 
 function RequestsPage() {
-	const { usersRequests } = useUser();
+	const { myReceivedRequests, mySentRequests } = useUser();
 	
 	return (
-		<div>
+		<>
 			<Typography>Recieved requests:</Typography>
-			{usersRequests.map((req) => {
+			{myReceivedRequests.map((req) => {
 				return <ReceivedReqCard key={req.id} request={req}/>;
 			})}
-		</div>
+			<Typography>Sent requests:</Typography>
+			{mySentRequests.map((req) => {
+				return <ReceivedReqCard key={req.id} request={req}/>;
+			})}
+		</>
 	);
 }
 
