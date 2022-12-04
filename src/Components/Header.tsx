@@ -44,7 +44,7 @@ const Header = () => {
         <Box
           component="img"
           src={MobileHeader}
-          alt=""
+          alt="mobile header background"
           sx={{ 
             height: "170px",
           }}
@@ -343,7 +343,6 @@ const headerBackground: SxProps = {
   top: "-5px",
   width: "100%",
   zIndex: "2",
-  // height: "100px",
   overflowX: "hidden",
 };
 const navItems: SxProps = {
