@@ -1,31 +1,51 @@
-import React, { FormEvent, useState } from "react";
+import React, { CSSProperties, FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
-import { Button, SxProps, TextField, Typography } from "@mui/material";
+import { Button, FormControl, IconButton, InputLabel, MenuItem, Select, Snackbar, SxProps, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import CloseIcon from '@mui/icons-material/Close';
 import { db } from "../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useAuth } from "../Contexts/AuthContext";
+import * as yup from "yup";
+import { useFormik, Formik } from 'formik';
+import { IListItem } from "../Interfaces";
+
+const validationSchema = yup
+    .object({
+    category: yup
+    .string()
+    .required('Category is required'),
+    title: yup
+        .string()
+        .required('Title is required'),
+    price: yup
+        .string()
+        .required('Price is required'),
+    description: yup
+        .string()
+        .required('Password is required'),
+    imageUrl: yup
+        .string()
+        .min(6, 'Image URL should be of minimum 8 characters length')
+        .required('Image url is required'),
+      });
 
 const categories = [
   {
-    value: "Select a category",
-    label: "Select a category",
-  },
-  {
     value: "Electronics",
-    label: "Electronics",
+    title: "Electronics",
   },
   {
     value: "Home",
-    label: "Home",
+    title: "Home",
   },
   {
     value: "Clothing",
-    label: "Clothing",
+    title: "Clothing",
   },
   {
     value: "Other",
-    label: "Other",
+    title: "Other",
   },
 ];
 
@@ -40,15 +60,15 @@ export default function NewListing() {
   const listingsRef = collection(db, "listings");
   const navigate = useNavigate();
 
-  const handleNewListing = async (event: FormEvent) => {
-    event.preventDefault();
+  const handleNewListing = async () => {
+    // event.preventDefault();
     try {
       const docRef = await addDoc(listingsRef, {
-        category,
-        title,
-        description,
-        price,
-        image,
+        category: formik.values.category,
+        title : formik.values.title,
+        description:  formik.values.description,
+        price:  formik.values.price,
+        image:  formik.values.imageUrl,
         authorID,
         createdAt: Timestamp.now(),
       });
@@ -58,92 +78,98 @@ export default function NewListing() {
     }
   };
 
-  return (
-    <Box sx={wrapper}>
-      {currentUser ? (
-        <>
+  const formik = useFormik({
+    initialValues: {
+        category: "",
+        title: "", 
+        price: "",
+        description: "", 
+        imageUrl: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      handleNewListing()
+    },
+});
+
+console.log('title', title);
+return (
+  <Box sx={wrapper}>
+    {currentUser ? (
+      <>
+          <form onSubmit={formik.handleSubmit}>
           <h1>Create a listing</h1>
           <Box
-            component="form"
-            onSubmit={handleNewListing}
             sx={{
               "& > :not(style)": { m: 1, width: "25ch" },
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
-            noValidate
-            autoComplete="off"
           >
-            <TextField
+              <FormControl sx={{ marginBottom: "1rem" }}>
+              <InputLabel id="category">Category</InputLabel>
+                  <Select
+                      name="category"
+                      value={formik.values.category}
+                      label="categoryLabel"
+                      onChange={formik.handleChange}
+                      error={formik.touched.category && Boolean(formik.errors.category)}
+                  >
+                  {categories.map ((chooseCategory, index)=> (
+                 <MenuItem key={index} value={chooseCategory.title}>{chooseCategory.title}</MenuItem>
+                 ))}
+                  </Select>
+              </FormControl>
+              <TextField
               sx={{ marginBottom: "1rem" }}
-              id="outlined-select-category-native"
-              select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              SelectProps={{
-                native: true,
-              }}
-            >
-              {categories.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </TextField>
-            <TextField
-              sx={{ marginBottom: "1rem" }}
-              id="outlined-basic"
+              id="title"
+              name="title"
               label="Title"
-              variant="outlined"
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <TextField
+              value={formik.values.title}
+              onChange={formik.handleChange}
+              error={formik.touched.title && Boolean(formik.errors.title)}
+              helperText={formik.touched.title && formik.errors.title}
+              />
+              <TextField
               sx={{ marginBottom: "1rem" }}
-              id="outlined-multiline-static"
-              multiline
-              rows={4}
+              id="description"
+              name="description"
               label="Description"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <TextField
+              type="text"
+              value={formik.values.description}
+              onChange={formik.handleChange}
+              error={formik.touched.description && Boolean(formik.errors.description)}
+              helperText={formik.touched.description && formik.errors.description}
+              />
+              <TextField
               sx={{ marginBottom: "1rem" }}
-              type="number"
-              id="outlined-basic"
-              label="Price per day"
-              variant="outlined"
-              onChange={(e) => setPrice(e.target.value)}
-            />
-            <TextField
+              id="price"
+              name="price"
+              label="Price"
+              type="text"
+              value={formik.values.price}
+              onChange={formik.handleChange}
+              error={formik.touched.price && Boolean(formik.errors.price)}
+              helperText={formik.touched.price && formik.errors.price}
+              />
+              <TextField
               sx={{ marginBottom: "1rem" }}
-              id="outlined-basic"
-              label="Image url"
-              variant="outlined"
-              onChange={(e) => setImage(e.target.value)}
-            />
-            <Box
-              sx={{
-                backgroundColor: "#80CCFF",
-                borderRadius: "6px",
-                opacity: "60%",
-                marginBottom: "1rem",
-              }}
-            >
-              <h5 style={{ margin: "1rem" }}>
-                By adding this listing you agree with Chubby Dog&apos;s terms of
-                use
-              </h5>
-            </Box>
-            <Button
-              sx={{ background: "#00C4BA" }}
-              type="submit"
-              variant="contained"
-              size="large"
-            >
-              Create listing
-            </Button>
-          </Box>
-        </>
+              id="imageUrl"
+              name="imageUrl"
+              label="ImageUrl"
+              type="text"
+              value={formik.values.imageUrl}
+              onChange={formik.handleChange}
+              error={formik.touched.imageUrl && Boolean(formik.errors.imageUrl)}
+              helperText={formik.touched.imageUrl && formik.errors.imageUrl}
+              />
+              <Button color="primary" variant="contained" fullWidth type="submit">
+              Submit
+              </Button>
+              </Box>
+          </form>
+      </>
       ) : (
         <Box
           sx={{
@@ -163,7 +189,6 @@ export default function NewListing() {
     </Box>
   );
 }
-
 const wrapper: SxProps = {
   display: "flex",
   flexDirection: "column",

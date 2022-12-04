@@ -15,6 +15,7 @@ import ItemsContextProvide from "./Contexts/ItemContext";
 import HowItWorks from "./Pages/HowItWorks";
 import UserProvider from "./Contexts/UserContext";
 import NotFound from "./NotFound";
+import { IListItem } from "./Interfaces";
 
 const theme = createTheme({
   status: {
@@ -68,7 +69,7 @@ function App() {
                   <Route path="/signup" element={<SignUpPage />} />
                   <Route path="/signin" element={<SignInPage />} />
                   <Route path="/profile/:id" element={<ProfilePage />} />
-                  <Route path="/newlisting" element={<NewListingPage />} />
+                  <Route path="/newlisting" element={<NewListingPage  />} />
                   <Route path="/requests" element={<RequestsPage />} />
                   <Route path="/howitworks" element={<HowItWorks />} />
                   <Route path="*" element={<NotFound />} />
