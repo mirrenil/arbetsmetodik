@@ -45,7 +45,9 @@ const Header = () => {
           component="img"
           src={MobileHeader}
           alt=""
-          sx={{ height: "150px" }}
+          sx={{ 
+            height: "170px",
+          }}
         />
       </Box>
       <Box sx={navBoxInnerMobile}>
@@ -369,8 +371,6 @@ const mobileMenuList: SxProps = {
   position: "absolute",
   right: "0",
   top: "100px",
-  // borderLeft: "1px solid black",
-  // borderBottom: "1px solid black",
   backgroundColor: "rgb(255, 255, 255)",
   borderRadius: "5px",
   zIndex: "1",
