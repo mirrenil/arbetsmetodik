@@ -6,31 +6,25 @@ import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
 
 function SignUpPage() {
-  const {
-    signup,
-    registerEmail,
-    setRegisterEmail,
-    registerPassword,
-    setRegisterPassword,
-    googleSignIn,
-    passwordConfirmation,
-    setPasswordConfirmation,
-  } = useAuth();
+  const { signup, setRegisterEmail, setRegisterPassword, googleSignIn } =
+    useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const emailRef = useRef<null | HTMLInputElement>(null);
+  const passwordRef = useRef<null | HTMLInputElement>(null);
+  const passwordConfirmationRef = useRef<null | HTMLInputElement>(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    if (registerPassword !== passwordConfirmation)
+    if (passwordRef.current?.value !== passwordConfirmationRef.current?.value) {
       return setError("Passwords do not match");
-
+    }
     try {
       setError("");
       setLoading(true);
-      await signup(registerEmail, registerPassword);
-      navigate("/");
+      await signup(emailRef, passwordRef);
+      navigate("/signin");
     } catch (error) {
       setError("Failed to create an account");
     }
@@ -67,23 +61,28 @@ function SignUpPage() {
           label="Email"
           variant="outlined"
           required
+          ref={emailRef}
           onChange={(e) => setRegisterEmail(e.target.value)}
         />
+
         <TextField
           id="outlined-basic"
           label="Password"
           variant="outlined"
           type="password"
           required
+          ref={passwordRef}
           onChange={(e) => setRegisterPassword(e.target.value)}
         />
+
         <TextField
           id="outlined-basic"
           label="Password confirmation"
           variant="outlined"
           type="password"
+          ref={passwordConfirmationRef}
           required
-          onChange={(e) => setPasswordConfirmation(e.target.value)}
+          onChange={(e) => setRegisterPassword(e.target.value)}
         />
         {error && <Alert severity="error">{error}</Alert>}
         <Button
