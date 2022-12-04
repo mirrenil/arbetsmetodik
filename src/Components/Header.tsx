@@ -15,7 +15,6 @@ import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import backGroundImg from "../Assets/Images/DesktopHeaderBackground.png";
 import logoImg from "../Assets/Images/logo.png";
 import { useAuth } from "../Contexts/AuthContext";
-import { textAlign } from "@mui/system";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -60,7 +59,6 @@ const Header = () => {
                   {userImg ? (
                     <Box
                       component="img"
-
                       src={
                         currentUser.photoURL
                           ? userImg
