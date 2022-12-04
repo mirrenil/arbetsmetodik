@@ -24,7 +24,6 @@ const RecentlyAdded = () => {
           data-aos="fade-left"
           data-aos-offset="200"
           data-aos-duration="1000"
-          data-aos-delay="100"
         >
           {items.map((item: IListItem) => (
             <Link
