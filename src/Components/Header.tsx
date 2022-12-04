@@ -1,13 +1,9 @@
-import { Box, SxProps } from "@mui/material";
+import { Box, Button, SxProps, colors } from "@mui/material";
 import { Avatar, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Paper from "@mui/material/Paper";
-import InputBase from "@mui/material/InputBase";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -234,9 +230,11 @@ const Header = () => {
             <Link to="/howItWorks" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>How it works</Typography>
             </Link>
+
             <Link to="/requests" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>My requests</Typography>
             </Link>
+
             <Link to="/newlisting" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>List an Item</Typography>
             </Link>
@@ -319,6 +317,11 @@ const navItems: SxProps = {
   justifyContent: "space-between",
   mr: "1em",
   display: { xs: "flex", md: "none", lg: "none", xl: "none" },
+  "&:hover": {
+    backgroundColor: "#fff",
+    opacity: "90%",
+    border: "2px solid #fff",
+  },
 };
 const logo: SxProps = {
   width: "100px",
@@ -385,20 +388,22 @@ const navItemsDesk: SxProps = {
   zIndex: "1",
   display: "flex",
   alignItems: "center",
-  justifyContent: "space-between",
+  justifyContent: "space-evenly",
   width: "450px",
-  marginRight: "4em",
 };
 
 const itemsDesk: SxProps = {
   color: "#F1F1F1",
   cursor: "pointer",
   fontWeight: "bold",
-};
-const searchBox: SxProps = {
-  position: "absolute",
-  left: "2em",
-  top: "6em",
+  width: "7rem",
+  height: "1.8rem",
+  textAlign: "center",
+  padding: "5% 5%",
+  borderRadius: "6px",
+  "&:hover": {
+    color: "#FEBF00",
+  },
 };
 
 export default Header;
