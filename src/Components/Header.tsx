@@ -45,7 +45,7 @@ const Header = () => {
           component="img"
           src={MobileHeader}
           alt=""
-          sx={{ 
+          sx={{
             height: "170px",
           }}
         />
@@ -284,37 +284,6 @@ const Header = () => {
             )}
           </Box>
         </Box>
-        <Box sx={searchBox}>
-          <Paper
-            component="form"
-            sx={{
-              p: "2px 4px",
-              display: "flex",
-              alignItems: "center",
-              width: 250,
-              height: 25,
-            }}
-          >
-            <InputBase
-              sx={{ ml: 1, flex: 1, fontSize: "12px" }}
-              placeholder="What are you looking for?"
-              inputProps={{ "aria-label": "What are you looking for?" }}
-            />
-            <IconButton
-              type="button"
-              sx={{
-                p: "10px",
-                backgroundColor: "#00C4BA",
-                height: "23px",
-                width: "30px",
-                borderRadius: "5px",
-              }}
-              aria-label="search"
-            >
-              <SearchIcon sx={{ fill: "#FFFFFF" }} />
-            </IconButton>
-          </Paper>
-        </Box>
       </Box>
     </Box>
   );
@@ -342,7 +311,6 @@ const headerBackground: SxProps = {
   top: "-5px",
   width: "100%",
   zIndex: "2",
-  // height: "100px",
   overflowX: "hidden",
 };
 const navItems: SxProps = {
