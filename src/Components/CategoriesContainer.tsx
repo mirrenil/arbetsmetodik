@@ -7,7 +7,7 @@ import "aos/dist/aos.css";
 
 const CategoryCard = () => {
   const navigate = useNavigate();
-  AOS.init()
+  AOS.init({once: true});
   const { categories, fetchCategoriesFromDb, setSelectedCategoryId } =
     useItems();
   const [showMore, setShowMore] = useState(false);
@@ -16,8 +16,6 @@ const CategoryCard = () => {
 
   useEffect(() => {
     fetchCategoriesFromDb();
-    // AOS.init();
-    // AOS.refresh();
   }, []);
 
   const test = (id: string) => {

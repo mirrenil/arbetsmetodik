@@ -7,7 +7,7 @@ import infoSecImg from "../Assets/Images/infoSecImg.png";
 import "aos/dist/aos.css";
 
 const StartPageInfo = () => {
-  AOS.init()
+  AOS.init({once: true});
 
   return (
     <Box sx={mainPageInfoBox}>

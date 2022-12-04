@@ -9,7 +9,7 @@ import { IListItem } from "../Interfaces";
 
 const RecentlyAdded = () => {
   const { fetchItemsFromDb, items } = useItems();
-  AOS.init()
+  AOS.init({once: true});
   useEffect(() => {
     fetchItemsFromDb();
   }, []);
