@@ -1,13 +1,9 @@
-import { Box, SxProps } from "@mui/material";
+import { Box, Button, SxProps, colors } from "@mui/material";
 import { Avatar, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Paper from "@mui/material/Paper";
-import InputBase from "@mui/material/InputBase";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -46,6 +42,7 @@ const Header = () => {
           src={MobileHeader}
           alt="mobile header background"
           sx={{ 
+
             height: "170px",
           }}
         />
@@ -234,9 +231,11 @@ const Header = () => {
             <Link to="/howItWorks" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>How it works</Typography>
             </Link>
+
             <Link to="/requests" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>My requests</Typography>
             </Link>
+
             <Link to="/newlisting" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>List an Item</Typography>
             </Link>
@@ -258,17 +257,16 @@ const Header = () => {
                       />
                     ) : (
                       <Box
+                        component="img"
+                        src="https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
+                        alt={userName}
                         sx={{
                           cursor: "pointer",
                           width: "30px",
                           height: "30px",
                           borderRadius: "50px",
                         }}
-                      >
-                        <Typography sx={{ color: "#000" }}>
-                          {userName}
-                        </Typography>
-                      </Box>
+                      />
                     )}
                   </Link>
                   <Box sx={{ marginLeft: "1rem" }} onClick={handleSubmit}>
@@ -284,37 +282,6 @@ const Header = () => {
               </Link>
             )}
           </Box>
-        </Box>
-        <Box sx={searchBox}>
-          <Paper
-            component="form"
-            sx={{
-              p: "2px 4px",
-              display: "flex",
-              alignItems: "center",
-              width: 250,
-              height: 25,
-            }}
-          >
-            <InputBase
-              sx={{ ml: 1, flex: 1, fontSize: "12px" }}
-              placeholder="What are you looking for?"
-              inputProps={{ "aria-label": "What are you looking for?" }}
-            />
-            <IconButton
-              type="button"
-              sx={{
-                p: "10px",
-                backgroundColor: "#00C4BA",
-                height: "23px",
-                width: "30px",
-                borderRadius: "5px",
-              }}
-              aria-label="search"
-            >
-              <SearchIcon sx={{ fill: "#FFFFFF" }} />
-            </IconButton>
-          </Paper>
         </Box>
       </Box>
     </Box>
@@ -351,6 +318,11 @@ const navItems: SxProps = {
   justifyContent: "space-between",
   mr: "1em",
   display: { xs: "flex", md: "none", lg: "none", xl: "none" },
+  "&:hover": {
+    backgroundColor: "#fff",
+    opacity: "90%",
+    border: "2px solid #fff",
+  },
 };
 const logo: SxProps = {
   width: "100px",
@@ -417,20 +389,22 @@ const navItemsDesk: SxProps = {
   zIndex: "1",
   display: "flex",
   alignItems: "center",
-  justifyContent: "space-between",
+  justifyContent: "space-evenly",
   width: "450px",
-  marginRight: "4em",
 };
 
 const itemsDesk: SxProps = {
   color: "#F1F1F1",
   cursor: "pointer",
   fontWeight: "bold",
-};
-const searchBox: SxProps = {
-  position: "absolute",
-  left: "2em",
-  top: "6em",
+  width: "7rem",
+  height: "1.8rem",
+  textAlign: "center",
+  padding: "5% 5%",
+  borderRadius: "6px",
+  "&:hover": {
+    color: "#FEBF00",
+  },
 };
 
 export default Header;

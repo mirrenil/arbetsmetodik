@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, SxProps, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
@@ -168,3 +168,11 @@ export default function NewListing() {
     </Box>
   );
 }
+
+const wrapper: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  height: "100vh",
+  marginTop: { xs: "100px", md: "250px", lg: "150px", xl: "150px" },
+};
