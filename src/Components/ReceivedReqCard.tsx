@@ -11,6 +11,7 @@ import camera from '../Assets/Images/Film-Photography.png';
 import { IRequest, IUser, IListItem } from '../Interfaces';
 import { getDocs, collection, where, query } from 'firebase/firestore';
 import { db } from '../firebase';
+import "aos/dist/aos.css";
 
 interface Props {
 	request: IRequest;

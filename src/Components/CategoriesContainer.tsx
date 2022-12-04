@@ -1,12 +1,13 @@
 import { Box, SxProps, Typography } from "@mui/material";
 import React, { useState, useEffect, useContext } from "react";
 import AOS from "aos";
-import { Category } from "../Interfaces";
 import { useItems } from "../Contexts/ItemContext";
 import { useNavigate } from "react-router-dom";
+import "aos/dist/aos.css";
 
 const CategoryCard = () => {
   const navigate = useNavigate();
+  AOS.init()
   const { categories, fetchCategoriesFromDb, setSelectedCategoryId } =
     useItems();
   const [showMore, setShowMore] = useState(false);
@@ -15,8 +16,8 @@ const CategoryCard = () => {
 
   useEffect(() => {
     fetchCategoriesFromDb();
-    AOS.init();
-    AOS.refresh();
+    // AOS.init();
+    // AOS.refresh();
   }, []);
 
   const test = (id: string) => {
@@ -113,6 +114,7 @@ const categoriesDivDisk: SxProps = {
   margin: "auto",
   position: "relative",
   userSelect: "none",
+  overflowX: "hidden",
 };
 const categoryDiv: SxProps = {
   width: { xs: "50%", md: "25%", lg: "25%", xl: "25%" },

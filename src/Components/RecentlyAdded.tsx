@@ -9,11 +9,9 @@ import { IListItem } from "../Interfaces";
 
 const RecentlyAdded = () => {
   const { fetchItemsFromDb, items } = useItems();
-
+  AOS.init()
   useEffect(() => {
     fetchItemsFromDb();
-    AOS.init();
-    AOS.refresh();
   }, []);
   items.length = 6;
 
@@ -46,6 +44,7 @@ const MainItemsContainer: SxProps = {
   width: "100%",
   mt: 8,
   minHeight: 250,
+  overflowX: "hidden",
 };
 const itemsContainer: SxProps = {
   display: "flex",
