@@ -45,7 +45,9 @@ const Header = () => {
           component="img"
           src={MobileHeader}
           alt=""
-          sx={{ height: "150px" }}
+          sx={{ 
+            height: "170px",
+          }}
         />
       </Box>
       <Box sx={navBoxInnerMobile}>
