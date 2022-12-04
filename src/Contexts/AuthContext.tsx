@@ -35,9 +35,9 @@ interface AuthContext {
 }
 
 export const AuthContext = createContext<AuthContext>({
-  signup: async () => { },
-  login: async () => { },
-  logout: () => { },
+  signup: async () => {},
+  login: async () => {},
+  logout: () => {},
   currentUser: undefined,
   registerEmail: "",
   setRegisterEmail: () => Promise,
@@ -66,15 +66,11 @@ export function AuthProvider({ children }: any) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setCurrentUser(currentUser as User);
     });
-    if (auth.currentUser) {
-      setCurrentUser(auth.currentUser)
-    } else {
-      setCurrentUser(undefined)
-    }
 
     return unsubscribe;
-  }, [onAuthStateChanged, currentUser]);
+  }, [onAuthStateChanged, auth, currentUser]);
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
@@ -99,9 +95,9 @@ export function AuthProvider({ children }: any) {
     try {
       await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
       if (auth.currentUser) {
-        setCurrentUser(auth.currentUser)
+        setCurrentUser(auth.currentUser);
       } else {
-        setCurrentUser(undefined)
+        setCurrentUser(undefined);
       }
     } catch (error) {
       console.error(error);

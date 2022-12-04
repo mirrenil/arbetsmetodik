@@ -256,17 +256,16 @@ const Header = () => {
                       />
                     ) : (
                       <Box
+                        component="img"
+                        src="https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
+                        alt={userName}
                         sx={{
                           cursor: "pointer",
                           width: "30px",
                           height: "30px",
                           borderRadius: "50px",
                         }}
-                      >
-                        <Typography sx={{ color: "#000" }}>
-                          {userName}
-                        </Typography>
-                      </Box>
+                      />
                     )}
                   </Link>
                   <Box sx={{ marginLeft: "1rem" }} onClick={handleSubmit}>
