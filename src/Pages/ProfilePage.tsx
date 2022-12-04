@@ -50,7 +50,7 @@ function ProfilePage() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        height: "100vh",
+        height: "100%",
         margin: "2rem",
       }}
     >
@@ -128,7 +128,9 @@ function ProfilePage() {
             sx={{
               display: "flex",
               flexWrap: "wrap",
-              justifyContent: "space-evenly",
+              justifyContent: "center",
+              gap: "4rem",
+              width: "100%",
             }}
           >
             {items.map((item: IListItem) => (
