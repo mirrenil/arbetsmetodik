@@ -7,8 +7,8 @@ import infoSecImg from "../Assets/Images/infoSecImg.png";
 
 const StartPageInfo = () => {
   useEffect(() => {
-    AOS.init();
-    AOS.refresh();
+    // AOS.init();
+    // AOS.refresh();
   }, []);
   return (
     <Box sx={mainPageInfoBox}>
@@ -25,9 +25,9 @@ const StartPageInfo = () => {
       </Box>
       <Box
         sx={infoMainTextBox}
-        data-aos="fade-right"
-        data-aos-offset="200"
-        data-aos-duration="500"
+        // data-aos="fade-right"
+        // data-aos-offset="200"
+        // data-aos-duration="500"
       >
         <Box>
           <Typography

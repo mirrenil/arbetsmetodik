@@ -15,6 +15,7 @@ import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import backGroundImg from "../Assets/Images/DesktopHeaderBackground.png";
 import logoImg from "../Assets/Images/logo.png";
 import { useAuth } from "../Contexts/AuthContext";
+import MobileHeader from "../Assets/Images/mobileHeader.png";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -35,6 +36,17 @@ const Header = () => {
 
   return (
     <Box sx={navBox}>
+      <Box sx={headerBackground}>
+        <Box
+          component="img"
+          src={MobileHeader}
+          alt="mobile header background"
+          sx={{ 
+
+            height: "170px",
+          }}
+        />
+      </Box>
       <Box sx={navBoxInnerMobile}>
         <Box sx={logo}>
           <Link to="/">
@@ -49,7 +61,7 @@ const Header = () => {
                   cursor: "pointer",
                   width: "30px",
                   height: "30px",
-                  fill: "#000",
+                  fill: "#ffffff",
                 }}
               />
             </Link>
@@ -59,11 +71,7 @@ const Header = () => {
                   {userImg ? (
                     <Box
                       component="img"
-                      src={
-                        currentUser.photoURL
-                          ? userImg
-                          : "https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
-                      }
+                      src={userImg}
                       alt={userName}
                       sx={{
                         cursor: "pointer",
@@ -75,9 +83,7 @@ const Header = () => {
                   ) : (
                     <Box
                       component="img"
-                      src={
-                        "https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
-                      }
+                      src="https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
                       alt={userName}
                       sx={{
                         cursor: "pointer",
@@ -96,7 +102,7 @@ const Header = () => {
                     cursor: "pointer",
                     width: "30px",
                     height: "30px",
-                    fill: "#000",
+                    fill: "#ffffff",
                   }}
                 />
               </Link>
@@ -109,88 +115,90 @@ const Header = () => {
                 cursor: "pointer",
                 width: "30px",
                 height: "30px",
-                fill: "#000",
+                fill: "#ffffff",
               }}
             />
-            {menuOpen ? (
-              <Box
-                sx={mobileMenuList}
-                data-aos="fade-left"
-                data-aos-offset="200"
-                data-aos-duration="1000"
-              >
-                <ul
-                  style={{ listStyle: "none", marginTop: "4em" }}
-                  data-aos="fade-left"
-                  data-aos-offset="200"
-                  data-aos-duration="1000"
-                >
-                  <Link to="/signup" style={{ textDecoration: "none" }}>
-                    <Box sx={navItem} onClick={() => setMenuOpen(false)}>
-                      <SensorOccupiedIcon sx={navMenuIcon} />
-                      <Typography sx={navItemText}>Sign Up</Typography>
-                    </Box>
-                  </Link>
-                  <Link to="/" style={{ textDecoration: "none" }}>
-                    <Box sx={navItem} onClick={() => setMenuOpen(false)}>
-                      <HelpOutlineIcon sx={navMenuIcon} />
-                      <Typography sx={navItemText}>How it works?</Typography>
-                    </Box>
-                  </Link>
-                  {currentUser ? (
-                    <Link to="/requests" style={{ textDecoration: "none" }}>
-                      <Box sx={navItem}>
-                        <AddCircleOutlineIcon sx={navMenuIcon} />
-                        <Typography sx={navItemText}>My requests</Typography>
-                      </Box>
-                    </Link>
-                  ) : null}
-
-                  <Link to="/" style={{ textDecoration: "none" }}>
-                    <Box sx={navItem} onClick={() => setMenuOpen(false)}>
-                      <GavelIcon sx={navMenuIcon} />
-                      <Typography sx={navItemText}>Terms of use</Typography>
-                    </Box>
-                  </Link>
-                  <Link to="/" style={{ textDecoration: "none" }}>
-                    <Box sx={navItem} onClick={() => setMenuOpen(false)}>
-                      <ContactPhoneIcon sx={navMenuIcon} />
-                      <Typography sx={navItemText}>Contact</Typography>
-                    </Box>
-                  </Link>
-                  <Link to="/newlisting" style={{ textDecoration: "none" }}>
-                    <Box sx={navItem} onClick={() => setMenuOpen(false)}>
-                      <AddCircleOutlineIcon sx={navMenuIcon} />
-                      <Typography sx={navItemText}>List an Item</Typography>
-                    </Box>
-                  </Link>
-                  {currentUser ? (
-                    <>
-                      <Box
-                        sx={navItem}
-                        onClick={() => {
-                          setMenuOpen(false);
-                          handleSubmit();
-                        }}
-                      >
-                        <LoginIcon sx={navMenuIcon} />
-                        <Typography sx={navItemText}>Logout</Typography>
-                      </Box>
-                    </>
-                  ) : (
-                    <Link to="/signin" style={{ textDecoration: "none" }}>
-                      <Box sx={navItem} onClick={() => setMenuOpen(false)}>
-                        <LoginIcon sx={navMenuIcon} />
-                        <Typography sx={navItemText}>Login</Typography>
-                      </Box>
-                    </Link>
-                  )}
-                </ul>
-              </Box>
-            ) : null}
           </Box>
         </Box>
       </Box>
+      {menuOpen ? (
+        <Box
+          sx={mobileMenuList}
+          data-aos="fade-left"
+          data-aos-offset="200"
+          data-aos-duration="1000"
+        >
+          <Box sx={UlDiv}>
+            <ul
+              style={{ listStyle: "none", marginTop: "4em" }}
+              data-aos="fade-left"
+              data-aos-offset="200"
+              data-aos-duration="1000"
+            >
+              <Link to="/signup" style={{ textDecoration: "none" }}>
+                <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                  <SensorOccupiedIcon sx={navMenuIcon} />
+                  <Typography sx={navItemText}>Sign Up</Typography>
+                </Box>
+              </Link>
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                  <HelpOutlineIcon sx={navMenuIcon} />
+                  <Typography sx={navItemText}>How it works?</Typography>
+                </Box>
+              </Link>
+              {currentUser ? (
+                <Link to="/requests" style={{ textDecoration: "none" }}>
+                  <Box sx={navItem}>
+                    <AddCircleOutlineIcon sx={navMenuIcon} />
+                    <Typography sx={navItemText}>My requests</Typography>
+                  </Box>
+                </Link>
+              ) : null}
+
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                  <GavelIcon sx={navMenuIcon} />
+                  <Typography sx={navItemText}>Terms of use</Typography>
+                </Box>
+              </Link>
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                  <ContactPhoneIcon sx={navMenuIcon} />
+                  <Typography sx={navItemText}>Contact</Typography>
+                </Box>
+              </Link>
+              <Link to="/newlisting" style={{ textDecoration: "none" }}>
+                <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                  <AddCircleOutlineIcon sx={navMenuIcon} />
+                  <Typography sx={navItemText}>List an Item</Typography>
+                </Box>
+              </Link>
+              {currentUser ? (
+                <>
+                  <Box
+                    sx={navItem}
+                    onClick={() => {
+                      setMenuOpen(false);
+                      handleSubmit();
+                    }}
+                  >
+                    <LoginIcon sx={navMenuIcon} />
+                    <Typography sx={navItemText}>Logout</Typography>
+                  </Box>
+                </>
+              ) : (
+                <Link to="/signin" style={{ textDecoration: "none" }}>
+                  <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                    <LoginIcon sx={navMenuIcon} />
+                    <Typography sx={navItemText}>Login</Typography>
+                  </Box>
+                </Link>
+              )}
+            </ul>
+          </Box>
+        </Box>
+      ) : null}
       <Box sx={navBoxDesk}>
         <Box>
           <img
@@ -249,17 +257,16 @@ const Header = () => {
                       />
                     ) : (
                       <Box
+                        component="img"
+                        src="https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
+                        alt={userName}
                         sx={{
                           cursor: "pointer",
                           width: "30px",
                           height: "30px",
                           borderRadius: "50px",
                         }}
-                      >
-                        <Typography sx={{ color: "#000" }}>
-                          {userName}
-                        </Typography>
-                      </Box>
+                      />
                     )}
                   </Link>
                   <Box sx={{ marginLeft: "1rem" }} onClick={handleSubmit}>
@@ -294,7 +301,16 @@ const navBoxInnerMobile: SxProps = {
   alignItems: "center",
   justifyContent: "space-between",
   zIndex: "3",
-  backgroundColor: "#ffffff",
+  position: "absolute",
+  top: "-15px",
+};
+const headerBackground: SxProps = {
+  display: { xs: "block", md: "none", lg: "none", xl: "none" },
+  position: "absolute",
+  top: "-5px",
+  width: "100%",
+  zIndex: "2",
+  overflowX: "hidden",
 };
 const navItems: SxProps = {
   width: "150px",
@@ -314,19 +330,26 @@ const logo: SxProps = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  zIndex: "3",
 };
 const logoImgStyle: SxProps = {};
+
 const mobileMenuList: SxProps = {
   width: "250px",
-  height: "100vh",
-  display: "flex",
+  height: "400px",
+  display: { xs: "flex", md: "none", lg: "none", xl: "none" },
   alignItems: "flex-start",
-  justifyContent: "flex-start",
+  justifyContent: "center",
   position: "absolute",
   right: "0",
   top: "100px",
-  borderLeft: "1px solid black",
-  backgroundColor: "#ffffff",
+  backgroundColor: "rgb(255, 255, 255)",
+  borderRadius: "5px",
+  zIndex: "1",
+};
+const UlDiv: SxProps = {
+  backgroundColor: "rgb(255, 255, 255)",
+  mt: "20%",
 };
 const navItem: SxProps = {
   marginTop: "1em",

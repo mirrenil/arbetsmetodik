@@ -42,7 +42,9 @@ function SignUpPage() {
   };
 
   return (
-    <div>
+    <Box sx={{
+      mt:{xs: 4, md: 10, lg: 10, xl: 10}
+    }}>
       <Typography variant="h4" align="center" mb={5}>
         New to Chubby Dog?
       </Typography>
@@ -99,7 +101,7 @@ function SignUpPage() {
         </Typography>
         <GoogleButton onClick={handleGoogleSignIn} />
       </Box>
-    </div>
+    </Box>
   );
 }
 

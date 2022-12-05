@@ -59,7 +59,16 @@ export default function NewListing() {
   };
 
   return (
-    <Box sx={wrapper}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100vh",
+        margin: "auto",
+        mt:{xs: 4, md: 10, lg: 12, xl: 10}
+      }}
+    >
       {currentUser ? (
         <>
           <h1>Create a listing</h1>
@@ -145,20 +154,16 @@ export default function NewListing() {
           </Box>
         </>
       ) : (
+        <>
         <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+          sx={{width: "70%", m: 'auto, 0'}}
         >
           <Typography variant="h5">
             You need to be signed in to create a listing
           </Typography>
-          <Typography sx={{ marginTop: "2rem" }} variant="h5">
-            <Link to="/signin">Sign in now!</Link>
-          </Typography>
+          <Link to="/signin" style={{ textDecoration: "none"}}>Sign in now!</Link>
         </Box>
+        </>
       )}
     </Box>
   );
