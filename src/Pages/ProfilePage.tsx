@@ -69,17 +69,41 @@ function ProfilePage() {
               alt="profile picture"
             />
           )}
-          <button
-            onClick={handleOpen}
-            style={{
-              border: "none",
-              backgroundColor: "transparent",
-              cursor: "pointer",
-              marginTop: "1rem",
-            }}
-          >
-            <SettingsIcon />
-          </button>
+          {currentUser.displayName ? (
+            <button
+              onClick={handleOpen}
+              style={{
+                border: "none",
+                backgroundColor: "transparent",
+                cursor: "pointer",
+                marginTop: "1rem",
+                fontSize: "1.5rem",
+              }}
+            >
+              {" "}
+              Update your username
+              <SettingsIcon />
+            </button>
+          ) : (
+            <>
+              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+                Welcome to Chubby Dog! To get started, please set your username.
+              </Typography>
+              <button
+                onClick={handleOpen}
+                style={{
+                  border: "none",
+                  backgroundColor: "transparent",
+                  cursor: "pointer",
+                  marginTop: "1rem",
+                  fontSize: "1.5rem",
+                }}
+              >
+                Press here to choose a username
+                <SettingsIcon />
+              </button>
+            </>
+          )}
           <Modal open={modalOpen} onClose={handleClose}>
             <Box sx={modalStyle}>
               <form onSubmit={handleSubmit}>
@@ -102,11 +126,11 @@ function ProfilePage() {
               </form>
             </Box>
           </Modal>
-          <Typography variant="h1" component="h1" sx={{ marginTop: "1rem" }}>
+          <Typography variant="h2" component="h2" sx={{ marginTop: "1rem" }}>
             {currentUser?.displayName}
           </Typography>
 
-          <Typography variant="h2" component="h2" sx={{ marginTop: "2rem" }}>
+          {/* <Typography variant="h2" component="h2" sx={{ marginTop: "2rem" }}>
             About me
           </Typography>
           <TextField
@@ -116,7 +140,7 @@ function ProfilePage() {
             rows={3}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-          />
+          /> */}
           <Typography
             variant="h2"
             component="h2"
