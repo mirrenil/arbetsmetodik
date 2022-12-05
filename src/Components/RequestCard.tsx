@@ -17,7 +17,7 @@ interface Props {
   isMySentRequest: boolean
 }
 
-const ReceivedReqCard = ({ request, isMySentRequest }: Props) => {
+const RequestCard = ({ request, isMySentRequest }: Props) => {
   const [sender, setSender] = useState<IUser>();
   const [receiver, setReceiver] = useState<IUser>();
   const [item, setItem] = useState<IListItem>();
@@ -197,4 +197,4 @@ const decline = {
   backgroundColor: 'red',
 };
 
-export default ReceivedReqCard;
+export default RequestCard;
