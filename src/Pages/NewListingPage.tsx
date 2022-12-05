@@ -20,12 +20,15 @@ import { useFormik } from "formik";
 const validationSchema = yup.object({
   category: yup.string().required("Category is required"),
   title: yup.string().required("Please choose a title"),
-  price: yup.number().required("Please set a price"),
-  description: yup.string().required("Enter a description"),
+  price: yup.number().required("Please set a price in numbers"),
+  description: yup.string().required("Please provide a description"),
+  location: yup
+    .string()
+    .required("Please provide a district in Gothenburg (ex. Hisingen)"),
   imageUrl: yup
     .string()
     .min(6, "Image URL should be of minimum 8 characters length")
-    .required("Image url is required"),
+    .required("Example: https://minhast.se/uploads/GettyImages.jpg"),
 });
 
 const categories = [
@@ -34,12 +37,28 @@ const categories = [
     title: "Electronics",
   },
   {
+    value: "Film & Photography",
+    title: "Film & Photography",
+  },
+  {
     value: "Home",
     title: "Home",
   },
   {
     value: "Clothing",
     title: "Clothing",
+  },
+  {
+    value: "Tools",
+    title: "Tools",
+  },
+  {
+    value: "Gaming",
+    title: "Gaming",
+  },
+  {
+    value: "Cars",
+    title: "Cars",
   },
   {
     value: "Other",
@@ -60,6 +79,7 @@ export default function NewListing() {
         title: formik.values.title,
         description: formik.values.description,
         price: formik.values.price,
+        location: formik.values.location,
         image: formik.values.imageUrl,
         authorID,
         createdAt: Timestamp.now(),
@@ -76,6 +96,7 @@ export default function NewListing() {
       title: "",
       price: "",
       description: "",
+      location: "",
       imageUrl: "",
     },
     validationSchema: validationSchema,
@@ -183,6 +204,76 @@ export default function NewListing() {
                 Please update your profile with a username before creating a
                 listing
               </Typography>
+                  {categories.map((chooseCategory, index) => (
+                    <MenuItem key={index} value={chooseCategory.title}>
+                      {chooseCategory.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <TextField
+                sx={{ marginBottom: "1rem" }}
+                id="title"
+                name="title"
+                label="Title"
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                error={formik.touched.title && Boolean(formik.errors.title)}
+                helperText={formik.touched.title && formik.errors.title}
+              />
+              <TextField
+                sx={{ marginBottom: "1rem" }}
+                id="description"
+                name="description"
+                label="Description"
+                type="text"
+                value={formik.values.description}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.description &&
+                  Boolean(formik.errors.description)
+                }
+                helperText={
+                  formik.touched.description && formik.errors.description
+                }
+              />
+              <TextField
+                sx={{ marginBottom: "1rem" }}
+                id="price"
+                name="price"
+                label="Price"
+                type="number"
+                value={formik.values.price}
+                onChange={formik.handleChange}
+                error={formik.touched.price && Boolean(formik.errors.price)}
+                helperText={formik.touched.price && formik.errors.price}
+              />
+              <TextField
+                sx={{ marginBottom: "1rem" }}
+                id="location"
+                name="location"
+                label="Location"
+                type="text"
+                value={formik.values.location}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.location && Boolean(formik.errors.location)
+                }
+                helperText={formik.touched.location && formik.errors.location}
+              />
+              <TextField
+                sx={{ marginBottom: "1rem" }}
+                id="imageUrl"
+                name="imageUrl"
+                label="Image Url"
+                type="text"
+                value={formik.values.imageUrl}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.imageUrl && Boolean(formik.errors.imageUrl)
+                }
+                helperText={formik.touched.imageUrl && formik.errors.imageUrl}
+              />
               <Button
                 variant="contained"
                 onClick={() => navigate("/profile/:id")}
