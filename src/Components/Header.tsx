@@ -41,8 +41,7 @@ const Header = () => {
           component="img"
           src={MobileHeader}
           alt="mobile header background"
-          sx={{ 
-
+          sx={{
             height: "170px",
           }}
         />
@@ -390,17 +389,14 @@ const navItemsDesk: SxProps = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-evenly",
-  width: "450px",
 };
 
 const itemsDesk: SxProps = {
   color: "#F1F1F1",
   cursor: "pointer",
   fontWeight: "bold",
-  width: "7rem",
+  width: "6rem",
   height: "1.8rem",
-  textAlign: "center",
-  padding: "5% 5%",
   borderRadius: "6px",
   "&:hover": {
     color: "#FEBF00",
