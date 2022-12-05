@@ -85,16 +85,7 @@ export default function NewListing() {
   });
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "100vh",
-        margin: "auto",
-        mt:{xs: 4, md: 10, lg: 12, xl: 10}
-      }}
-    >
+    <Box sx={wrapper}>
       {currentUser ? (
         <>
           <form onSubmit={formik.handleSubmit}>
@@ -187,16 +178,22 @@ export default function NewListing() {
           </form>
         </>
       ) : (
-        <>
+
         <Box
-          sx={{width: "70%", m: 'auto, 0'}}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
           <Typography variant="h5">
             You need to be signed in to create a listing
           </Typography>
-          <Link to="/signin" style={{ textDecoration: "none"}}>Sign in now!</Link>
+
+          <Typography sx={{ marginTop: "2rem" }} variant="h5">
+            <Link to="/signin">Sign in now!</Link>
+          </Typography>
         </Box>
-        </>
       )}
     </Box>
   );

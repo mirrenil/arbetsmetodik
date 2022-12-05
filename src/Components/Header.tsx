@@ -391,7 +391,6 @@ const navItemsDesk: SxProps = {
   alignItems: "center",
   justifyContent: "space-evenly",
   width: "450px",
-  marginRight: "3rem"
 };
 
 const itemsDesk: SxProps = {
