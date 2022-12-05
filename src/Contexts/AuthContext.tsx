@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  MutableRefObject,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -11,27 +17,23 @@ import {
   User,
   UserInfo,
 } from "firebase/auth";
-import { auth, db } from "../firebase";
-import { query } from "express";
-import { collection, where, getDocs } from "firebase/firestore";
-import { IRequest } from "../Interfaces";
-
+import { auth } from "../firebase";
 interface AuthContext {
-  signup: (email: string, password: string) => Promise<any>;
-  login: (email: string, password: string) => Promise<any>;
+  signup: (
+    email: MutableRefObject<null | HTMLInputElement>,
+    password: MutableRefObject<null | HTMLInputElement>
+  ) => Promise<any>;
+  login: (
+    email: MutableRefObject<null | HTMLInputElement>,
+    password: MutableRefObject<null | HTMLInputElement>
+  ) => Promise<any>;
   logout: () => void;
   currentUser?: UserInfo;
-  registerEmail: string;
   setRegisterEmail: (email: string) => void;
-  registerPassword: string;
   setRegisterPassword: (password: string) => void;
-  loginEmail: string;
   setLoginEmail: (email: string) => void;
-  loginPassword: string;
   setLoginPassword: (password: string) => void;
   googleSignIn: () => void;
-  passwordConfirmation: string;
-  setPasswordConfirmation: (password: string) => void;
 }
 
 export const AuthContext = createContext<AuthContext>({
@@ -39,17 +41,11 @@ export const AuthContext = createContext<AuthContext>({
   login: async () => {},
   logout: () => {},
   currentUser: undefined,
-  registerEmail: "",
   setRegisterEmail: () => Promise,
-  registerPassword: "",
   setRegisterPassword: () => Promise,
-  loginEmail: "",
   setLoginEmail: () => Promise,
-  loginPassword: "",
   setLoginPassword: () => Promise,
   googleSignIn: () => Promise,
-  passwordConfirmation: "",
-  setPasswordConfirmation: () => Promise,
 });
 
 export function useAuth() {
@@ -62,7 +58,6 @@ export function AuthProvider({ children }: any) {
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -122,17 +117,11 @@ export function AuthProvider({ children }: any) {
         login,
         logout,
         currentUser,
-        registerEmail,
         setRegisterEmail,
-        registerPassword,
         setRegisterPassword,
-        loginEmail,
         setLoginEmail,
-        loginPassword,
         setLoginPassword,
         googleSignIn,
-        passwordConfirmation,
-        setPasswordConfirmation,
       }}
     >
       {children}
