@@ -48,6 +48,7 @@ const ReceivedReqCard = ({ request }: Props) => {
           image: doc.data().image,
           price: doc.data().price,
           category: doc.data().category,
+          location: doc.data().location,
           id: doc.data().id,
         });
       }
