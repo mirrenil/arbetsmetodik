@@ -133,9 +133,11 @@ function ProfilePage() {
               width: "100%",
             }}
           >
-            {items.map((item: IListItem) => (
-              <ItemCard key={item.id} item={item} />
-            ))}
+            {items
+              .filter((item) => item.authorID === currentUser.uid)
+              .map((item: IListItem) => (
+                <ItemCard key={item.id} item={item} />
+              ))}
           </Box>
         </>
       ) : (
