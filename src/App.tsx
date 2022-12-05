@@ -9,13 +9,12 @@ import RequestsPage from "./Pages/RequestsPage";
 import SignInPage from "./Pages/SignIn";
 import SignUpPage from "./Pages/SignUp";
 import StartPage from "./Pages/StartPage";
-import { createTheme, colors, ThemeProvider, Typography } from "@mui/material"
+import { createTheme, colors, ThemeProvider } from "@mui/material";
 import { AuthProvider } from "./Contexts/AuthContext";
 import ItemsContextProvide from "./Contexts/ItemContext";
 import HowItWorks from "./Pages/HowItWorks";
 import UserProvider from "./Contexts/UserContext";
 import NotFound from "./NotFound";
-import { IListItem } from "./Interfaces";
 
 const theme = createTheme({
   status: {
@@ -58,26 +57,26 @@ function App() {
     <div>
       <AuthProvider>
         <UserProvider>
-        <ItemsContextProvide>
-          <ThemeProvider theme={theme}>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Layout />}>
-                  <Route index element={<StartPage />} />
-                  <Route path="/items/:id" element={<DetailPage />} />
-                  <Route path="/category/:name" element={<CategoryPage />} />
-                  <Route path="/signup" element={<SignUpPage />} />
-                  <Route path="/signin" element={<SignInPage />} />
-                  <Route path="/profile/:id" element={<ProfilePage />} />
-                  <Route path="/newlisting" element={<NewListingPage  />} />
-                  <Route path="/requests" element={<RequestsPage />} />
-                  <Route path="/howitworks" element={<HowItWorks />} />
-                  <Route path="*" element={<NotFound />} />
-                </Route>
-              </Routes>
-            </BrowserRouter>
-          </ThemeProvider>
-        </ItemsContextProvide>
+          <ItemsContextProvide>
+            <ThemeProvider theme={theme}>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Layout />}>
+                    <Route index element={<StartPage />} />
+                    <Route path="/items/:id" element={<DetailPage />} />
+                    <Route path="/category/:name" element={<CategoryPage />} />
+                    <Route path="/signup" element={<SignUpPage />} />
+                    <Route path="/signin" element={<SignInPage />} />
+                    <Route path="/profile/:id" element={<ProfilePage />} />
+                    <Route path="/newlisting" element={<NewListingPage />} />
+                    <Route path="/requests" element={<RequestsPage />} />
+                    <Route path="/howitworks" element={<HowItWorks />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Route>
+                </Routes>
+              </BrowserRouter>
+            </ThemeProvider>
+          </ItemsContextProvide>
         </UserProvider>
       </AuthProvider>
     </div>
