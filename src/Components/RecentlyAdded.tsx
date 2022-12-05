@@ -9,11 +9,9 @@ import { IListItem } from "../Interfaces";
 
 const RecentlyAdded = () => {
   const { fetchItemsFromDb, items } = useItems();
-
+  AOS.init({once: true});
   useEffect(() => {
     fetchItemsFromDb();
-    AOS.init();
-    AOS.refresh();
   }, []);
   items.length = 6;
 
@@ -26,7 +24,6 @@ const RecentlyAdded = () => {
           data-aos="fade-left"
           data-aos-offset="200"
           data-aos-duration="1000"
-          data-aos-delay="100"
         >
           {items.map((item: IListItem) => (
             <Link
@@ -46,6 +43,7 @@ const MainItemsContainer: SxProps = {
   width: "100%",
   mt: 8,
   minHeight: 250,
+  overflowX: "hidden",
 };
 const itemsContainer: SxProps = {
   display: "flex",

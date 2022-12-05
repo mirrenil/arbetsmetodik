@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Typography, Button, Alert } from "@mui/material";
@@ -8,27 +8,21 @@ import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
 
 function SignInPage() {
-  const {
-    currentUser,
-    login,
-    loginEmail,
-    setLoginEmail,
-    loginPassword,
-    setLoginPassword,
-    googleSignIn,
-  } = useAuth();
+  const { currentUser, login, setLoginEmail, setLoginPassword, googleSignIn } =
+    useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const emailRef = useRef<null | HTMLInputElement>(null);
+  const passwordRef = useRef<null | HTMLInputElement>(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      await login(loginEmail, loginPassword);
-      navigate("/");
+      await login(emailRef, passwordRef);
+      navigate("/profile/:id");
     } catch (error) {
       console.error("login failed" + error);
-
       setError("Failed to sign in");
     }
     setLoading(false);
@@ -67,6 +61,7 @@ function SignInPage() {
             label="Email"
             variant="outlined"
             required
+            ref={emailRef}
             onChange={(e) => setLoginEmail(e.target.value)}
           />
           <TextField
@@ -75,6 +70,7 @@ function SignInPage() {
             variant="outlined"
             type="password"
             required
+            ref={passwordRef}
             onChange={(e) => setLoginPassword(e.target.value)}
           />
           {error && <Alert severity="error">{error}</Alert>}
