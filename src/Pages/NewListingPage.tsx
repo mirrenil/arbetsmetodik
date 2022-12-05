@@ -20,8 +20,11 @@ import { useFormik } from "formik";
 const validationSchema = yup.object({
   category: yup.string().required("Category is required"),
   title: yup.string().required("Please choose a title"),
-  price: yup.number().required("Please set a price"),
-  description: yup.string().required("Enter a description"),
+  price: yup.number().required("Please set a price in numbers"),
+  description: yup.string().required("Please provide a description"),
+  location: yup
+    .string()
+    .required("Please provide a district in Gothenburg (ex. Hisingen)"),
   imageUrl: yup
     .string()
     .min(6, "Image URL should be of minimum 8 characters length")
@@ -34,12 +37,28 @@ const categories = [
     title: "Electronics",
   },
   {
+    value: "Film & Photography",
+    title: "Film & Photography",
+  },
+  {
     value: "Home",
     title: "Home",
   },
   {
     value: "Clothing",
     title: "Clothing",
+  },
+  {
+    value: "Tools",
+    title: "Tools",
+  },
+  {
+    value: "Gaming",
+    title: "Gaming",
+  },
+  {
+    value: "Cars",
+    title: "Cars",
   },
   {
     value: "Other",
@@ -60,6 +79,7 @@ export default function NewListing() {
         title: formik.values.title,
         description: formik.values.description,
         price: formik.values.price,
+        location: formik.values.location,
         image: formik.values.imageUrl,
         authorID,
         createdAt: Timestamp.now(),
@@ -76,6 +96,7 @@ export default function NewListing() {
       title: "",
       price: "",
       description: "",
+      location: "",
       imageUrl: "",
     },
     validationSchema: validationSchema,
@@ -152,6 +173,19 @@ export default function NewListing() {
                 onChange={formik.handleChange}
                 error={formik.touched.price && Boolean(formik.errors.price)}
                 helperText={formik.touched.price && formik.errors.price}
+              />
+              <TextField
+                sx={{ marginBottom: "1rem" }}
+                id="location"
+                name="location"
+                label="Location"
+                type="text"
+                value={formik.values.location}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.location && Boolean(formik.errors.location)
+                }
+                helperText={formik.touched.location && formik.errors.location}
               />
               <TextField
                 sx={{ marginBottom: "1rem" }}
