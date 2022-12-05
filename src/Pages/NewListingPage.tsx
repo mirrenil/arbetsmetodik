@@ -25,7 +25,7 @@ const validationSchema = yup.object({
   imageUrl: yup
     .string()
     .min(6, "Image URL should be of minimum 8 characters length")
-    .required("Image url is required"),
+    .required("Example: https://minhast.se/uploads/GettyImages.jpg"),
 });
 
 const categories = [
@@ -178,7 +178,6 @@ export default function NewListing() {
           </form>
         </>
       ) : (
-
         <Box
           sx={{
             display: "flex",
