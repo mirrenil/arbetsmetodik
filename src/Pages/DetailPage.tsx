@@ -38,8 +38,6 @@ function DetailPage() {
       return setItem(listingProvided);
     }
     setDocumentData();
-
-
   }, []);
 
   const handleSendRequest = async (e?: Event) => {
@@ -52,9 +50,7 @@ function DetailPage() {
       toUser: item?.authorID
     }
     const docRef = await addDoc(collection(db, "requests"), newRequest);
-    console.log("Document written with ID: ", docRef.id);
   }
-
 
   return (
     <Box sx={wrapper}>
