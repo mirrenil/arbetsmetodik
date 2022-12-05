@@ -25,22 +25,22 @@ const ReceivedReqCard = ({ request, isMySentRequest }: Props) => {
 
   useEffect(() => {
     getReqSender();
+    getReceiver();
     getReqItem();
   }, []);
 
   const getReqSender = async () => {
     const user = await getUser(request.fromUser);
     if (user) {
-      setSender(user);
+      setSender(user as IUser);
     }
   };
 
   const getReceiver = async () => {
     const user = await getUser(request.toUser);
     if (user) {
-      setReceiver(user);
+      setReceiver(user as IUser);
     }
-
   }
 
   const getUser = async (userId: string) => {
