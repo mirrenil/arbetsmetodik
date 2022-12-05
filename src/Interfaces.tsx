@@ -5,6 +5,7 @@ export interface IListItem {
   image: string;
   price: number;
   category: string;
+  location: string;
   id: string;
 }
 
