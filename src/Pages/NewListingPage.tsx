@@ -121,89 +121,6 @@ export default function NewListing() {
                     alignItems: "center",
                   }}
                 >
-                <FormControl sx={{ marginBottom: "1rem" }}>
-                    <InputLabel id="category">Category</InputLabel>
-                    <Select
-                      name="category"
-                      value={formik.values.category}
-                      label="categoryLabel"
-                      onChange={formik.handleChange}
-                      error={
-                        formik.touched.category &&
-                        Boolean(formik.errors.category)
-                      }
-                    >
-                      {categories.map((chooseCategory, index) => (
-                        <MenuItem key={index} value={chooseCategory.title}>
-                          {chooseCategory.title}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                 </FormControl>
-              <TextField
-                sx={{ marginBottom: "1rem" }}
-                id="title"
-                name="title"
-                label="Title"
-                value={formik.values.title}
-                onChange={formik.handleChange}
-                error={formik.touched.title && Boolean(formik.errors.title)}
-                helperText={formik.touched.title && formik.errors.title}
-              />
-              <TextField
-                sx={{ marginBottom: "1rem" }}
-                id="description"
-                name="description"
-                label="Description"
-                type="text"
-                value={formik.values.description}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.description &&
-                  Boolean(formik.errors.description)
-                }
-                helperText={
-                  formik.touched.description && formik.errors.description
-                }
-              />
-              <TextField
-                sx={{ marginBottom: "1rem" }}
-                id="price"
-                name="price"
-                label="Price"
-                type="number"
-                value={formik.values.price}
-                onChange={formik.handleChange}
-                error={formik.touched.price && Boolean(formik.errors.price)}
-                helperText={formik.touched.price && formik.errors.price}
-              />
-              {/* Hej hej jag vill committa */}
-              <TextField
-                sx={{ marginBottom: "1rem" }}
-                id="location"
-                name="location"
-                label="Location"
-                type="text"
-                value={formik.values.location}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.location && Boolean(formik.errors.location)
-                }
-                helperText={formik.touched.location && formik.errors.location}
-              />
-              <TextField
-                sx={{ marginBottom: "1rem" }}
-                id="imageUrl"
-                name="imageUrl"
-                label="Image Url"
-                type="text"
-                value={formik.values.imageUrl}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.imageUrl && Boolean(formik.errors.imageUrl)
-                }
-                helperText={formik.touched.imageUrl && formik.errors.imageUrl}
-              />
                   <FormControl sx={{ marginBottom: "1rem" }}>
                     <InputLabel id="category">Category</InputLabel>
                     <Select
@@ -260,6 +177,22 @@ export default function NewListing() {
                     error={formik.touched.price && Boolean(formik.errors.price)}
                     helperText={formik.touched.price && formik.errors.price}
                   />
+
+                  <TextField
+                    sx={{ marginBottom: "1rem" }}
+                    id="location"
+                    name="location"
+                    label="Location"
+                    type="text"
+                    value={formik.values.location}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.location && Boolean(formik.errors.location)
+                    }
+                    helperText={
+                      formik.touched.location && formik.errors.location
+                    }
+                  />
                   <TextField
                     sx={{ marginBottom: "1rem" }}
                     id="imageUrl"
@@ -275,6 +208,7 @@ export default function NewListing() {
                       formik.touched.imageUrl && formik.errors.imageUrl
                     }
                   />
+
                   <Button
                     color="primary"
                     variant="contained"
