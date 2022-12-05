@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, SxProps, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
@@ -59,16 +59,7 @@ export default function NewListing() {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "100vh",
-        margin: "auto",
-        mt:{xs: 4, md: 10, lg: 12, xl: 10}
-      }}
-    >
+    <Box sx={wrapper}>
       {currentUser ? (
         <>
           <h1>Create a listing</h1>
@@ -154,17 +145,31 @@ export default function NewListing() {
           </Box>
         </>
       ) : (
-        <>
+
         <Box
-          sx={{width: "70%", m: 'auto, 0'}}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
           <Typography variant="h5">
             You need to be signed in to create a listing
           </Typography>
-          <Link to="/signin" style={{ textDecoration: "none"}}>Sign in now!</Link>
+
+          <Typography sx={{ marginTop: "2rem" }} variant="h5">
+            <Link to="/signin">Sign in now!</Link>
+          </Typography>
         </Box>
-        </>
       )}
     </Box>
   );
 }
+
+const wrapper: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  height: "100vh",
+  marginTop: { xs: "100px", md: "250px", lg: "150px", xl: "150px" },
+};
