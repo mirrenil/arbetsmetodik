@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import { IListItem } from "../Interfaces";
+import { IListItem, IRequest } from "../Interfaces";
 import {
   Box,
   Card,
@@ -14,11 +14,15 @@ import {
 } from "@mui/material";
 import { CSSProperties } from "@mui/styled-engine";
 import Dave from "../Assets/Images/Dave.png";
+import { useAuth } from "../Contexts/AuthContext";
+import { getAuth } from "firebase/auth";
 
 function DetailPage() {
   const listingCollection = collection(db, "listings");
   const { id } = useParams();
   const [item, setItem] = useState<IListItem>();
+  const { currentUser } = useAuth()
+
   useEffect(() => {
     async function setDocumentData() {
       const documents: any = await getDocs(listingCollection);
@@ -34,7 +38,23 @@ function DetailPage() {
       return setItem(listingProvided);
     }
     setDocumentData();
+
+
   }, []);
+
+  const handleSendRequest = async (e?: Event) => {
+    const newRequest = {
+      accepted: false,
+      createdAt: new Date,
+      fromUser: currentUser?.uid,
+      itemId: item?.id,
+      priceTotal: item?.price,
+      toUser: item?.authorID
+    }
+    const docRef = await addDoc(collection(db, "requests"), newRequest);
+    console.log("Document written with ID: ", docRef.id);
+  }
+
 
   return (
     <Box sx={wrapper}>
@@ -98,7 +118,7 @@ function DetailPage() {
           </Box>
           <CardMedia component="img" sx={lessorPic} image={Dave} alt="Dave" />
         </Card>
-        <Button sx={button} variant="contained">
+        <Button sx={button} variant="contained" onClick={() => handleSendRequest()}>
           Send a request
         </Button>
       </Card>
