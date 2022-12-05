@@ -20,7 +20,7 @@ import { useFormik } from "formik";
 const validationSchema = yup.object({
   category: yup.string().required("Category is required"),
   title: yup.string().required("Please choose a title"),
-  price: yup.string().required("Please set a price"),
+  price: yup.number().required("Please set a price"),
   description: yup.string().required("Enter a description"),
   imageUrl: yup
     .string()
@@ -147,7 +147,7 @@ export default function NewListing() {
                 id="price"
                 name="price"
                 label="Price"
-                type="text"
+                type="number"
                 value={formik.values.price}
                 onChange={formik.handleChange}
                 error={formik.touched.price && Boolean(formik.errors.price)}
