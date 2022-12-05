@@ -24,7 +24,6 @@ function ProfilePage() {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
-  const [description, setDescription] = useState<string>("");
   const [username, setUsername] = useState(currentUser?.displayName);
   const userImg: any = currentUser?.photoURL;
 
@@ -70,24 +69,13 @@ function ProfilePage() {
             />
           )}
           {currentUser.displayName ? (
-            <button
-              onClick={handleOpen}
-              style={{
-                border: "none",
-                backgroundColor: "transparent",
-                cursor: "pointer",
-                marginTop: "1rem",
-                fontSize: "1.5rem",
-              }}
-            >
-              {" "}
-              Update your username
-              <SettingsIcon />
-            </button>
-          ) : (
             <>
-              <Typography variant="h5" style={{ marginTop: "1rem" }}>
-                Welcome to Chubby Dog! To get started, please set your username.
+              <Typography
+                variant="h2"
+                component="h2"
+                sx={{ marginTop: "1rem" }}
+              >
+                {currentUser?.displayName}
               </Typography>
               <button
                 onClick={handleOpen}
@@ -99,9 +87,26 @@ function ProfilePage() {
                   fontSize: "1.5rem",
                 }}
               >
-                Press here to choose a username
+                Update your username
                 <SettingsIcon />
               </button>
+            </>
+          ) : (
+            <>
+              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+                Welcome to Chubby Dog! To get started, please set your username.
+              </Typography>
+              <Button
+                variant="contained"
+                onClick={handleOpen}
+                style={{
+                  cursor: "pointer",
+                  marginTop: "1rem",
+                  fontSize: "1rem",
+                }}
+              >
+                Press here to choose a username
+              </Button>
             </>
           )}
           <Modal open={modalOpen} onClose={handleClose}>
@@ -126,21 +131,6 @@ function ProfilePage() {
               </form>
             </Box>
           </Modal>
-          <Typography variant="h2" component="h2" sx={{ marginTop: "1rem" }}>
-            {currentUser?.displayName}
-          </Typography>
-
-          {/* <Typography variant="h2" component="h2" sx={{ marginTop: "2rem" }}>
-            About me
-          </Typography>
-          <TextField
-            sx={{ marginTop: ".5rem" }}
-            id="outlined-multiline-static"
-            multiline
-            rows={3}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          /> */}
           <Typography
             variant="h2"
             component="h2"
