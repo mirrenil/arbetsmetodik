@@ -5,35 +5,52 @@ import camera from "../Assets/Images/Film-Photography.png";
 import { IRequest, IUser, IListItem } from "../Interfaces";
 import { getDocs, collection, where, query } from "firebase/firestore";
 import { db } from "../firebase";
-import "aos/dist/aos.css";
 
 interface Props {
   request: IRequest;
+  isMySentRequest: boolean;
 }
 
-const ReceivedReqCard = ({ request }: Props) => {
+const RequestCard = ({ request, isMySentRequest }: Props) => {
   const [sender, setSender] = useState<IUser>();
+  const [receiver, setReceiver] = useState<IUser>();
   const [item, setItem] = useState<IListItem>();
   const theme = useTheme();
 
   useEffect(() => {
     getReqSender();
+    getReceiver();
     getReqItem();
   }, []);
 
   const getReqSender = async () => {
+    const user = await getUser(request.fromUser);
+    if (user) {
+      setSender(user as IUser);
+    }
+  };
+
+  const getReceiver = async () => {
+    const user = await getUser(request.toUser);
+    if (user) {
+      setReceiver(user as IUser);
+    }
+  };
+
+  const getUser = async (userId: string) => {
+    let user = {};
     const data = query(collection(db, "users"));
     const req = await getDocs(data);
     req.forEach((doc) => {
-      if (doc.id == request.fromUser) {
-        const sender = {
+      if (doc.id == userId) {
+        user = {
           email: doc.data().email,
           displayName: doc.data().displayName,
           id: doc.id,
         };
-        setSender(sender);
       }
     });
+    return user;
   };
 
   const getReqItem = async () => {
@@ -71,8 +88,15 @@ const ReceivedReqCard = ({ request }: Props) => {
     >
       <CardMedia sx={[imgStyle, grid.pic]} component="img" src={camera} />
       <Typography sx={[textContainer, grid.reqFrom]}>
-        <span style={titleStyle}>Request from: </span>
-        {sender?.email ? sender.email : "no name"}
+        {isMySentRequest ? (
+          <span style={titleStyle}>
+            Request To: {receiver?.email ? receiver.email : "no name"}
+          </span>
+        ) : (
+          <span style={titleStyle}>
+            Request from: {sender?.email ? sender.email : "no name"}
+          </span>
+        )}
       </Typography>
       <Typography sx={[textContainer, grid.reqFor]}>
         <span style={titleStyle}>Request for: </span>{" "}
@@ -91,12 +115,16 @@ const ReceivedReqCard = ({ request }: Props) => {
         <span style={titleStyle}>Message: </span>Hi! I would like to rent the
         projector for a couple of days. Cheers!
       </Typography>
-      <div style={buttonsContainer}>
-        <Button sx={[button, decline]}>Decline</Button>
-        <Button variant="contained" sx={button}>
-          Accept
-        </Button>
-      </div>
+      {isMySentRequest ? (
+        <Typography>Pending...</Typography>
+      ) : (
+        <div style={buttonsContainer}>
+          <Button sx={[button, decline]}>Decline</Button>
+          <Button variant="contained" sx={button}>
+            Accept
+          </Button>
+        </div>
+      )}
     </Box>
   );
 };
@@ -166,4 +194,4 @@ const decline = {
   backgroundColor: "red",
 };
 
-export default ReceivedReqCard;
+export default RequestCard;
