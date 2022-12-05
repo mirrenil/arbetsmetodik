@@ -42,6 +42,7 @@ const ReceivedReqCard = ({ request }: Props) => {
     req.forEach((doc) => {
       if (doc.id == request.itemId) {
         setItem({
+          authorID: doc.data().authorID,
           title: doc.data().title,
           description: doc.data().description,
           image: doc.data().image,

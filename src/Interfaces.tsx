@@ -1,4 +1,5 @@
 export interface IListItem {
+  authorID: string;
   title: string;
   description: string;
   image: string;
