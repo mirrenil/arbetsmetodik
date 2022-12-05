@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { CSSProperties } from "@mui/styled-engine";
 import Dave from "../Assets/Images/Dave.png";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 function DetailPage() {
   const listingCollection = collection(db, "listings");
@@ -66,13 +67,16 @@ function DetailPage() {
               {item?.price}:- per day
             </Typography>
           </Box>
-          <Box sx={{ display: "flex", justifyContent: "spaceBetween" }}>
+          <Box sx={descLocation}>
             <Typography variant="body2" color="text.primary">
               {item?.description}
             </Typography>
-            <Typography variant="body2" color="text.primary">
-              {item?.location}
-            </Typography>
+            <Box>
+              <Typography sx={location} variant="body2" color="text.primary">
+                {item?.location}
+                <LocationOnIcon sx={{ fontSize: "1rem" }} />
+              </Typography>
+            </Box>
           </Box>
         </CardContent>
         <Card sx={lessorCard}>
@@ -150,6 +154,18 @@ const cardHeaders: CSSProperties = {
 };
 const titlePrice: CSSProperties = {
   color: "rgba(51, 51, 51, 0.7)",
+};
+
+const descLocation: SxProps = {
+  display: "flex",
+  justifyContent: "space-between",
+};
+
+const location: SxProps = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  fontStyle: "italic",
 };
 
 const itemImage: CSSProperties = {

@@ -174,6 +174,7 @@ export default function NewListing() {
                 error={formik.touched.price && Boolean(formik.errors.price)}
                 helperText={formik.touched.price && formik.errors.price}
               />
+              {/* Hej hej jag vill committa */}
               <TextField
                 sx={{ marginBottom: "1rem" }}
                 id="location"

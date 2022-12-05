@@ -13,7 +13,6 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
-
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 interface Props {
@@ -58,11 +57,13 @@ const ItemCard = ({ item }: Props) => {
         // onClick={() => navigate(`/items/'${item.id}`)}
       />
       <Typography sx={itemTitle}>{item.title}</Typography>
-      <Typography sx={itemLocation}>
-        {" "}
-        <LocationOnIcon />
-        {item.location}
-      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Typography sx={itemLocation}>
+          {item.location}
+
+          <LocationOnIcon sx={{ fontSize: "1rem" }} />
+        </Typography>
+      </Box>
       <CardContent sx={itemInfo}>
         <Typography sx={itemPrice}>{item.price}:-</Typography>
       </CardContent>
