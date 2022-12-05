@@ -88,97 +88,111 @@ export default function NewListing() {
     <Box sx={wrapper}>
       {currentUser ? (
         <>
-          <form onSubmit={formik.handleSubmit}>
-            <h1>Create a listing</h1>
-            <Box
-              sx={{
-                "& > :not(style)": { m: 1, width: "25ch" },
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <FormControl sx={{ marginBottom: "1rem" }}>
-                <InputLabel id="category">Category</InputLabel>
-                <Select
-                  name="category"
-                  value={formik.values.category}
-                  label="categoryLabel"
+          {currentUser.displayName ? (
+            <form onSubmit={formik.handleSubmit}>
+              <h1>Create a listing</h1>
+              <Box
+                sx={{
+                  "& > :not(style)": { m: 1, width: "25ch" },
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <FormControl sx={{ marginBottom: "1rem" }}>
+                  <InputLabel id="category">Category</InputLabel>
+                  <Select
+                    name="category"
+                    value={formik.values.category}
+                    label="categoryLabel"
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.category && Boolean(formik.errors.category)
+                    }
+                  >
+                    {categories.map((chooseCategory, index) => (
+                      <MenuItem key={index} value={chooseCategory.title}>
+                        {chooseCategory.title}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <TextField
+                  sx={{ marginBottom: "1rem" }}
+                  id="title"
+                  name="title"
+                  label="Title"
+                  value={formik.values.title}
+                  onChange={formik.handleChange}
+                  error={formik.touched.title && Boolean(formik.errors.title)}
+                  helperText={formik.touched.title && formik.errors.title}
+                />
+                <TextField
+                  sx={{ marginBottom: "1rem" }}
+                  id="description"
+                  name="description"
+                  label="Description"
+                  type="text"
+                  value={formik.values.description}
                   onChange={formik.handleChange}
                   error={
-                    formik.touched.category && Boolean(formik.errors.category)
+                    formik.touched.description &&
+                    Boolean(formik.errors.description)
                   }
+                  helperText={
+                    formik.touched.description && formik.errors.description
+                  }
+                />
+                <TextField
+                  sx={{ marginBottom: "1rem" }}
+                  id="price"
+                  name="price"
+                  label="Price"
+                  type="number"
+                  value={formik.values.price}
+                  onChange={formik.handleChange}
+                  error={formik.touched.price && Boolean(formik.errors.price)}
+                  helperText={formik.touched.price && formik.errors.price}
+                />
+                <TextField
+                  sx={{ marginBottom: "1rem" }}
+                  id="imageUrl"
+                  name="imageUrl"
+                  label="Image Url"
+                  type="text"
+                  value={formik.values.imageUrl}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.imageUrl && Boolean(formik.errors.imageUrl)
+                  }
+                  helperText={formik.touched.imageUrl && formik.errors.imageUrl}
+                />
+                <Button
+                  color="primary"
+                  variant="contained"
+                  fullWidth
+                  type="submit"
                 >
-                  {categories.map((chooseCategory, index) => (
-                    <MenuItem key={index} value={chooseCategory.title}>
-                      {chooseCategory.title}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <TextField
-                sx={{ marginBottom: "1rem" }}
-                id="title"
-                name="title"
-                label="Title"
-                value={formik.values.title}
-                onChange={formik.handleChange}
-                error={formik.touched.title && Boolean(formik.errors.title)}
-                helperText={formik.touched.title && formik.errors.title}
-              />
-              <TextField
-                sx={{ marginBottom: "1rem" }}
-                id="description"
-                name="description"
-                label="Description"
-                type="text"
-                value={formik.values.description}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.description &&
-                  Boolean(formik.errors.description)
-                }
-                helperText={
-                  formik.touched.description && formik.errors.description
-                }
-              />
-              <TextField
-                sx={{ marginBottom: "1rem" }}
-                id="price"
-                name="price"
-                label="Price"
-                type="number"
-                value={formik.values.price}
-                onChange={formik.handleChange}
-                error={formik.touched.price && Boolean(formik.errors.price)}
-                helperText={formik.touched.price && formik.errors.price}
-              />
-              <TextField
-                sx={{ marginBottom: "1rem" }}
-                id="imageUrl"
-                name="imageUrl"
-                label="Image Url"
-                type="text"
-                value={formik.values.imageUrl}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.imageUrl && Boolean(formik.errors.imageUrl)
-                }
-                helperText={formik.touched.imageUrl && formik.errors.imageUrl}
-              />
+                  Submit
+                </Button>
+              </Box>
+            </form>
+          ) : (
+            <>
+              <Typography variant="h5" sx={{ textAlign: "center" }}>
+                Please update your profile with a username before creating a
+                listing
+              </Typography>
               <Button
-                color="primary"
                 variant="contained"
-                fullWidth
-                type="submit"
+                onClick={() => navigate("/profile/:id")}
               >
-                Submit
+                Update profile
               </Button>
-            </Box>
-          </form>
+            </>
+          )}
         </>
       ) : (
-
         <Box
           sx={{
             display: "flex",
@@ -189,10 +203,7 @@ export default function NewListing() {
           <Typography variant="h5">
             You need to be signed in to create a listing
           </Typography>
-
-          <Typography sx={{ marginTop: "2rem" }} variant="h5">
-            <Link to="/signin">Sign in now!</Link>
-          </Typography>
+          <Button onClick={() => navigate("/signin")}></Button>
         </Box>
       )}
     </Box>
