@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import React from 'react';
-import ReceivedReqCard from '../Components/ReceivedReqCard';
+import RequestCard from '../Components/RequestCard';
 import { useUser } from '../Contexts/UserContext';
 
 function RequestsPage() {
@@ -10,11 +10,11 @@ function RequestsPage() {
 		<>
 			<Typography>Recieved requests:</Typography>
 			{myReceivedRequests.map((req) => {
-				return <ReceivedReqCard key={req.id} request={req} isMySentRequest={false}/>;
+				return <RequestCard key={req.id} request={req} isMySentRequest={false}/>;
 			})}
 			<Typography>Sent requests:</Typography>
 			{mySentRequests.map((req) => {
-				return <ReceivedReqCard key={req.id} request={req} isMySentRequest={true}/>;
+				return <RequestCard key={req.id} request={req} isMySentRequest={true}/>;
 			})}
 		</>
 	);

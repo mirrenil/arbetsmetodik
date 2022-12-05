@@ -11,7 +11,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import logoImg from "../Assets/Images/logo.png";
 import mobileMainHeroImage from "../Assets/Images/mobileMainHeroImage.png";
-import MobileHeader from "../Assets/Images/mobileHeader.png";
 import DesktopMainHeroImg from "../Assets/Images/DesktopMainHeroImg.png";
 
 const StartPageHero = () => {
@@ -20,13 +19,7 @@ const StartPageHero = () => {
       <Box>
         {/* Header will go here from layout */}
         <Box sx={mobileBox}>
-          <Box sx={headerBackground}>
-            <img
-              src={MobileHeader}
-              alt=""
-              style={{ width: "100%", height: "150px" }}
-            />
-          </Box>
+          
           <Box sx={{ mt: 10 }}>
             <Box sx={logoAndHeroText}>
               <Typography sx={{ fontSize: "1.5em", fontweight: "900" }}>
@@ -118,12 +111,7 @@ const mobileBox: SxProps = {
   display: { xs: "block", md: "none", lg: "none", xl: "none" },
   userSelect: "none",
 };
-const headerBackground: SxProps = {
-  position: "absolute",
-  top: "60px",
-  zIndex: "0",
-  width: "100%",
-};
+
 const logoAndHeroText: SxProps = {
   width: "300px",
   marginLeft: "2em",

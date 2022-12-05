@@ -1,15 +1,14 @@
 import { Box, Button, SxProps, Typography } from "@mui/material";
 import AOS from "aos";
-import React, { useEffect } from "react";
+import React from "react";
 
 import startPageInfoImg from "../Assets/Images/startPageInfoImg.png";
 import infoSecImg from "../Assets/Images/infoSecImg.png";
+import "aos/dist/aos.css";
 
 const StartPageInfo = () => {
-  useEffect(() => {
-    AOS.init();
-    AOS.refresh();
-  }, []);
+  AOS.init({once: true});
+
   return (
     <Box sx={mainPageInfoBox}>
       <Box sx={imgBox}>
