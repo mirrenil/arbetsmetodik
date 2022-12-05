@@ -38,10 +38,6 @@ function DetailPage() {
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
   const [title, setTitle] = useState<string>("");
-  // const [description, setDescription] = useState<string>("");
-  // const [price, setPrice] = useState<string>("");
-  // const [image, setImage] = useState<string>("");
-  // const [location, setLocation] = useState<string>("");
 
   useEffect(() => {
     async function setDocumentData() {
@@ -80,14 +76,15 @@ function DetailPage() {
 
   const updateListing = async (id: string) => {
     const itemToUpdate = doc(db, "listings", id);
-    await updateDoc(itemToUpdate, {
-      title: title,
-      // price: price,
-      // description: description,
-      // image: image,
-      // location: location,
-    });
-    alert("Listing with id " + id + " has been updated");
+    try {
+      await updateDoc(itemToUpdate, {
+        title: title,
+      });
+      console.log("Listing with id " + id + " has been updated");
+      return itemToUpdate;
+    } catch (e) {
+      console.log("Error updating document: ", e);
+    }
   };
 
   return (
@@ -112,7 +109,7 @@ function DetailPage() {
                       cursor: "pointer",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => deleteListing(item?.id)}
+                    onClick={() => deleteListing(id as string)}
                   >
                     <Clear />
                   </button>
@@ -130,12 +127,10 @@ function DetailPage() {
                 </Box>
                 <Modal open={modalOpen} onClose={handleClose}>
                   <Box sx={modalStyle}>
-                    <form onSubmit={() => updateListing(item?.id)}>
+                    <form onSubmit={() => updateListing(id as string)}>
                       <DialogContent sx={crudModal}>
                         <DialogContentText>
-                          <Typography variant="h6" component="h6">
-                            Update your listing
-                          </Typography>
+                          Update your listing
                         </DialogContentText>
                         <TextField
                           autoFocus
@@ -144,49 +139,8 @@ function DetailPage() {
                           label="Title"
                           variant="standard"
                           value={title || ""}
-                          required
                           onChange={(e) => setTitle(e.target.value)}
                         />
-                        {/* <TextField
-                          autoFocus
-                          margin="normal"
-                          type="number"
-                          label="Price"
-                          variant="standard"
-                          value={price || ""}
-                          required
-                          onChange={(e) => setPrice(e.target.value)}
-                        /> */}
-                        {/* <TextField
-                          autoFocus
-                          margin="normal"
-                          type="text"
-                          label="Description"
-                          variant="standard"
-                          value={description || ""}
-                          required
-                          onChange={(e) => setDescription(e.target.value)}
-                        /> */}
-                        {/* <TextField
-                          autoFocus
-                          margin="normal"
-                          type="text"
-                          label="Location"
-                          variant="standard"
-                          value={location || ""}
-                          required
-                          onChange={(e) => setLocation(e.target.value)}
-                        /> */}
-                        {/* <TextField
-                          autoFocus
-                          margin="normal"
-                          type="text"
-                          label="Image URL"
-                          variant="standard"
-                          value={image || ""}
-                          required
-                          onChange={(e) => setImage(e.target.value)}
-                        /> */}
                         <Button
                           variant="contained"
                           type="submit"
