@@ -66,9 +66,14 @@ function DetailPage() {
               {item?.price}:- per day
             </Typography>
           </Box>
-          <Typography variant="body2" color="text.primary">
-            {item?.description}
-          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "spaceBetween" }}>
+            <Typography variant="body2" color="text.primary">
+              {item?.description}
+            </Typography>
+            <Typography variant="body2" color="text.primary">
+              {item?.location}
+            </Typography>
+          </Box>
         </CardContent>
         <Card sx={lessorCard}>
           <Box sx={lessorCardLeftInfo}>

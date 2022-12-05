@@ -13,7 +13,8 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import { fontWeight, margin } from "@mui/system";
+
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 interface Props {
   item: IListItem;
@@ -56,8 +57,13 @@ const ItemCard = ({ item }: Props) => {
         sx={{ borderRadius: "6px", cursor: "pointer" }}
         // onClick={() => navigate(`/items/'${item.id}`)}
       />
+      <Typography sx={itemTitle}>{item.title}</Typography>
+      <Typography sx={itemLocation}>
+        {" "}
+        <LocationOnIcon />
+        {item.location}
+      </Typography>
       <CardContent sx={itemInfo}>
-        <Typography sx={itemTitle}>{item.title}</Typography>
         <Typography sx={itemPrice}>{item.price}:-</Typography>
       </CardContent>
     </Card>
@@ -65,9 +71,8 @@ const ItemCard = ({ item }: Props) => {
 };
 
 const boxStyle: SxProps = {
-
   width: { xs: "8rem", md: "10rem", lg: "10rem", xl: "10rem" },
-  height: "10rem",
+  height: "12rem",
   padding: "1rem",
   marginBottom: { xs: "1rem", md: "0", lg: "0", xl: "0" },
   display: "flex",
@@ -90,11 +95,20 @@ const itemInfo: SxProps = {
 const itemTitle: SxProps = {
   padding: "0",
   textAlign: "center",
+  fontSize: "1rem",
+  fontWeight: "bold",
+};
+
+const itemLocation: SxProps = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  fontStyle: "italic",
 };
 
 const itemPrice: SxProps = {
   padding: "0",
-  fontWeight: "bold",
+  // fontWeight: "bold",
   fontSize: "1.2rem",
   textAlign: "center",
 };
