@@ -150,7 +150,13 @@ function ProfilePage() {
             {items
               .filter((item) => item.authorID === currentUser.uid)
               .map((item: IListItem) => (
-                <ItemCard key={item.id} item={item} />
+                <Link
+                  to={`/items/${item.id}`}
+                  key={item.id}
+                  style={{ textDecoration: "none" }}
+                >
+                  <ItemCard key={item.id} item={item} />
+                </Link>
               ))}
           </Box>
         </>
