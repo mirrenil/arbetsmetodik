@@ -317,11 +317,7 @@ const navItems: SxProps = {
   justifyContent: "space-between",
   mr: "1em",
   display: { xs: "flex", md: "none", lg: "none", xl: "none" },
-  "&:hover": {
-    backgroundColor: "#fff",
-    opacity: "90%",
-    border: "2px solid #fff",
-  },
+  cursor: "pointer",
 };
 const logo: SxProps = {
   width: "100px",
