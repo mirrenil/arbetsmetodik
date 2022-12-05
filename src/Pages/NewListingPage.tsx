@@ -27,7 +27,7 @@ const validationSchema = yup.object({
     .required("Please provide a district in Gothenburg (ex. Hisingen)"),
   imageUrl: yup
     .string()
-    .min(6, "Image URL should be of minimum 8 characters length")
+    .min(8, "The Image URL should be of minimum 8 characters length")
     .required("Example: https://minhast.se/uploads/GettyImages.jpg"),
 });
 
