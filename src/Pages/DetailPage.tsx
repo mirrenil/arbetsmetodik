@@ -15,7 +15,6 @@ import {
 import { CSSProperties } from "@mui/styled-engine";
 import Dave from "../Assets/Images/Dave.png";
 import { useAuth } from "../Contexts/AuthContext";
-import { getAuth } from "firebase/auth";
 
 function DetailPage() {
   const listingCollection = collection(db, "listings");
