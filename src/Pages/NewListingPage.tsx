@@ -1,54 +1,66 @@
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import { Button, SxProps, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SxProps,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useAuth } from "../Contexts/AuthContext";
+import * as yup from "yup";
+import { useFormik } from "formik";
+
+const validationSchema = yup.object({
+  category: yup.string().required("Category is required"),
+  title: yup.string().required("Please choose a title"),
+  price: yup.number().required("Please set a price"),
+  description: yup.string().required("Enter a description"),
+  imageUrl: yup
+    .string()
+    .min(6, "Image URL should be of minimum 8 characters length")
+    .required("Image url is required"),
+});
 
 const categories = [
   {
-    value: "Select a category",
-    label: "Select a category",
-  },
-  {
     value: "Electronics",
-    label: "Electronics",
+    title: "Electronics",
   },
   {
     value: "Home",
-    label: "Home",
+    title: "Home",
   },
   {
     value: "Clothing",
-    label: "Clothing",
+    title: "Clothing",
   },
   {
     value: "Other",
-    label: "Other",
+    title: "Other",
   },
 ];
 
 export default function NewListing() {
-  const [category, setCategory] = useState<string>("Select Category");
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [price, setPrice] = useState<string>("");
-  const [image, setImage] = useState<string>("");
   const { currentUser } = useAuth();
   const [authorID, setAuthorID] = useState(currentUser?.uid);
   const listingsRef = collection(db, "listings");
   const navigate = useNavigate();
 
-  const handleNewListing = async (event: FormEvent) => {
-    event.preventDefault();
+  const handleNewListing = async () => {
     try {
       const docRef = await addDoc(listingsRef, {
-        category,
-        title,
-        description,
-        price,
-        image,
+        category: formik.values.category,
+        title: formik.values.title,
+        description: formik.values.description,
+        price: formik.values.price,
+        image: formik.values.imageUrl,
         authorID,
         createdAt: Timestamp.now(),
       });
@@ -57,6 +69,20 @@ export default function NewListing() {
       console.error("Error adding document: ", error);
     }
   };
+
+  const formik = useFormik({
+    initialValues: {
+      category: "",
+      title: "",
+      price: "",
+      description: "",
+      imageUrl: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      handleNewListing();
+    },
+  });
 
   return (
     <Box
@@ -71,87 +97,94 @@ export default function NewListing() {
     >
       {currentUser ? (
         <>
-          <h1>Create a listing</h1>
-          <Box
-            component="form"
-            onSubmit={handleNewListing}
-            sx={{
-              "& > :not(style)": { m: 1, width: "25ch" },
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              sx={{ marginBottom: "1rem" }}
-              id="outlined-select-category-native"
-              select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              SelectProps={{
-                native: true,
-              }}
-            >
-              {categories.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </TextField>
-            <TextField
-              sx={{ marginBottom: "1rem" }}
-              id="outlined-basic"
-              label="Title"
-              variant="outlined"
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <TextField
-              sx={{ marginBottom: "1rem" }}
-              id="outlined-multiline-static"
-              multiline
-              rows={4}
-              label="Description"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <TextField
-              sx={{ marginBottom: "1rem" }}
-              type="number"
-              id="outlined-basic"
-              label="Price per day"
-              variant="outlined"
-              onChange={(e) => setPrice(e.target.value)}
-            />
-            <TextField
-              sx={{ marginBottom: "1rem" }}
-              id="outlined-basic"
-              label="Image url"
-              variant="outlined"
-              onChange={(e) => setImage(e.target.value)}
-            />
+          <form onSubmit={formik.handleSubmit}>
+            <h1>Create a listing</h1>
             <Box
               sx={{
-                backgroundColor: "#80CCFF",
-                borderRadius: "6px",
-                opacity: "60%",
-                marginBottom: "1rem",
+                "& > :not(style)": { m: 1, width: "25ch" },
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
-              <h5 style={{ margin: "1rem" }}>
-                By adding this listing you agree with Chubby Dog&apos;s terms of
-                use
-              </h5>
+              <FormControl sx={{ marginBottom: "1rem" }}>
+                <InputLabel id="category">Category</InputLabel>
+                <Select
+                  name="category"
+                  value={formik.values.category}
+                  label="categoryLabel"
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.category && Boolean(formik.errors.category)
+                  }
+                >
+                  {categories.map((chooseCategory, index) => (
+                    <MenuItem key={index} value={chooseCategory.title}>
+                      {chooseCategory.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <TextField
+                sx={{ marginBottom: "1rem" }}
+                id="title"
+                name="title"
+                label="Title"
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                error={formik.touched.title && Boolean(formik.errors.title)}
+                helperText={formik.touched.title && formik.errors.title}
+              />
+              <TextField
+                sx={{ marginBottom: "1rem" }}
+                id="description"
+                name="description"
+                label="Description"
+                type="text"
+                value={formik.values.description}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.description &&
+                  Boolean(formik.errors.description)
+                }
+                helperText={
+                  formik.touched.description && formik.errors.description
+                }
+              />
+              <TextField
+                sx={{ marginBottom: "1rem" }}
+                id="price"
+                name="price"
+                label="Price"
+                type="number"
+                value={formik.values.price}
+                onChange={formik.handleChange}
+                error={formik.touched.price && Boolean(formik.errors.price)}
+                helperText={formik.touched.price && formik.errors.price}
+              />
+              <TextField
+                sx={{ marginBottom: "1rem" }}
+                id="imageUrl"
+                name="imageUrl"
+                label="Image Url"
+                type="text"
+                value={formik.values.imageUrl}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.imageUrl && Boolean(formik.errors.imageUrl)
+                }
+                helperText={formik.touched.imageUrl && formik.errors.imageUrl}
+              />
+              <Button
+                color="primary"
+                variant="contained"
+                fullWidth
+                type="submit"
+              >
+                Submit
+              </Button>
             </Box>
-            <Button
-              sx={{ background: "#00C4BA" }}
-              type="submit"
-              variant="contained"
-              size="large"
-            >
-              Create listing
-            </Button>
-          </Box>
+          </form>
         </>
       ) : (
         <>
@@ -168,7 +201,6 @@ export default function NewListing() {
     </Box>
   );
 }
-
 const wrapper: SxProps = {
   display: "flex",
   flexDirection: "column",
