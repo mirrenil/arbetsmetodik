@@ -11,12 +11,8 @@ function SignInPage() {
   const { currentUser, login, googleSignIn } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  // const emailRef = useRef<null | HTMLInputElement>(null);
-  // const passwordRef = useRef<null | HTMLInputElement>(null);
-
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {

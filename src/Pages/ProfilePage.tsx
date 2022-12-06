@@ -17,6 +17,8 @@ import ItemCard from "../Components/ItemCard";
 import { IListItem } from "../Interfaces";
 import { updateProfile, User } from "firebase/auth";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { setDoc, doc } from "firebase/firestore";
+import { db } from "../firebase";
 
 function ProfilePage() {
   const { fetchItemsFromDb, items } = useItems();
@@ -27,13 +29,19 @@ function ProfilePage() {
   const [username, setUsername] = useState(currentUser?.displayName);
   const userImg: any = currentUser?.photoURL;
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleNameChange = async (e: FormEvent) => {
     e.preventDefault();
     let userObject = {
       displayName: username,
     };
     userObject = { ...userObject };
+    //updates in auth
     await updateProfile(currentUser as User, userObject);
+    // updates in db
+    await setDoc(doc(db, "users", currentUser!.uid), {
+      displayName: username,
+      email: currentUser?.email
+    });
     handleClose();
   };
 
@@ -68,7 +76,7 @@ function ProfilePage() {
               alt="profile picture"
             />
           )}
-          {currentUser.displayName ? (
+          {/* {currentUser.displayName ? ( */}
             <>
               <Typography
                 variant="h2"
@@ -91,8 +99,8 @@ function ProfilePage() {
                 <SettingsIcon />
               </button>
             </>
-          ) : (
-            <>
+          {/* ) : ( */}
+            {/* <>
               <Typography variant="h5" style={{ marginTop: "1rem" }}>
                 Welcome to Chubby Dog! To get started, please set your username.
               </Typography>
@@ -107,11 +115,11 @@ function ProfilePage() {
               >
                 Press here to choose a username
               </Button>
-            </>
-          )}
+            </> */}
+          {/* )} */}
           <Modal open={modalOpen} onClose={handleClose}>
             <Box sx={modalStyle}>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleNameChange}>
                 <DialogContent>
                   <DialogContentText>Update your username:</DialogContentText>
                   <TextField

@@ -16,21 +16,20 @@ import {
   getAuth,
   User,
   UserInfo,
+  updateProfile,
 } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
-import { async } from "@firebase/util";
 
 interface AuthContext {
   signup: (
-    email: MutableRefObject<null | HTMLInputElement>,
-    password: MutableRefObject<null | HTMLInputElement>
+    email: string,
+    password: string,
+    displayName: string
   ) => Promise<any>;
   login: (email: string, password: string) => Promise<any>;
   logout: () => void;
   currentUser?: UserInfo;
-  setRegisterEmail: (email: string) => void;
-  setRegisterPassword: (password: string) => void;
   googleSignIn: () => void;
 }
 
@@ -39,8 +38,6 @@ export const AuthContext = createContext<AuthContext>({
   login: async () => {},
   logout: () => {},
   currentUser: undefined,
-  setRegisterEmail: () => Promise,
-  setRegisterPassword: () => Promise,
   googleSignIn: () => Promise,
 });
 
@@ -50,46 +47,45 @@ export function useAuth() {
 
 export function AuthProvider({ children }: any) {
   const [currentUser, setCurrentUser] = useState<User>();
-  const [registerEmail, setRegisterEmail] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-  //     setCurrentUser(currentUser as User);
-  //   });
-
-  //   return unsubscribe;
-  // }, [onAuthStateChanged, auth, currentUser]);
 
   useEffect(() => {
-    console.log(currentUser);
-  }, [currentUser]);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setCurrentUser(currentUser as User);
+    });
+    return unsubscribe;
+  }, [onAuthStateChanged, auth, currentUser]);
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
-
     signInWithPopup(auth, provider);
   };
 
-  const addUserToDb = async () => {
-    console.log(currentUser);
-
-    if (currentUser?.email) {
-      await setDoc(doc(db, "users", currentUser.uid), {
-        displayName: currentUser?.displayName,
-        email: currentUser?.email,
-      });
-    }
+  const addUserToDb = async (
+    email: string,
+    id: string,
+    displayName: string
+  ) => {
+    await setDoc(doc(db, "users", id), {
+      displayName: displayName,
+      email: email,
+    });
   };
 
-  const signup = async () => {
+  const signup = async (
+    email: string,
+    password: string,
+    displayName: string
+  ) => {
     try {
-      const user = await createUserWithEmailAndPassword(
-        auth,
-        registerEmail,
-        registerPassword
-      );
-      login(registerEmail, registerPassword);
+      await createUserWithEmailAndPassword(auth, email, password).then(() => {
+        if(auth.currentUser) {
+         updateProfile(auth.currentUser, {displayName: displayName})
+        }
+      });
+      if (auth.currentUser && auth.currentUser.email) {
+        addUserToDb(auth.currentUser.email, auth.currentUser.uid, displayName);
+      }
+      login(email, password);
     } catch (error) {
       console.error(error);
     }
@@ -101,7 +97,6 @@ export function AuthProvider({ children }: any) {
 
       if (auth.currentUser) {
         setCurrentUser(auth.currentUser);
-        addUserToDb();
       } else {
         setCurrentUser(undefined);
       }
@@ -128,8 +123,6 @@ export function AuthProvider({ children }: any) {
         login,
         logout,
         currentUser,
-        setRegisterEmail,
-        setRegisterPassword,
         googleSignIn,
       }}
     >

@@ -1,34 +1,30 @@
 import { Typography, Box, TextField, Button, Alert } from "@mui/material";
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
 
 function SignUpPage() {
-  const {
-    signup,
-    setRegisterEmail,
-    setRegisterPassword,
-    googleSignIn,
-    currentUser,
-  } = useAuth();
+  const { signup, googleSignIn, currentUser } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const emailRef = useRef<null | HTMLInputElement>(null);
-  const passwordRef = useRef<null | HTMLInputElement>(null);
-  const passwordConfirmationRef = useRef<null | HTMLInputElement>(null);
   const navigate = useNavigate();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmationPassword, setConfirmationPassword] = useState<string>("");
+  const [displayName, setDisplayedName] = useState<string>("")
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (passwordRef.current?.value !== passwordConfirmationRef.current?.value) {
+    if (password !== confirmationPassword) {
       return setError("Passwords do not match");
     }
+
     try {
       setError("");
       setLoading(true);
-      await signup(emailRef, passwordRef);
+      await signup(email, password, displayName);
     } catch (error) {
       setError("Failed to create an account");
     }
@@ -40,7 +36,7 @@ function SignUpPage() {
     e.preventDefault();
     try {
       googleSignIn();
-      navigate("/profile");
+      navigate(`/profile/${currentUser?.uid}`);
     } catch (error) {
       console.error(error);
     }
@@ -70,8 +66,14 @@ function SignUpPage() {
           label="Email"
           variant="outlined"
           required
-          ref={emailRef}
-          onChange={(e) => setRegisterEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          id="outlined-basic"
+          label="Display name"
+          variant="outlined"
+          required
+          onChange={(e) => setDisplayedName(e.target.value)}
         />
 
         <TextField
@@ -80,8 +82,7 @@ function SignUpPage() {
           variant="outlined"
           type="password"
           required
-          ref={passwordRef}
-          onChange={(e) => setRegisterPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <TextField
@@ -89,9 +90,8 @@ function SignUpPage() {
           label="Password confirmation"
           variant="outlined"
           type="password"
-          ref={passwordConfirmationRef}
           required
-          onChange={(e) => setRegisterPassword(e.target.value)}
+          onChange={(e) => setConfirmationPassword(e.target.value)}
         />
         {error && <Alert severity="error">{error}</Alert>}
         <Button
