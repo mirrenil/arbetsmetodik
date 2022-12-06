@@ -37,24 +37,29 @@ function DetailPage() {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
+
   const [title, setTitle] = useState<string>("");
 
   useEffect(() => {
-    async function setDocumentData() {
-      const documents: any = await getDocs(listingCollection);
-      const listingsProvided: any = [];
-      documents.forEach((doc: any) => {
-        let listing = doc.data();
-        listing = { ...listing, id: doc.id };
-        listingsProvided.push(listing);
-      });
-      const listingProvided = listingsProvided.find(
-        (item: any) => item.id === id
-      );
-      return setItem(listingProvided);
-    }
+    console.log('in useeffect')
     setDocumentData();
-  }, []);
+    console.log(title)
+  }, [modalOpen]);
+
+  async function setDocumentData() {
+    console.log('in setDocumentDAta')
+    const documents: any = await getDocs(listingCollection);
+    const listingsProvided: any = [];
+    documents.forEach((doc: any) => {
+      let listing = doc.data();
+      listing = { ...listing, id: doc.id };
+      listingsProvided.push(listing);
+    });
+    const listingProvided = listingsProvided.find(
+      (item: any) => item.id === id
+    );
+    return setItem(listingProvided);
+  }
 
   const handleSendRequest = async (e?: Event) => {
     const newRequest = {
@@ -74,17 +79,17 @@ function DetailPage() {
     alert("Listing with id " + id + " has been deleted");
   };
 
-  const updateListing = async (id: string) => {
-    const itemToUpdate = doc(db, "listings", id);
-    try {
+  const updateListing = async () => {
+    let itemToUpdate;
+    // Borde ha en else som fångar om det inte finns id. 
+    // Kanske en route till 404?
+    if (id) {
+      itemToUpdate = doc(db, "listings", id);
       await updateDoc(itemToUpdate, {
         title: title,
       });
-      console.log("Listing with id " + id + " has been updated");
-      return itemToUpdate;
-    } catch (e) {
-      console.log("Error updating document: ", e);
     }
+    handleClose();
   };
 
   return (
@@ -127,7 +132,7 @@ function DetailPage() {
                 </Box>
                 <Modal open={modalOpen} onClose={handleClose}>
                   <Box sx={modalStyle}>
-                    <form onSubmit={() => updateListing(id as string)}>
+                    <form onSubmit={(e) => {e.preventDefault(); updateListing()}}>
                       <DialogContent sx={crudModal}>
                         <DialogContentText>
                           Update your listing
@@ -143,7 +148,7 @@ function DetailPage() {
                         />
                         <Button
                           variant="contained"
-                          type="submit"
+                          onClick={() => {updateListing()}}
                           sx={{ marginTop: "1.5rem" }}
                         >
                           Update Listing
