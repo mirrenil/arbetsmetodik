@@ -4,16 +4,32 @@ import { useNavigate } from "react-router-dom";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
+// import { db } from "../firebase";
+// import { setDoc } from "firebase/firestore";
+// import { doc } from "prettier";
 
 function SignUpPage() {
-  const { signup, setRegisterEmail, setRegisterPassword, googleSignIn } =
-    useAuth();
+  const {
+    signup,
+    setRegisterEmail,
+    setRegisterPassword,
+    googleSignIn,
+    currentUser,
+  } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const emailRef = useRef<null | HTMLInputElement>(null);
   const passwordRef = useRef<null | HTMLInputElement>(null);
   const passwordConfirmationRef = useRef<null | HTMLInputElement>(null);
   const navigate = useNavigate();
+
+  // const addUserToDb = async () => {
+  //   await setDoc(doc(db, "users", currentUser?.uid), {
+  //     name: "Los Angeles",
+  //     state: "CA",
+  //     country: "USA",
+  //   });
+  // };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -24,7 +40,8 @@ function SignUpPage() {
       setError("");
       setLoading(true);
       await signup(emailRef, passwordRef);
-      navigate("/signin");
+      // addUserToDb();
+      navigate(`/profile/${currentUser?.uid}`);
     } catch (error) {
       setError("Failed to create an account");
     }
@@ -42,9 +59,11 @@ function SignUpPage() {
   };
 
   return (
-    <Box sx={{
-      mt:{xs: 4, md: 10, lg: 10, xl: 10}
-    }}>
+    <Box
+      sx={{
+        mt: { xs: 4, md: 10, lg: 10, xl: 10 },
+      }}
+    >
       <Typography variant="h4" align="center" mb={5}>
         New to Chubby Dog?
       </Typography>
