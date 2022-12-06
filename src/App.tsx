@@ -15,6 +15,7 @@ import ItemsContextProvide from "./Contexts/ItemContext";
 import HowItWorks from "./Pages/HowItWorks";
 import UserProvider from "./Contexts/UserContext";
 import NotFound from "./NotFound";
+import FreeRentCategory from "./Pages/FreeRentCategory";
 
 const theme = createTheme({
   status: {
@@ -65,6 +66,10 @@ function App() {
                     <Route index element={<StartPage />} />
                     <Route path="/items/:id" element={<DetailPage />} />
                     <Route path="/category/:name" element={<CategoryPage />} />
+                    <Route
+                      path="/category/free"
+                      element={<FreeRentCategory />}
+                    />
                     <Route path="/signup" element={<SignUpPage />} />
                     <Route path="/signin" element={<SignInPage />} />
                     <Route path="/profile/:id" element={<ProfilePage />} />
