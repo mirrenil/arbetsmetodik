@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   collection,
   getDocs,
@@ -38,6 +38,7 @@ function DetailPage() {
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
   const [title, setTitle] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleSendRequest = async (e?: Event) => {
     const newRequest = {
@@ -63,8 +64,17 @@ function DetailPage() {
       await updateDoc(itemToUpdate, {
         title: title,
       });
+    } else {
+      return (
+        <Box>
+          <Typography variant="h4">Error</Typography>
+          <Button variant="contained" onClick={() => navigate(-1)}>
+            Take me back
+          </Button>
+        </Box>
+      );
     }
-  }, [id, title, handleClose]);
+  }, [id, title]);
 
   useEffect(() => {
     async function setDocumentData() {
@@ -105,7 +115,7 @@ function DetailPage() {
                       cursor: "pointer",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => deleteListing(item?.id as string)}
+                    onClick={() => deleteListing(id as string)}
                   >
                     <Clear />
                   </button>
@@ -144,8 +154,10 @@ function DetailPage() {
                         />
                         <Button
                           variant="contained"
-                          type="submit"
-                          onClick={updateListing}
+                          onClick={() => {
+                            updateListing();
+                          }}
+                          sx={{ marginTop: "1.5rem" }}
                         >
                           Update Listing
                         </Button>
