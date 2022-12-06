@@ -32,13 +32,17 @@ import { Clear, Edit } from "@mui/icons-material";
 function DetailPage() {
   const listingCollection = collection(db, "listings");
   const { id } = useParams();
-  const [item, setItem] = useState<IListItem>();
   const { currentUser } = useAuth();
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [item, setItem] = useState<IListItem>();
   const [title, setTitle] = useState<string>("");
-  const navigate = useNavigate();
+  const [description, setDescription] = useState<string>("");
+  const [price, setPrice] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
+  const [image, setImage] = useState<string>("");
 
   const handleSendRequest = async (e?: Event) => {
     const newRequest = {
@@ -55,7 +59,7 @@ function DetailPage() {
   const deleteListing = async (id: string) => {
     const itemToRemove = doc(db, "listings", id);
     await deleteDoc(itemToRemove);
-    alert("Listing with id " + id + " has been deleted");
+    navigate("/profile/:id");
   };
 
   const updateListing = useCallback(async () => {
@@ -63,7 +67,12 @@ function DetailPage() {
       const itemToUpdate = doc(db, "listings", id);
       await updateDoc(itemToUpdate, {
         title: title,
+        description: description,
+        price: price,
+        location: location,
+        image: image,
       });
+      handleClose();
     } else {
       return (
         <Box>
@@ -152,6 +161,42 @@ function DetailPage() {
                           value={title || ""}
                           onChange={(e) => setTitle(e.target.value)}
                         />
+                        <TextField
+                          autoFocus
+                          margin="normal"
+                          type="text"
+                          label="Description"
+                          variant="standard"
+                          value={description || ""}
+                          onChange={(e) => setDescription(e.target.value)}
+                        />
+                        <TextField
+                          autoFocus
+                          margin="normal"
+                          type="number"
+                          label="Price"
+                          variant="standard"
+                          value={price || ""}
+                          onChange={(e) => setPrice(e.target.value)}
+                        />
+                        <TextField
+                          autoFocus
+                          margin="normal"
+                          type="text"
+                          label="Location"
+                          variant="standard"
+                          value={location || ""}
+                          onChange={(e) => setLocation(e.target.value)}
+                        />
+                        <TextField
+                          autoFocus
+                          margin="normal"
+                          type="text"
+                          label="Image"
+                          variant="standard"
+                          value={image || ""}
+                          onChange={(e) => setImage(e.target.value)}
+                        />
                         <Button
                           variant="contained"
                           onClick={() => {
@@ -189,7 +234,11 @@ function DetailPage() {
               {item?.description}
             </Typography>
             <Box>
-              <Typography sx={location} variant="body2" color="text.primary">
+              <Typography
+                sx={listingLocation}
+                variant="body2"
+                color="text.primary"
+              >
                 {item?.location}
                 <LocationOnIcon sx={{ fontSize: "1rem" }} />
               </Typography>
@@ -282,7 +331,7 @@ const descLocation: SxProps = {
   justifyContent: "space-between",
 };
 
-const location: SxProps = {
+const listingLocation: SxProps = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
