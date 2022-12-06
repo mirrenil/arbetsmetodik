@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function SignUpPage() {
   const { signup, setRegisterEmail, setRegisterPassword, googleSignIn } =
@@ -25,8 +27,16 @@ function SignUpPage() {
       setLoading(true);
       await signup(emailRef, passwordRef);
       navigate("/signin");
+      toast.success("You account was successfully registered!", {
+        autoClose: 1000,
+        theme: "colored",
+      });
     } catch (error) {
       setError("Failed to create an account");
+      toast.warn("Failed to create an account!, pleas try again", {
+        autoClose: 1000,
+        theme: "colored",
+      });
     }
     setLoading(false);
   };
@@ -36,15 +46,26 @@ function SignUpPage() {
     try {
       googleSignIn();
       navigate("/profile");
+      toast.success("You account was successfully registered!", {
+        autoClose: 1000,
+        theme: "colored",
+      });
     } catch (error) {
       console.error(error);
+      toast.warn("something went wrong!", {
+        autoClose: 1000,
+        theme: "colored",
+      });
     }
   };
 
   return (
-    <Box sx={{
-      mt:{xs: 4, md: 10, lg: 10, xl: 10}
-    }}>
+    <Box
+      sx={{
+        mt: { xs: 4, md: 10, lg: 10, xl: 10 },
+      }}
+    >
+      <ToastContainer />
       <Typography variant="h4" align="center" mb={5}>
         New to Chubby Dog?
       </Typography>

@@ -16,6 +16,8 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useAuth } from "../Contexts/AuthContext";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const validationSchema = yup.object({
   category: yup.string().required("Category is required"),
@@ -85,8 +87,16 @@ export default function NewListing() {
         createdAt: Timestamp.now(),
       });
       navigate("/");
+      toast.success("Your item has been added", {
+        autoClose: 1000,
+        theme: "colored",
+      });
     } catch (error) {
       console.error("Error adding document: ", error);
+      toast.warn("Something went wrong pleas try again", {
+        autoClose: 2000,
+        theme: "colored",
+      });
     }
   };
 

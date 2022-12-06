@@ -6,6 +6,8 @@ import "../Assets/FormStyle.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function SignInPage() {
   const { currentUser, login, setLoginEmail, setLoginPassword, googleSignIn } =
@@ -20,26 +22,51 @@ function SignInPage() {
     e.preventDefault();
     try {
       await login(emailRef, passwordRef);
-      navigate("/profile/:id");
+      if (currentUser) {
+        navigate("/profile/:id");
+        toast.success("You are now signed in", {
+          autoClose: 1000,
+        });
+      } else {
+        toast.warn("Failed to sign in", {
+          autoClose: 1500,
+          theme: "colored",
+        });
+      }
     } catch (error) {
       console.error("login failed" + error);
       setError("Failed to sign in");
+      toast.warn("Failed to sign in", {
+        autoClose: 1500,
+        theme: "colored",
+      });
     }
     setLoading(false);
   };
 
   const handleGoogleSignIn = (e: FormEvent) => {
+    setLoading(true);
     e.preventDefault();
     try {
       googleSignIn();
       navigate("/");
+      toast.success("You are now signed in", {
+        autoClose: 1000,
+        theme: "colored",
+      });
     } catch (error) {
       console.error(error);
+      toast.warn("Failed to sign in", {
+        autoClose: 1500,
+      });
     }
+    setLoading(false);
   };
 
   return (
     <div className="wrapper">
+      <ToastContainer />
+
       <Typography variant="h4" align="center" mb={5}>
         Welcome to Chubby Dog
       </Typography>

@@ -16,13 +16,13 @@ import backGroundImg from "../Assets/Images/DesktopHeaderBackground.png";
 import logoImg from "../Assets/Images/logo.png";
 import { useAuth } from "../Contexts/AuthContext";
 import MobileHeader from "../Assets/Images/mobileHeader.png";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { currentUser, logout } = useAuth();
   const userImg: any = currentUser?.photoURL;
   const userName: any = currentUser?.displayName;
-
   useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -31,11 +31,18 @@ const Header = () => {
 
   const handleSubmit = () => {
     logout();
+    toast.success("You are logged out", {
+      autoClose: 1000,
+      pauseOnHover: true,
+      theme: "dark",
+    });
+    // notify();
     navigate("/");
   };
 
   return (
     <Box sx={navBox}>
+      <ToastContainer />
       <Box sx={headerBackground}>
         <Box
           component="img"
