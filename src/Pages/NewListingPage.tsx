@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useAuth } from "../Contexts/AuthContext";
@@ -110,7 +110,7 @@ export default function NewListing() {
       imageUrl: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: () => {
       handleNewListing();
     },
   });

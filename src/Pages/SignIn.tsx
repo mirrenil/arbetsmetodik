@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useRef } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Typography, Button, SxProps } from "@mui/material";
@@ -26,17 +26,10 @@ function SignInPage() {
   const handleSignIn = async () => {
     try {
       await login(emailRef, passwordRef);
-      if (currentUser) {
-        navigate("/profile/:id");
-        toast.success("You are now signed in", {
-          autoClose: 1000,
-        });
-      } else {
-        toast.warn("Failed to sign in", {
-          autoClose: 1500,
-          theme: "colored",
-        });
-      }
+      navigate("/profile/:id");
+      toast.success("You are now signed in", {
+        autoClose: 1000,
+      });
     } catch (error) {
       console.error("login failed" + error);
       toast.warn("Failed to sign in", {
@@ -69,19 +62,22 @@ function SignInPage() {
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: () => {
       handleSignIn();
     },
   });
 
   return (
     <Box sx={wrapper}>
+      <ToastContainer />
       <Typography variant="h4" align="center" mb={5}>
         Welcome to Chubby Dog
       </Typography>
-      <ToastContainer />
       {currentUser ? (
-        <Typography variant="h5"> You are already signed in</Typography>
+        <Typography variant="h5" align="center">
+          {" "}
+          You are already signed in
+        </Typography>
       ) : (
         <Box>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -136,7 +132,10 @@ function SignInPage() {
                 OR
               </Typography>
               <GoogleButton onClick={handleGoogleSignIn} />
-              <Link to="/signup">
+              <Link
+                to="/signup"
+                style={{ textDecoration: "none", cursor: "pointer" }}
+              >
                 <Typography>
                   Don&apos;t have an account? Sign up here!
                 </Typography>

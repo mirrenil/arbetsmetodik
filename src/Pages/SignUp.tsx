@@ -1,5 +1,5 @@
 import { Typography, Box, TextField, Button } from "@mui/material";
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
@@ -67,7 +67,7 @@ function SignUpPage() {
       confirmPassword: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: () => {
       handleSubmit();
     },
   });
