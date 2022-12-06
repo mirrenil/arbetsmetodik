@@ -177,6 +177,22 @@ export default function NewListing() {
                     error={formik.touched.price && Boolean(formik.errors.price)}
                     helperText={formik.touched.price && formik.errors.price}
                   />
+
+                  <TextField
+                    sx={{ marginBottom: "1rem" }}
+                    id="location"
+                    name="location"
+                    label="Location"
+                    type="text"
+                    value={formik.values.location}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.location && Boolean(formik.errors.location)
+                    }
+                    helperText={
+                      formik.touched.location && formik.errors.location
+                    }
+                  />
                   <TextField
                     sx={{ marginBottom: "1rem" }}
                     id="imageUrl"
@@ -192,6 +208,7 @@ export default function NewListing() {
                       formik.touched.imageUrl && formik.errors.imageUrl
                     }
                   />
+
                   <Button
                     color="primary"
                     variant="contained"
