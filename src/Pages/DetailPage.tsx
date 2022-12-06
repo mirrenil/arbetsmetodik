@@ -112,7 +112,7 @@ function DetailPage() {
                       cursor: "pointer",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => deleteListing(item?.id)}
+                    onClick={() => deleteListing(item?.id as string)}
                   >
                     <Clear />
                   </button>
@@ -130,7 +130,7 @@ function DetailPage() {
                 </Box>
                 <Modal open={modalOpen} onClose={handleClose}>
                   <Box sx={modalStyle}>
-                    <form onSubmit={() => updateListing(item?.id)}>
+                    <form onSubmit={() => updateListing(item?.id as string)}>
                       <DialogContent sx={crudModal}>
                         <DialogContentText>
                           <Typography variant="h6" component="h6">
