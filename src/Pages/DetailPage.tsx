@@ -22,12 +22,50 @@ import {
   DialogContentText,
   Modal,
   TextField,
+  InputLabel,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import { CSSProperties } from "@mui/styled-engine";
 import Dave from "../Assets/Images/Dave.png";
 import { useAuth } from "../Contexts/AuthContext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Clear, Edit } from "@mui/icons-material";
+
+const categories = [
+  {
+    value: "Electronics",
+    title: "Electronics",
+  },
+  {
+    value: "Film & Photography",
+    title: "Film & Photography",
+  },
+  {
+    value: "Home",
+    title: "Home",
+  },
+  {
+    value: "Clothing",
+    title: "Clothing",
+  },
+  {
+    value: "Tools",
+    title: "Tools",
+  },
+  {
+    value: "Gaming",
+    title: "Gaming",
+  },
+  {
+    value: "Cars",
+    title: "Cars",
+  },
+  {
+    value: "Other",
+    title: "Other",
+  },
+];
 
 function DetailPage() {
   const listingCollection = collection(db, "listings");
@@ -43,6 +81,7 @@ function DetailPage() {
   const [price, setPrice] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [image, setImage] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
 
   const handleSendRequest = async (e?: Event) => {
     const newRequest = {
@@ -71,6 +110,7 @@ function DetailPage() {
         price: price,
         location: location,
         image: image,
+        category: category,
       });
       handleClose();
     } else {
@@ -83,7 +123,7 @@ function DetailPage() {
         </Box>
       );
     }
-  }, [id, title]);
+  }, [id, title, description, price, location, image, category]);
 
   useEffect(() => {
     async function setDocumentData() {
@@ -152,6 +192,19 @@ function DetailPage() {
                         <DialogContentText>
                           Update your listing
                         </DialogContentText>
+                        <InputLabel id="category">Category</InputLabel>
+                        <Select
+                          name="categories"
+                          value={category}
+                          label="Category"
+                          onChange={(e) => setCategory(e.target.value)}
+                        >
+                          {categories.map((chooseCategory, index) => (
+                            <MenuItem key={index} value={chooseCategory.title}>
+                              {chooseCategory.title}
+                            </MenuItem>
+                          ))}
+                        </Select>
                         <TextField
                           autoFocus
                           margin="normal"
