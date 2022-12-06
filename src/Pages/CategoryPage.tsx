@@ -9,8 +9,7 @@ function CategoryPage() {
   const { name } = useParams();
   const { items, categories, fetchCategoriesFromDb, fetchItemsFromDb } =
     useItems();
-  const [itemsFilterState, setItemsFilterState] = useState<any>("all");
-
+  const [itemsFilterState, setItemsFilterState] = useState<any>(true);
   useEffect(() => {
     fetchCategoriesFromDb();
     fetchItemsFromDb();
@@ -23,13 +22,13 @@ function CategoryPage() {
 
   let itemsToRender = CategoryItems;
   const showAll = () => {
-    setItemsFilterState("all");
+    setItemsFilterState(true);
   };
   const filteredFreeItems = CategoryItems?.filter((item) => item.price === 0);
   const filterFree = () => {
-    setItemsFilterState("free");
+    setItemsFilterState(false);
   };
-  itemsFilterState === "all"
+  itemsFilterState
     ? (itemsToRender = CategoryItems)
     : (itemsToRender = filteredFreeItems);
 
