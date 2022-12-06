@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -38,10 +39,6 @@ function DetailPage() {
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
   const [title, setTitle] = useState<string>("");
-  // const [description, setDescription] = useState<string>("");
-  // const [price, setPrice] = useState<string>("");
-  // const [image, setImage] = useState<string>("");
-  // const [location, setLocation] = useState<string>("");
 
   useEffect(() => {
     async function setDocumentData() {
@@ -82,10 +79,6 @@ function DetailPage() {
     const itemToUpdate = doc(db, "listings", id);
     await updateDoc(itemToUpdate, {
       title: title,
-      // price: price,
-      // description: description,
-      // image: image,
-      // location: location,
     });
     alert("Listing with id " + id + " has been updated");
   };
@@ -147,46 +140,6 @@ function DetailPage() {
                           required
                           onChange={(e) => setTitle(e.target.value)}
                         />
-                        {/* <TextField
-                          autoFocus
-                          margin="normal"
-                          type="number"
-                          label="Price"
-                          variant="standard"
-                          value={price || ""}
-                          required
-                          onChange={(e) => setPrice(e.target.value)}
-                        /> */}
-                        {/* <TextField
-                          autoFocus
-                          margin="normal"
-                          type="text"
-                          label="Description"
-                          variant="standard"
-                          value={description || ""}
-                          required
-                          onChange={(e) => setDescription(e.target.value)}
-                        /> */}
-                        {/* <TextField
-                          autoFocus
-                          margin="normal"
-                          type="text"
-                          label="Location"
-                          variant="standard"
-                          value={location || ""}
-                          required
-                          onChange={(e) => setLocation(e.target.value)}
-                        /> */}
-                        {/* <TextField
-                          autoFocus
-                          margin="normal"
-                          type="text"
-                          label="Image URL"
-                          variant="standard"
-                          value={image || ""}
-                          required
-                          onChange={(e) => setImage(e.target.value)}
-                        /> */}
                         <Button
                           variant="contained"
                           type="submit"

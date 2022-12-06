@@ -24,6 +24,7 @@ function SignUpPage() {
   const { signup, setRegisterEmail, setRegisterPassword, googleSignIn } =
     useAuth();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const emailRef = useRef<null | HTMLInputElement>(null);
   const passwordRef = useRef<null | HTMLInputElement>(null);
   const passwordConfirmationRef = useRef<null | HTMLInputElement>(null);
@@ -35,12 +36,12 @@ function SignUpPage() {
     }
     try {
       setLoading(true);
+      setError("");
       await signup(emailRef, passwordRef);
       navigate("/signin");
     } catch (error) {
       console.log("error")
     }
-    setLoading(false);
   };
 
   const handleGoogleSignIn = (e: FormEvent) => {
@@ -66,9 +67,11 @@ function SignUpPage() {
 });
 
   return (
-    <Box sx={{
-      mt:{xs: 4, md: 10, lg: 10, xl: 10}
-    }}>
+    <Box
+      sx={{
+        mt: { xs: 4, md: 10, lg: 10, xl: 10 },
+      }}
+    >
       <Typography variant="h4" align="center" mb={5}>
         New to Chubby Dog?
       </Typography>

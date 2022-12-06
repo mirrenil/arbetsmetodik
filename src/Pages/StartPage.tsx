@@ -1,3 +1,4 @@
+/* eslint-disable */
 import StartPageHero from "../Components/StartPageHero";
 import RecentlyAdded from "../Components/RecentlyAdded";
 import StartPageInfo from "../Components/StartPageInfo";
@@ -16,7 +17,6 @@ const StartPage = () => {
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         data["id"] = doc.id;
-        // doc.data() is never undefined for query doc snapshots
         dataWithId.push(data);
         setCategories(dataWithId);
       });
@@ -25,12 +25,10 @@ const StartPage = () => {
   }, []);
   return (
     <>
-      {/* Header will go here from layout */}
       <StartPageHero />
       <CategoryCard />
       <RecentlyAdded />
       <StartPageInfo />
-      {/* Footer will go here from layout */}
     </>
   );
 };

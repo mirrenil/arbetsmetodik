@@ -3,7 +3,7 @@ import { Box, CardMedia, Typography, useTheme, Button } from "@mui/material";
 import React, { CSSProperties, useEffect, useState } from "react";
 import camera from "../Assets/Images/Film-Photography.png";
 import { IRequest, IUser, IListItem } from "../Interfaces";
-import { getDocs, collection, where, query } from "firebase/firestore";
+import { getDocs, collection, query } from "firebase/firestore";
 import { db } from "../firebase";
 
 interface Props {
