@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   collection,
@@ -39,23 +39,6 @@ function DetailPage() {
   const handleClose = () => setModalOpen(false);
   const [title, setTitle] = useState<string>("");
 
-  useEffect(() => {
-    async function setDocumentData() {
-      const documents: any = await getDocs(listingCollection);
-      const listingsProvided: any = [];
-      documents.forEach((doc: any) => {
-        let listing = doc.data();
-        listing = { ...listing, id: doc.id };
-        listingsProvided.push(listing);
-      });
-      const listingProvided = listingsProvided.find(
-        (item: any) => item.id === id
-      );
-      return setItem(listingProvided);
-    }
-    setDocumentData();
-  }, []);
-
   const handleSendRequest = async (e?: Event) => {
     const newRequest = {
       accepted: false,
@@ -74,18 +57,31 @@ function DetailPage() {
     alert("Listing with id " + id + " has been deleted");
   };
 
-  const updateListing = async (id: string) => {
-    const itemToUpdate = doc(db, "listings", id);
-    try {
+  const updateListing = useCallback(async () => {
+    if (id) {
+      const itemToUpdate = doc(db, "listings", id);
       await updateDoc(itemToUpdate, {
         title: title,
       });
-      console.log("Listing with id " + id + " has been updated");
-      return itemToUpdate;
-    } catch (e) {
-      console.log("Error updating document: ", e);
     }
-  };
+  }, [id, title, handleClose]);
+
+  useEffect(() => {
+    async function setDocumentData() {
+      const documents: any = await getDocs(listingCollection);
+      const listingsProvided: any = [];
+      documents.forEach((doc: any) => {
+        let listing = doc.data();
+        listing = { ...listing, id: doc.id };
+        listingsProvided.push(listing);
+      });
+      const listingProvided = listingsProvided.find(
+        (item: any) => item.id === id
+      );
+      return setItem(listingProvided);
+    }
+    setDocumentData();
+  }, [updateListing, modalOpen]);
 
   return (
     <Box sx={wrapper}>
@@ -109,7 +105,7 @@ function DetailPage() {
                       cursor: "pointer",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => deleteListing(id as string)}
+                    onClick={() => deleteListing(item?.id as string)}
                   >
                     <Clear />
                   </button>
@@ -127,7 +123,12 @@ function DetailPage() {
                 </Box>
                 <Modal open={modalOpen} onClose={handleClose}>
                   <Box sx={modalStyle}>
-                    <form onSubmit={() => updateListing(id as string)}>
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        updateListing();
+                      }}
+                    >
                       <DialogContent sx={crudModal}>
                         <DialogContentText>
                           Update your listing
@@ -144,7 +145,7 @@ function DetailPage() {
                         <Button
                           variant="contained"
                           type="submit"
-                          sx={{ marginTop: "1.5rem" }}
+                          onClick={updateListing}
                         >
                           Update Listing
                         </Button>
@@ -317,7 +318,6 @@ const modalStyle = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  height: 500,
   bgcolor: "background.paper",
   border: "none",
   borderRadius: "6px",
