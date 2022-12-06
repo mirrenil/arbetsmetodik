@@ -1,5 +1,6 @@
+/* eslint-disable */
 import { Box, SxProps, Typography } from "@mui/material";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import AOS from "aos";
 import { useItems } from "../Contexts/ItemContext";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +8,7 @@ import "aos/dist/aos.css";
 
 const CategoryCard = () => {
   const navigate = useNavigate();
-  AOS.init({once: true});
+  AOS.init({ once: true });
   const { categories, fetchCategoriesFromDb, setSelectedCategoryId } =
     useItems();
   const [showMore, setShowMore] = useState(false);

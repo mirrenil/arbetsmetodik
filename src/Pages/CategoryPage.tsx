@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Box, SxProps, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
