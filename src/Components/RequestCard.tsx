@@ -12,23 +12,14 @@ interface Props {
 }
 
 const RequestCard = ({ request, isMySentRequest }: Props) => {
-  const [sender, setSender] = useState<IUser>();
   const [receiver, setReceiver] = useState<IUser>();
   const [item, setItem] = useState<IListItem>();
   const theme = useTheme();
 
   useEffect(() => {
-    getReqSender();
     getReceiver();
     getReqItem();
   }, []);
-
-  const getReqSender = async () => {
-    const user = await getUser(request.fromUser);
-    if (user) {
-      setSender(user as IUser);
-    }
-  };
 
   const getReceiver = async () => {
     const user = await getUser(request.toUser);
@@ -90,11 +81,11 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
       <Typography sx={[textContainer, grid.reqFrom]}>
         {isMySentRequest ? (
           <span style={titleStyle}>
-            Request To: {receiver?.email ? receiver.email : "no name"}
+            Request To: {receiver?.displayName ? receiver.displayName : "no name found"}
           </span>
         ) : (
           <span style={titleStyle}>
-            Request from: {sender?.email ? sender.email : "no name"}
+            Request from: {request?.fromUserName ? request.fromUserName : "no name found"}
           </span>
         )}
       </Typography>
