@@ -11,7 +11,6 @@ function SignInPage() {
   const { currentUser, login, setLoginEmail, setLoginPassword, googleSignIn } =
     useAuth();
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const emailRef = useRef<null | HTMLInputElement>(null);
   const passwordRef = useRef<null | HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -25,7 +24,6 @@ function SignInPage() {
       console.error("login failed" + error);
       setError("Failed to sign in");
     }
-    setLoading(false);
   };
 
   const handleGoogleSignIn = (e: FormEvent) => {

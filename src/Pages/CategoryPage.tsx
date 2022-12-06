@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Box, SxProps, Typography, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -9,7 +10,7 @@ function CategoryPage() {
   const { name } = useParams();
   const { items, categories, fetchCategoriesFromDb, fetchItemsFromDb } =
     useItems();
-  const [itemsFilterState, setItemsFilterState] = useState<any>(true);
+  const [itemsFilterState, setItemsFilterState] = useState<boolean>(true);
   useEffect(() => {
     fetchCategoriesFromDb();
     fetchItemsFromDb();
