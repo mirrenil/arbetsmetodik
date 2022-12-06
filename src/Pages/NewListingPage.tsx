@@ -17,7 +17,7 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useAuth } from "../Contexts/AuthContext";
 import * as yup from "yup";
 import { useFormik } from "formik";
-
+ 
 const validationSchema = yup.object({
   category: yup.string().required("Category is required"),
   title: yup.string().required("Please choose a title"),
@@ -31,7 +31,7 @@ const validationSchema = yup.object({
     .min(8, "The Image URL should be of minimum 8 characters length")
     .required("Example: https://minhast.se/uploads/GettyImages.jpg"),
 });
-
+ 
 const categories = [
   {
     value: "Electronics",
@@ -66,13 +66,13 @@ const categories = [
     title: "Other",
   },
 ];
-
+ 
 export default function NewListing() {
   const { currentUser } = useAuth();
   const [authorID, setAuthorID] = useState(currentUser?.uid);
   const listingsRef = collection(db, "listings");
   const navigate = useNavigate();
-
+ 
   const handleNewListing = async () => {
     try {
       const docRef = await addDoc(listingsRef, {
@@ -90,7 +90,7 @@ export default function NewListing() {
       console.error("Error adding document: ", error);
     }
   };
-
+ 
   const formik = useFormik({
     initialValues: {
       category: "",
@@ -105,7 +105,7 @@ export default function NewListing() {
       handleNewListing();
     },
   });
-
+ 
   return (
     <Box sx={wrapper}>
       {currentUser ? (
@@ -178,7 +178,6 @@ export default function NewListing() {
                     error={formik.touched.price && Boolean(formik.errors.price)}
                     helperText={formik.touched.price && formik.errors.price}
                   />
-
                   <TextField
                     sx={{ marginBottom: "1rem" }}
                     id="location"
@@ -209,7 +208,6 @@ export default function NewListing() {
                       formik.touched.imageUrl && formik.errors.imageUrl
                     }
                   />
-
                   <Button
                     color="primary"
                     variant="contained"

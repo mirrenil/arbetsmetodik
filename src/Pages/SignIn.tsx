@@ -1,28 +1,40 @@
 import React, { FormEvent, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { Typography, Button, Alert } from "@mui/material";
+import { Typography, Button, SxProps } from "@mui/material";
 import "../Assets/FormStyle.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
+import * as yup from "yup";
+import { useFormik } from 'formik';
+
+const validationSchema = yup
+  .object({
+  email: yup
+  .string()
+  .required('Please enter your email address'),
+  password: yup
+    .string()
+    .required('Please enter a password'),
+});
 
 function SignInPage() {
   const { currentUser, login, setLoginEmail, setLoginPassword, googleSignIn } =
     useAuth();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const emailRef = useRef<null | HTMLInputElement>(null);
   const passwordRef = useRef<null | HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleSignIn = async () => {
     try {
       await login(emailRef, passwordRef);
       navigate("/profile/:id");
     } catch (error) {
       console.error("login failed" + error);
-      setError("Failed to sign in");
+
     }
   };
 
@@ -36,62 +48,87 @@ function SignInPage() {
     }
   };
 
+  const formik = useFormik({
+    initialValues: {
+        email: "",
+        password: "", 
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      handleSignIn()
+    },
+});
+
   return (
-    <div className="wrapper">
+    <Box sx={wrapper}>
       <Typography variant="h4" align="center" mb={5}>
         Welcome to Chubby Dog
       </Typography>
       {currentUser ? (
         <Typography variant="h5"> You are already signed in</Typography>
       ) : (
-        <Box
-          component="form"
-          className="box"
-          sx={{
-            "& > :not(style)": { m: 1, width: "25ch" },
-          }}
-          onSubmit={handleSubmit}
-          noValidate
-          autoComplete="off"
-        >
+        <Box>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <form onSubmit={formik.handleSubmit} style={{ display: "flex", flexDirection: "column", width: "15rem", gap: "1rem" }}>
           <TextField
-            id="outlined-basic"
+            id="email"
+            name="email"
             label="Email"
-            variant="outlined"
-            required
+            type="text"
+            value={formik.values.email}
+            onChange={ (e) =>{ 
+              formik.handleChange(e)
+              setLoginEmail( e.target.value)
+            }}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
             ref={emailRef}
-            onChange={(e) => setLoginEmail(e.target.value)}
           />
           <TextField
-            id="outlined-basic"
+            id="password"
+            name="password"
             label="Password"
-            variant="outlined"
             type="password"
-            required
+            value={formik.values.password}
+            onChange={ (e) =>{ 
+              formik.handleChange(e)
+              setLoginPassword(e.target.value)
+            }}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
             ref={passwordRef}
-            onChange={(e) => setLoginPassword(e.target.value)}
           />
-          {error && <Alert severity="error">{error}</Alert>}
           <Button
             color="primary"
             variant="contained"
             sx={{ background: "#00C4BA" }}
-            onClick={handleSubmit}
+            type="submit"
           >
             Sign in
           </Button>
           <Typography variant="body1" align="center">
             OR
           </Typography>
-
           <GoogleButton onClick={handleGoogleSignIn} />
           <Link to="/signup">
             <Typography>Don&apos;t have an account? Sign up here!</Typography>
           </Link>
-        </Box>
+          </form>
+          </Box>
+          </Box>
       )}
-    </div>
+    </Box>
   );
 }
+
+const wrapper: SxProps = {
+  flexDirection: "column",
+  position: { xs: "static", md: "relative", lg: "relative", xl: "relative" },
+  top: { xs: "0", md: "150px", lg: "100px", xl: "100px" },
+  width: "100%",
+  minHeight: "500px",
+  display: "flex",
+  justifyContent: "center",
+};
 
 export default SignInPage;
