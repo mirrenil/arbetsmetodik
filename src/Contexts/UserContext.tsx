@@ -63,7 +63,8 @@ export function UserProvider({ children }: any) {
         const req = {
           accepted: doc.data().accepted,
           createdAt: doc.data().createdAt,
-          fromUser: doc.data().fromUser,
+          fromUserId: doc.data().fromUserId,
+          fromUserName: doc.data().fromUserName,
           toUser: doc.data().toUser,
           itemId: doc.data().itemId,
           priceTotal: doc.data().priceTotal,

@@ -64,7 +64,8 @@ function DetailPage() {
     const newRequest = {
       accepted: false,
       createdAt: new Date(),
-      fromUser: currentUser?.uid,
+      fromUserId: currentUser?.uid,
+      fromUserName: currentUser?.displayName,
       itemId: item?.id,
       priceTotal: item?.price,
       toUser: item?.authorID,
