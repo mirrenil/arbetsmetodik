@@ -80,7 +80,6 @@ export function AuthProvider({ children }: any) {
         registerEmail,
         registerPassword
       );
-      setCurrentUser(currentUser);
     } catch (error) {
       console.error(error);
     }
