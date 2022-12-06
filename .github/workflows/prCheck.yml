@@ -1,0 +1,20 @@
+name: prCheck CI
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  prCheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install
+        run: npm i
+
+      - name: Format
+        run: npm run format
+
+      - name: Lint
+        run: npm run lint

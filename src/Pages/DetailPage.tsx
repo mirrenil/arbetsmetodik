@@ -1,5 +1,7 @@
+/* eslint-disable */
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
 import {
   collection,
   getDocs,
@@ -87,7 +89,8 @@ function DetailPage() {
     const newRequest = {
       accepted: false,
       createdAt: new Date(),
-      fromUser: currentUser?.uid,
+      fromUserId: currentUser?.uid,
+      fromUserName: currentUser?.displayName,
       itemId: item?.id,
       priceTotal: item?.price,
       toUser: item?.authorID,
