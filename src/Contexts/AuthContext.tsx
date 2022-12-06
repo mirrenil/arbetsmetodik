@@ -17,22 +17,20 @@ import {
   User,
   UserInfo,
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { async } from "@firebase/util";
+
 interface AuthContext {
   signup: (
     email: MutableRefObject<null | HTMLInputElement>,
     password: MutableRefObject<null | HTMLInputElement>
   ) => Promise<any>;
-  login: (
-    email: MutableRefObject<null | HTMLInputElement>,
-    password: MutableRefObject<null | HTMLInputElement>
-  ) => Promise<any>;
+  login: (email: string, password: string) => Promise<any>;
   logout: () => void;
   currentUser?: UserInfo;
   setRegisterEmail: (email: string) => void;
   setRegisterPassword: (password: string) => void;
-  setLoginEmail: (email: string) => void;
-  setLoginPassword: (password: string) => void;
   googleSignIn: () => void;
 }
 
@@ -43,8 +41,6 @@ export const AuthContext = createContext<AuthContext>({
   currentUser: undefined,
   setRegisterEmail: () => Promise,
   setRegisterPassword: () => Promise,
-  setLoginEmail: () => Promise,
-  setLoginPassword: () => Promise,
   googleSignIn: () => Promise,
 });
 
@@ -56,21 +52,34 @@ export function AuthProvider({ children }: any) {
   const [currentUser, setCurrentUser] = useState<User>();
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+  //     setCurrentUser(currentUser as User);
+  //   });
+
+  //   return unsubscribe;
+  // }, [onAuthStateChanged, auth, currentUser]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setCurrentUser(currentUser as User);
-    });
-
-    return unsubscribe;
-  }, [onAuthStateChanged, auth, currentUser]);
+    console.log(currentUser);
+  }, [currentUser]);
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
 
     signInWithPopup(auth, provider);
+  };
+
+  const addUserToDb = async () => {
+    console.log(currentUser);
+
+    if (currentUser?.email) {
+      await setDoc(doc(db, "users", currentUser.uid), {
+        displayName: currentUser?.displayName,
+        email: currentUser?.email,
+      });
+    }
   };
 
   const signup = async () => {
@@ -80,18 +89,19 @@ export function AuthProvider({ children }: any) {
         registerEmail,
         registerPassword
       );
-      setLoginEmail(registerEmail), setLoginPassword(registerPassword);
-      login();
+      login(registerEmail, registerPassword);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const login = async () => {
+  const login = async (email: string, password: string) => {
     try {
-      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      await signInWithEmailAndPassword(auth, email, password);
+
       if (auth.currentUser) {
         setCurrentUser(auth.currentUser);
+        addUserToDb();
       } else {
         setCurrentUser(undefined);
       }
@@ -120,8 +130,6 @@ export function AuthProvider({ children }: any) {
         currentUser,
         setRegisterEmail,
         setRegisterPassword,
-        setLoginEmail,
-        setLoginPassword,
         googleSignIn,
       }}
     >

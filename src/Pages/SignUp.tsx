@@ -4,9 +4,6 @@ import { useNavigate } from "react-router-dom";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
-// import { db } from "../firebase";
-// import { setDoc } from "firebase/firestore";
-// import { doc } from "prettier";
 
 function SignUpPage() {
   const {
@@ -23,14 +20,6 @@ function SignUpPage() {
   const passwordConfirmationRef = useRef<null | HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  // const addUserToDb = async () => {
-  //   await setDoc(doc(db, "users", currentUser?.uid), {
-  //     name: "Los Angeles",
-  //     state: "CA",
-  //     country: "USA",
-  //   });
-  // };
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (passwordRef.current?.value !== passwordConfirmationRef.current?.value) {
@@ -40,12 +29,11 @@ function SignUpPage() {
       setError("");
       setLoading(true);
       await signup(emailRef, passwordRef);
-      // addUserToDb();
-      navigate(`/profile/${currentUser?.uid}`);
     } catch (error) {
       setError("Failed to create an account");
     }
     setLoading(false);
+    navigate(`/profile/${currentUser?.uid}`);
   };
 
   const handleGoogleSignIn = (e: FormEvent) => {
