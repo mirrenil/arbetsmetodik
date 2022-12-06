@@ -6,12 +6,8 @@ import {
   SxProps,
   Typography,
 } from "@mui/material";
-import React, { CSSProperties, useContext } from "react";
-import { useAuth } from "../Contexts/AuthContext";
+import React from "react";
 import { IListItem } from "../Interfaces";
-import ClearIcon from "@mui/icons-material/Clear";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
@@ -20,41 +16,15 @@ interface Props {
 }
 
 const ItemCard = ({ item }: Props) => {
-  const { currentUser } = useAuth();
   const navigate = useNavigate();
-
-  // This will be added back in when the listings are connected to a user
-
-  // const deleteListing = async (id: string) => {
-  //   const itemToRemove = doc(db, "listings", id);
-  //   await deleteDoc(itemToRemove);
-  //   alert("Listing with id " + id + " has been deleted");
-  // };
 
   return (
     <Card sx={boxStyle} onClick={() => navigate(`/items/'${item.id}`)}>
-      {/* This will be added back in when the listings are connected to a user */}
-
-      {/* {currentUser && (
-        <Box>
-          <button
-            style={{
-              border: "none",
-              cursor: "pointer",
-              backgroundColor: "transparent",
-            }}
-            onClick={() => deleteListing(item.id)}
-          >
-            <ClearIcon />
-          </button>
-        </Box>
-      )} */}
       <CardMedia
         component="img"
         src={item.image}
         height="100"
         sx={{ borderRadius: "6px", cursor: "pointer" }}
-        // onClick={() => navigate(`/items/'${item.id}`)}
       />
       <Typography sx={itemTitle}>{item.title}</Typography>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -85,7 +55,6 @@ const itemInfo: SxProps = {
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
-  // marginTop: "15px",
   margin: "0",
   padding: "0",
   "&:last-child": {
@@ -109,7 +78,6 @@ const itemLocation: SxProps = {
 
 const itemPrice: SxProps = {
   padding: "0",
-  // fontWeight: "bold",
   fontSize: "1.2rem",
   textAlign: "center",
 };

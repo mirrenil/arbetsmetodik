@@ -22,7 +22,6 @@ const validationSchema = yup
 function SignInPage() {
   const { currentUser, login, setLoginEmail, setLoginPassword, googleSignIn } =
     useAuth();
-  const [loading, setLoading] = useState(false);
   const emailRef = useRef<null | HTMLInputElement>(null);
   const passwordRef = useRef<null | HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -35,7 +34,6 @@ function SignInPage() {
       console.error("login failed" + error);
 
     }
-    setLoading(false);
   };
 
   const handleGoogleSignIn = (e: FormEvent) => {

@@ -1,4 +1,5 @@
-import { Box, Button, SxProps, colors } from "@mui/material";
+/* eslint-disable */
+import { Box, SxProps } from "@mui/material";
 import { Avatar, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
