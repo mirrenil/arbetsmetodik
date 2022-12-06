@@ -6,58 +6,86 @@ import { useAuth } from './AuthContext';
 
 
 interface UserContextValue {
-  usersRequests: IRequest[],
-  setUsersRequests?: () => void,
+  myReceivedRequests: IRequest[],
+  mySentRequests: IRequest[],
+  setMyReceivedRequests?: () => void,
+  setMySentRequests?: () => void
 }
 
 export const UserContext = createContext<UserContextValue>({
-  usersRequests: [],
-  setUsersRequests: () => Promise,
+  myReceivedRequests: [],
+  mySentRequests: [],
+  setMyReceivedRequests: () => [],
+  setMySentRequests: () => []
 })
 
 export function useUser() {
-    return useContext(UserContext);
+  return useContext(UserContext);
 }
 
-export function UserProvider({ children }: any) { 
-  const [usersRequests, setUsersRequests] = useState<IRequest[]>([])
+export function UserProvider({ children }: any) {
+  const [myReceivedRequests, setMyReceivedRequests] = useState<IRequest[]>([])
+  const [mySentRequests, setMySentRequests] = useState<IRequest[]>([])
   const { currentUser } = useAuth();
 
-      useEffect(() => {
-        getUserRequests();
-      }, [currentUser]);
+  useEffect(() => {
+    getMyReceivedRequests();
+    getMySentRequests();
+  }, [currentUser]);
 
-      const getUserRequests = async () => {
-          const data = query(
-          collection(db, 'requests'),
-          where('toUser', '==', `${currentUser?.uid}`)
-        );
-        const req = await getDocs(data);
+  const getMyReceivedRequests = async () => {
+    const requests = await getReqs('requests', 'toUser');
+    if (requests?.length) {
+      requests.forEach((req) => {
+        setMyReceivedRequests((reqs) => [...reqs, req])
+      })
+    }
+  };
 
-        req.forEach((doc) => {
-          const newRequest = {
-            accepted: doc.data().accepted,
-            createdAt: doc.data().createdAt,
-            fromUser: doc.data().fromUser,
-            toUser: doc.data().toUser,
-            itemId: doc.data().itemId,
-            priceTotal: doc.data().priceTotal,
-            id: doc.id
-          };
-          setUsersRequests((reqs) => [...reqs, newRequest]);
-        });
-      };
+  const getMySentRequests = async () => {
+    const requests = await getReqs('requests', 'fromUser');
+    if (requests?.length) {
+      requests.forEach((req) => {
+        setMySentRequests((reqs) => [...reqs, req])
+      })
+    }
+  };
 
-
-
-    return (
-        <UserContext.Provider
-          value={{ 
-            usersRequests,
-          }}
-        >
-          {children}
-        </UserContext.Provider>
+  const getReqs = async (dbCollection: string, property: string,) => {
+    const newReq: IRequest[] = [];
+    try {
+      const data = query(
+        collection(db, `${dbCollection}`),
+        where(`${property}`, '==', `${currentUser?.uid}`)
       );
+      const req = await getDocs(data);
+      req.forEach((doc) => {
+        const req = {
+          accepted: doc.data().accepted,
+          createdAt: doc.data().createdAt,
+          fromUser: doc.data().fromUser,
+          toUser: doc.data().toUser,
+          itemId: doc.data().itemId,
+          priceTotal: doc.data().priceTotal,
+          id: doc.id
+        };
+        newReq.push(req)
+      });
+      return newReq;
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  return (
+    <UserContext.Provider
+      value={{
+        myReceivedRequests,
+        mySentRequests
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 }
 export default UserProvider;

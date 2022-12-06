@@ -1,18 +1,22 @@
 import { Typography } from '@mui/material';
 import React from 'react';
-import ReceivedReqCard from '../Components/ReceivedReqCard';
+import RequestCard from '../Components/RequestCard';
 import { useUser } from '../Contexts/UserContext';
 
 function RequestsPage() {
-	const { usersRequests } = useUser();
+	const { myReceivedRequests, mySentRequests } = useUser();
 	
 	return (
-		<div>
+		<>
 			<Typography>Recieved requests:</Typography>
-			{usersRequests.map((req) => {
-				return <ReceivedReqCard key={req.id} request={req}/>;
+			{myReceivedRequests.map((req) => {
+				return <RequestCard key={req.id} request={req} isMySentRequest={false}/>;
 			})}
-		</div>
+			<Typography>Sent requests:</Typography>
+			{mySentRequests.map((req) => {
+				return <RequestCard key={req.id} request={req} isMySentRequest={true}/>;
+			})}
+		</>
 	);
 }
 
