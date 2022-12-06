@@ -105,7 +105,7 @@ function SignInPage() {
               <Button
                 color="primary"
                 variant="contained"
-                sx={{ background: "#00C4BA" }}
+                sx={{ background: "#00C4BA", color: "white" }}
                 type="submit"
               >
                 Sign in
