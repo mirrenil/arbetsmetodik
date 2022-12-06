@@ -117,6 +117,7 @@ export default function NewListing() {
 
   return (
     <Box sx={wrapper}>
+      <ToastContainer />
       {currentUser ? (
         <>
           {currentUser.displayName ? (
@@ -187,7 +188,6 @@ export default function NewListing() {
                     error={formik.touched.price && Boolean(formik.errors.price)}
                     helperText={formik.touched.price && formik.errors.price}
                   />
-
                   <TextField
                     sx={{ marginBottom: "1rem" }}
                     id="location"
@@ -218,7 +218,6 @@ export default function NewListing() {
                       formik.touched.imageUrl && formik.errors.imageUrl
                     }
                   />
-
                   <Button
                     color="primary"
                     variant="contained"
