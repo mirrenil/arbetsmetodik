@@ -157,7 +157,7 @@ const grid = {
 
 const imgStyle = {
   height: "5rem",
-  width: "auto",
+  width: "7rem",
   objectFit: "contain",
   marginRight: "1rem",
 };
