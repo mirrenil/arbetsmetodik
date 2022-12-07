@@ -21,7 +21,7 @@ function SignUpPage() {
   const [confirmationPassword, setConfirmationPassword] = useState<string>("");
   const [displayName, setDisplayedName] = useState<string>("");
 
-  const handleSubmit = async () => {
+  const handleSignUp = async () => {
     if (password !== confirmationPassword) {
       return alert("Passwords do not match");
     }
@@ -52,7 +52,7 @@ function SignUpPage() {
     validationSchema: validationSchema,
     // eslint-disable-next-line
     onSubmit: (values) => {
-      handleSubmit();
+      handleSignUp();
     },
   });
 
