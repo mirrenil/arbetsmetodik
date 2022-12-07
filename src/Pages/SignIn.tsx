@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Typography, Button, SxProps } from "@mui/material";
@@ -16,8 +16,6 @@ const validationSchema = yup.object({
 
 function SignInPage() {
   const { currentUser, login, googleSignIn } = useAuth();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import { Typography, Box, TextField, Button } from "@mui/material";
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
@@ -16,8 +16,6 @@ const validationSchema = yup.object({
 
 function SignUpPage() {
   const { signup, googleSignIn, currentUser } = useAuth();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -26,17 +24,14 @@ function SignUpPage() {
 
   const handleSubmit = async () => {
     if (password !== confirmationPassword) {
-      return setError("Passwords do not match");
+      return alert("Passwords do not match");
     }
 
     try {
-      setLoading(true);
-      setError("");
       await signup(email, password, displayName);
     } catch (error) {
       console.log("error");
     }
-    setLoading(false);
     navigate(`/profile/${currentUser?.uid}`);
   };
 
