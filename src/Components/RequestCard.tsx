@@ -3,7 +3,14 @@ import { Box, CardMedia, Typography, useTheme, Button } from "@mui/material";
 import React, { CSSProperties, useEffect, useState } from "react";
 import camera from "../Assets/Images/Film-Photography.png";
 import { IRequest, IUser, IListItem } from "../Interfaces";
-import { getDocs, collection, where, query } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  where,
+  query,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 interface Props {
@@ -22,26 +29,20 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   }, []);
 
   const getReceiver = async () => {
-    const user = await getUser(request.toUser);
-    if (user) {
-      setReceiver(user as IUser);
-    }
-  };
-
-  const getUser = async (userId: string) => {
-    let user = {};
-    const data = query(collection(db, "users"));
-    const req = await getDocs(data);
-    req.forEach((doc) => {
-      if (doc.id == userId) {
-        user = {
-          email: doc.data().email,
-          displayName: doc.data().displayName,
-          id: doc.id,
-        };
+    const docRef = doc(db, "users", request.toUser);
+    const snap = await getDoc(docRef);
+    const userDoc = snap.data()
+  
+    if (userDoc) {
+      const user = {
+        email: userDoc.email,
+        displayName: userDoc.displayName,
+        id: userDoc.id,
+      };
+      if (user) {
+        setReceiver(user as IUser);
       }
-    });
-    return user;
+    }
   };
 
   const getReqItem = async () => {
@@ -81,11 +82,13 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
       <Typography sx={[textContainer, grid.reqFrom]}>
         {isMySentRequest ? (
           <span style={titleStyle}>
-            Request To: {receiver?.displayName ? receiver.displayName : "no name found"}
+            Request To:{" "}
+            {receiver?.displayName ? receiver.displayName : "no name found"}
           </span>
         ) : (
           <span style={titleStyle}>
-            Request from: {request?.fromUserName ? request.fromUserName : "no name found"}
+            Request from:{" "}
+            {request?.fromUserName ? request.fromUserName : "no name found"}
           </span>
         )}
       </Typography>
