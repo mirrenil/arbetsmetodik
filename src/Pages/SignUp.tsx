@@ -1,4 +1,4 @@
-import { Typography, Box, TextField, Button, Alert } from "@mui/material";
+import { Typography, Box, TextField, Button } from "@mui/material";
 import React, { FormEvent, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Assets/FormStyle.css";
@@ -58,6 +58,7 @@ function SignUpPage() {
       confirmPassword: "",
     },
     validationSchema: validationSchema,
+    // eslint-disable-next-line
     onSubmit: (values) => {
       handleSubmit();
     },
@@ -74,7 +75,10 @@ function SignUpPage() {
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <form
-          onSubmit={(e) => {e.preventDefault(); formik.handleSubmit()}}
+          onSubmit={(e) => {
+            e.preventDefault();
+            formik.handleSubmit();
+          }}
           style={{
             display: "flex",
             flexDirection: "column",
