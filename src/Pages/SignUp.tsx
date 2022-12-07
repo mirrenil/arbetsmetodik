@@ -15,8 +15,7 @@ const validationSchema = yup.object({
 });
 
 function SignUpPage() {
-  const { signup, googleSignIn, currentUser } = useAuth();
-  const navigate = useNavigate();
+  const { signup, googleSignIn } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmationPassword, setConfirmationPassword] = useState<string>("");

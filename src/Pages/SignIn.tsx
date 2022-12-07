@@ -18,7 +18,6 @@ function SignInPage() {
   const { currentUser, login, googleSignIn } = useAuth();
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
-  const navigate = useNavigate();
 
   const handleSignIn = async () => {
     try {
