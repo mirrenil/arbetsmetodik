@@ -31,8 +31,8 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   const getReceiver = async () => {
     const docRef = doc(db, "users", request.toUser);
     const snap = await getDoc(docRef);
-    const userDoc = snap.data()
-  
+    const userDoc = snap.data();
+
     if (userDoc) {
       const user = {
         email: userDoc.email,
@@ -81,15 +81,17 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
       <CardMedia sx={[imgStyle, grid.pic]} component="img" src={camera} />
       <Typography sx={[textContainer, grid.reqFrom]}>
         {isMySentRequest ? (
-          <span style={titleStyle}>
-            Request To:{" "}
-            {receiver?.displayName ? receiver.displayName : "no name found"}
-          </span>
+          <>
+            {" "}
+            <span style={titleStyle}>Request To: </span>
+            <span>{receiver?.displayName}</span>
+          </>
         ) : (
-          <span style={titleStyle}>
-            Request from:{" "}
-            {request?.fromUserName ? request.fromUserName : "no name found"}
-          </span>
+          <>
+            {" "}
+            <span style={titleStyle}>Request from: </span>
+            <span>{request?.fromUserName}</span>
+          </>
         )}
       </Typography>
       <Typography sx={[textContainer, grid.reqFor]}>
