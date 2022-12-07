@@ -281,7 +281,6 @@ const wrapper: SxProps = {
   justifyContent: "center",
   flexDirection: "column",
   alignItems: "center",
-  height: { xs: "80vh", md: "70vh", lg: "70vh", xl: "70vh" },
   marginTop: { xs: "100px", md: "200px", lg: "100px", xl: "100px" },
 };
 const textfieldStyle: SxProps = {
@@ -310,5 +309,6 @@ const buttonBox: SxProps = {
 
 const signButton: SxProps = {
   width: "200px",
+  color: "white",
   background: "#00C4BA",
 };

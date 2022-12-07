@@ -348,6 +348,7 @@ const wrapper: SxProps = {
   height: "100%",
   display: "flex",
   justifyContent: "center",
+  marginBottom: "10rem",
 };
 
 const itemContainer: SxProps = {

@@ -97,7 +97,7 @@ const Header = () => {
                 </Link>
               </Box>
             ) : (
-              <Link to="/profile/:id" style={{ textDecoration: "none" }}>
+              <Link to="/signin" style={{ textDecoration: "none" }}>
                 <AccountCircleIcon
                   sx={{
                     cursor: "pointer",
@@ -129,9 +129,13 @@ const Header = () => {
           data-aos-offset="200"
           data-aos-duration="1000"
         >
-          <Box sx={UlDiv}>
+          <Box>
             <ul
-              style={{ listStyle: "none", marginTop: "4em" }}
+              style={{
+                listStyle: "none",
+                padding: "0 1rem 1rem 1rem",
+                margin: "0",
+              }}
               data-aos="fade-left"
               data-aos-offset="200"
               data-aos-duration="1000"
@@ -335,21 +339,17 @@ const logoImgStyle: SxProps = {};
 
 const mobileMenuList: SxProps = {
   width: "250px",
-  height: "400px",
+  zIndex: "100",
   display: { xs: "flex", md: "none", lg: "none", xl: "none" },
   alignItems: "flex-start",
   justifyContent: "center",
   position: "absolute",
   right: "0",
-  top: "100px",
-  backgroundColor: "rgb(255, 255, 255)",
+  top: "50px",
+  backgroundColor: "rgb(241, 241, 241)",
   borderRadius: "5px",
-  zIndex: "1",
 };
-const UlDiv: SxProps = {
-  backgroundColor: "rgb(255, 255, 255)",
-  mt: "20%",
-};
+
 const navItem: SxProps = {
   marginTop: "1em",
   cursor: "pointer",
