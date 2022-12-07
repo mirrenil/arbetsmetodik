@@ -213,7 +213,6 @@ export default function NewListing() {
                       formik.touched.imageUrl && formik.errors.imageUrl
                     }
                   />
-
                   <Button
                     color="primary"
                     variant="contained"
