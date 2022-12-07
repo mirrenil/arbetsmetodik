@@ -1,13 +1,12 @@
-import { Box, Button, SxProps } from '@mui/material'
+import { Box, Button, SxProps, Typography } from '@mui/material'
 import React from 'react'
-import girlTablet from "../Assets/Images/Group.png"
-import questionBall from "../Assets/Images/questionBall.png"
+import girlTablet from "../Assets/Images/girlIdea.svg"
 import bikeWave from "../Assets/Images/bikeWave.png"
 import waves2 from "../Assets/Images/waves2.png"
 import waves3 from "../Assets/Images/waves3.png"
-import banner from "../Assets/Images/Banner-Mockup.png"
-import handPhone from "../Assets/Images/handPhone.png"
-import manRolling from "../Assets/Images/man.png"
+import banner from "../Assets/Images/Banner.svg"
+import handPhone from "../Assets/Images/handPhone.svg"
+import manRolling from "../Assets/Images/Group.svg"
 import { Link } from 'react-router-dom'
 
 const HowItWorks = () => {
@@ -15,33 +14,32 @@ const HowItWorks = () => {
     <Box sx={pageHeight}>
       <Box sx={imgAndText}>
       <Box sx={firstTextBox}>
-        <Box sx={text1}>
+        <Typography sx={text1}>
         How to rent on Chubby Dog?
-        </Box>
-        <Box sx={text2}>
+        </Typography>
+        <Typography sx={text2}>
         Access items without owning them by renting them from people in your neighbourhood in a few easy steps.
-        </Box>
+        </Typography>
       </Box>
       <Box sx={imgGroup}>
-      <img src={questionBall} style={{ height: "100%", width: "3rem", marginLeft: "6rem", marginBottom: "10px"}} />
-      <img src={girlTablet} style={{ height: "20rem" }} />
+      <img src={girlTablet} style={{ height: "25rem", marginTop: "-4rem" }} />
       </Box>
       </Box>
       <img src={bikeWave} style={{ width: "100%", height: "auto" }} />
       <Box sx={imgAndText}>
       <Box sx={secondTextBox}>
-        <Box sx={text1}>
+        <Typography sx={text1}>
         Sign up and start earning or renting
-        </Box>
-        <Box sx={text2}>
+        </Typography>
+        <Typography sx={text2}>
         Create your account
-        </Box>
-        <Box sx={text2}>
+        </Typography>
+        <Typography sx={text2}>
         or
-        </Box>
-        <Box sx={text2}>
+        </Typography>
+        <Typography sx={text2}>
         Sign in with Gmail
-        </Box>
+        </Typography>
       </Box>
       <Box sx={bannerDisplay}>
         <img src={banner} style={{ height: "30rem", width: "100%", marginTop: "-10rem"}}/>
@@ -53,9 +51,9 @@ const HowItWorks = () => {
       <img src={handPhone} style={{ width: "100%", height: "100%"}}/>
       </Box>
       <Box sx={thirdTextBox}>
-      <Box sx={text1}>
+      <Typography sx={text1}>
         List your item
-      </Box>
+      </Typography>
       <Box sx={text3}>
         <p>
         1. Select your category
@@ -81,17 +79,17 @@ const HowItWorks = () => {
       <img src={waves3} style={{ width: "100%", height: "auto" }} />
       <Box sx={imgAndText2}>
       <Box sx={fourthTextBox}>
-      <Box sx={text4}>
+      <Typography sx={text4}>
         Ready to go!
-      </Box>
-      <Box sx={text5}>
+      </Typography>
+      <Typography sx={text5}>
         It is that easy!
         <Link to="/signin" style={{ textDecoration: "none" }}>
         <Button sx={btnStyle}>
         Sign up today
         </Button>
         </Link>
-      </Box>
+      </Typography>
       </Box>
       <Box sx={manRollingDisplay}>
       <img src={manRolling} style={{ marginLeft: "20rem", marginTop: "-10rem"}} />
@@ -113,7 +111,8 @@ const firstTextBox: SxProps = {
 const text1: SxProps = {
   fontSize:"3rem", 
   maxWidth: "20rem", 
-  letterSpacing: "1px"
+  letterSpacing: "1px",
+  lineHeight: "4rem"
 };
 const text2: SxProps = {
   fontSize:"20px", 
@@ -141,10 +140,9 @@ const text5: SxProps = {
   marginTop: "2rem"
 };
 const imgGroup: SxProps = {
-  display: { xs: "none", md: "flex", lg: "flex", xl: "flex" }, 
-  flexDirection: "column", 
+  display: { xs: "none", md: "flex", lg: "flex", xl: "flex" },
   marginLeft: { xs: "none", md: "10rem", lg: "20rem", xl: "20rem" }, 
-  marginTop: { xs: "none", md: "10rem", lg: "4rem", xl: "4rem" }
+  marginTop: { xs: "none", md: "12rem", }
 };
 const secondTextBox: SxProps = {
   display: "flex",
@@ -174,11 +172,6 @@ const fourthTextBox: SxProps = {
   flexDirection: "column",
   textAlign: { xs: "center", md: "none", lg: "none", xl: "none" },
   marginTop: { xs: "-5rem", md: "-10rem", lg: "-10rem", xl: "-10rem" }
-};
-const btnGroup: SxProps = {
-  display: "flex",
-  justifyContent: "center",
-  marginTop: "2rem"
 };
 const btnStyle: SxProps = {
   marginTop: "2rem",
