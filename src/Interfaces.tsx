@@ -12,7 +12,8 @@ export interface IListItem {
 export interface IRequest {
   accepted: boolean;
   createdAt: Date;
-  fromUser: string;
+  fromUserId: string;
+  fromUserName: string,
   toUser: string;
   itemId: string;
   priceTotal: number;

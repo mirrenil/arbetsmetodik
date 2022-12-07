@@ -1,9 +1,19 @@
 import { Typography, Box, TextField, Button, Alert } from "@mui/material";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
+import * as yup from "yup";
+import { useFormik } from "formik";
+import console from "console";
+
+const validationSchema = yup.object({
+  email: yup.string().required("Please enter your email address"),
+  displayName: yup.string().required("Display name is required"),
+  password: yup.string().required("Please enter a password"),
+  confirmPassword: yup.string().required("Please confirm your password"),
+});
 
 function SignUpPage() {
   const { signup, googleSignIn, currentUser } = useAuth();
@@ -13,20 +23,20 @@ function SignUpPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmationPassword, setConfirmationPassword] = useState<string>("");
-  const [displayName, setDisplayedName] = useState<string>("")
+  const [displayName, setDisplayedName] = useState<string>("");
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: FormEvent) => {
+    e!.preventDefault();
     if (password !== confirmationPassword) {
       return setError("Passwords do not match");
     }
 
     try {
-      setError("");
       setLoading(true);
+      setError("");
       await signup(email, password, displayName);
     } catch (error) {
-      setError("Failed to create an account");
+      console.log("error");
     }
     setLoading(false);
     navigate(`/profile/${currentUser?.uid}`);
@@ -42,6 +52,19 @@ function SignUpPage() {
     }
   };
 
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      displayName,
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      handleSubmit();
+    },
+  });
+
   return (
     <Box
       sx={{
@@ -51,62 +74,90 @@ function SignUpPage() {
       <Typography variant="h4" align="center" mb={5}>
         New to Chubby Dog?
       </Typography>
-      <Box
-        component="form"
-        className="box"
-        sx={{
-          "& > :not(style)": { m: 1, width: "30ch" },
-        }}
-        onSubmit={handleSubmit}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField
-          id="outlined-basic"
-          label="Email"
-          variant="outlined"
-          required
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextField
-          id="outlined-basic"
-          label="Display name"
-          variant="outlined"
-          required
-          onChange={(e) => setDisplayedName(e.target.value)}
-        />
-
-        <TextField
-          id="outlined-basic"
-          label="Password"
-          variant="outlined"
-          type="password"
-          required
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <TextField
-          id="outlined-basic"
-          label="Password confirmation"
-          variant="outlined"
-          type="password"
-          required
-          onChange={(e) => setConfirmationPassword(e.target.value)}
-        />
-        {error && <Alert severity="error">{error}</Alert>}
-        <Button
-          type="submit"
-          color="primary"
-          variant="contained"
-          sx={{ background: "#00C4BA" }}
-          className="buttonStyle"
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <form
+          onSubmit={formik.handleSubmit}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "15rem",
+            gap: "1rem",
+          }}
         >
-          Sign up
-        </Button>
-        <Typography variant="body1" align="center">
-          OR
-        </Typography>
-        <GoogleButton onClick={handleGoogleSignIn} />
+          <TextField
+            id="email"
+            name="email"
+            label="Email"
+            type="text"
+            value={formik.values.email}
+            onChange={(e) => {
+              formik.handleChange(e);
+              setEmail(e.target.value);
+            }}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+          />
+          <TextField
+            id="displayName"
+            label="Display name"
+            name="displayName"
+            type="text"
+            onChange={(e) => {
+              formik.handleChange(e);
+              setDisplayedName(e.target.value);
+            }}
+            value={formik.values.displayName}
+            error={
+              formik.touched.displayName && Boolean(formik.errors.displayName)
+            }
+            helperText={formik.touched.displayName && formik.errors.displayName}
+          />
+          <TextField
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            value={formik.values.password}
+            onChange={(e) => {
+              formik.handleChange(e);
+              setPassword(e.target.value);
+            }}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+          />
+
+          <TextField
+            id="confirmPassword"
+            name="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            value={formik.values.confirmPassword}
+            onChange={(e) => {
+              formik.handleChange(e);
+              setConfirmationPassword(e.target.value);
+            }}
+            error={
+              formik.touched.confirmPassword &&
+              Boolean(formik.errors.confirmPassword)
+            }
+            helperText={
+              formik.touched.confirmPassword && formik.errors.confirmPassword
+            }
+          />
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            sx={{ background: "#00C4BA" }}
+            className="buttonStyle"
+          >
+            Sign up
+          </Button>
+          <Typography variant="body1" align="center">
+            OR
+          </Typography>
+          <GoogleButton onClick={handleGoogleSignIn} />
+        </form>
       </Box>
     </Box>
   );
