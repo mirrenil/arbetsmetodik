@@ -94,6 +94,7 @@ function DetailPage() {
   const handleClose = () => setModalOpen(false);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [item, setItem] = useState<IListItem>();
+  const [reqSent, setReqSent] = useState<boolean>(false);
 
   const formik = useFormik({
     initialValues: {
@@ -121,6 +122,7 @@ function DetailPage() {
       toUser: item?.authorID,
     };
     const docRef = await addDoc(collection(db, "requests"), newRequest);
+    setReqSent(true);
   };
 
   const deleteListing = async (id: string) => {
@@ -390,13 +392,17 @@ function DetailPage() {
           </Box>
           <CardMedia component="img" sx={lessorPic} image={Dave} alt="Dave" />
         </Card>
-        <Button
-          sx={button}
-          variant="contained"
-          onClick={() => handleSendRequest()}
-        >
-          Send a request
-        </Button>
+        {reqSent ? (
+          <Typography variant="h4">Request sent!</Typography>
+        ) : (
+          <Button
+            sx={button}
+            variant="contained"
+            onClick={() => handleSendRequest()}
+          >
+            Send a request
+          </Button>
+        )}
       </Card>
     </Box>
   );
