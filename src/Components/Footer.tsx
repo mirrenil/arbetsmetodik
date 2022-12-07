@@ -22,7 +22,7 @@ const Footer = () => {
           <Link to="/" style={{ textDecoration: "none" }}>
             <Typography sx={textStyleMobile}>About Chubby Dog</Typography>
           </Link>
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/howitworks" style={{ textDecoration: "none" }}>
             <Typography sx={textStyleMobile}>How it works</Typography>
           </Link>
           <Link to="/" style={{ textDecoration: "none" }}>

@@ -140,7 +140,7 @@ const Header = () => {
                   <Typography sx={navItemText}>Sign Up</Typography>
                 </Box>
               </Link>
-              <Link to="/" style={{ textDecoration: "none" }}>
+              <Link to="/howitworks" style={{ textDecoration: "none" }}>
                 <Box sx={navItem} onClick={() => setMenuOpen(false)}>
                   <HelpOutlineIcon sx={navMenuIcon} />
                   <Typography sx={navItemText}>How it works?</Typography>
@@ -227,7 +227,7 @@ const Header = () => {
             </Typography>
           </Link>
           <Box sx={navItemsDesk}>
-            <Link to="/howItWorks" style={{ textDecoration: "none" }}>
+            <Link to="/howitworks" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>How it works</Typography>
             </Link>
 
