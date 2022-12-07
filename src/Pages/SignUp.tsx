@@ -1,5 +1,5 @@
 import { Typography, Box, TextField, Button } from "@mui/material";
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
@@ -21,7 +21,7 @@ function SignUpPage() {
   const passwordConfirmationRef = useRef<null | HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
+  const handleSignup = async () => {
     if (passwordRef.current?.value !== passwordConfirmationRef.current?.value) {
       return console.log("Passwords do not match");
     }
@@ -29,7 +29,7 @@ function SignUpPage() {
       await signup(emailRef, passwordRef);
       navigate("/signin");
     } catch (error) {
-      console.log("error");
+      console.error(error);
     }
   };
 
@@ -50,8 +50,9 @@ function SignUpPage() {
       confirmPassword: "",
     },
     validationSchema: validationSchema,
+    // eslint-disable-next-line
     onSubmit: (values) => {
-      handleSubmit();
+      handleSignup();
     },
   });
 

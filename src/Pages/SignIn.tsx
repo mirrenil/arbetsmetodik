@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useRef } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Typography, Button, SxProps } from "@mui/material";
@@ -17,8 +17,6 @@ const validationSchema = yup.object({
 function SignInPage() {
   const { currentUser, login, setLoginEmail, setLoginPassword, googleSignIn } =
     useAuth();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const emailRef = useRef<null | HTMLInputElement>(null);
   const passwordRef = useRef<null | HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -48,6 +46,7 @@ function SignInPage() {
       password: "",
     },
     validationSchema: validationSchema,
+    // eslint-disable-next-line
     onSubmit: (values) => {
       handleSignIn();
     },
@@ -135,6 +134,7 @@ const wrapper: SxProps = {
   minHeight: "500px",
   display: "flex",
   justifyContent: "center",
+  zIndex: "100",
 };
 
 export default SignInPage;

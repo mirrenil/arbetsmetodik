@@ -112,17 +112,20 @@ export default function NewListing() {
         <>
           {currentUser.displayName ? (
             <>
-              <form onSubmit={formik.handleSubmit}>
-                <h1>Create a listing</h1>
+              <form onSubmit={formik.handleSubmit} style={{ width: "100%", maxWidth: "400px" }}>
+                <h1 style={{textAlign: "center" }}>
+                Create a listing
+                </h1>
                 <Box
                   sx={{
-                    "& > :not(style)": { m: 1, width: "25ch" },
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
+                    justifyContent: "center",
+                    marginTop: "2rem"
                   }}
                 >
-                  <FormControl sx={{ marginBottom: "1rem" }}>
+                  <FormControl sx={textfieldStyle}>
                     <InputLabel id="category">Category</InputLabel>
                     <Select
                       name="category"
@@ -142,7 +145,7 @@ export default function NewListing() {
                     </Select>
                   </FormControl>
                   <TextField
-                    sx={{ marginBottom: "1rem" }}
+                    sx={textfieldStyle}
                     id="title"
                     name="title"
                     label="Title"
@@ -152,7 +155,9 @@ export default function NewListing() {
                     helperText={formik.touched.title && formik.errors.title}
                   />
                   <TextField
-                    sx={{ marginBottom: "1rem" }}
+                    sx={textfieldStyle}
+                    multiline
+                    rows={3}
                     id="description"
                     name="description"
                     label="Description"
@@ -168,7 +173,7 @@ export default function NewListing() {
                     }
                   />
                   <TextField
-                    sx={{ marginBottom: "1rem" }}
+                    sx={textfieldStyle}
                     id="price"
                     name="price"
                     label="Price"
@@ -179,7 +184,7 @@ export default function NewListing() {
                     helperText={formik.touched.price && formik.errors.price}
                   />
                   <TextField
-                    sx={{ marginBottom: "1rem" }}
+                    sx={textfieldStyle}
                     id="location"
                     name="location"
                     label="Location"
@@ -194,7 +199,7 @@ export default function NewListing() {
                     }
                   />
                   <TextField
-                    sx={{ marginBottom: "1rem" }}
+                    sx={textfieldStyle}
                     id="imageUrl"
                     name="imageUrl"
                     label="Image Url"
@@ -211,12 +216,13 @@ export default function NewListing() {
                   <Button
                     color="primary"
                     variant="contained"
-                    fullWidth
+                    sx={{ width: "12rem" }}
                     type="submit"
                     sx={{ color: "white" }}
                   >
                     Submit
                   </Button>
+                
                 </Box>
               </form>
             </>
@@ -227,6 +233,7 @@ export default function NewListing() {
                 listing
               </Typography>
               <Button
+                sx={{ display: "flex", justifyContent: "center" }}
                 variant="contained"
                 sx={{ color: "white" }}
                 onClick={() => navigate("/profile/:id")}
@@ -242,6 +249,7 @@ export default function NewListing() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            justifyContent: "center"
           }}
         >
           <Typography variant="h5">
@@ -257,6 +265,11 @@ const wrapper: SxProps = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  height: "100vh",
-  marginTop: { xs: "100px", md: "250px", lg: "150px", xl: "150px" },
+  height: { xs: "80vh", md: "70vh", lg: "70vh", xl: "70vh" },
+  marginTop: { xs: "100px", md: "200px", lg: "100px", xl: "100px" },
+};
+const textfieldStyle: SxProps = {
+  marginBottom: "1rem",
+  boxSizing: "border-box",
+  width: "100%",
 };
