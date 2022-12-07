@@ -1,5 +1,6 @@
-import { Box, SxProps, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+/* eslint-disable */
+import { Box, SxProps, Typography, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ItemCard from "../Components/ItemCard";
 import { useItems } from "../Contexts/ItemContext";
@@ -9,16 +10,28 @@ function CategoryPage() {
   const { name } = useParams();
   const { items, categories, fetchCategoriesFromDb, fetchItemsFromDb } =
     useItems();
-
+  const [itemsFilterState, setItemsFilterState] = useState<boolean>(true);
   useEffect(() => {
     fetchCategoriesFromDb();
     fetchItemsFromDb();
   }, []);
   const chosenCategory = categories.find((c) => c.title === name);
   const chosenCategoryImg: any = chosenCategory?.img;
-  const CategoryItems = items.filter(
+  const CategoryItems = items?.filter(
     (item) => item.category === chosenCategory?.title
   );
+
+  let itemsToRender = CategoryItems;
+  const showAll = () => {
+    setItemsFilterState(true);
+  };
+  const filteredFreeItems = CategoryItems?.filter((item) => item.price === 0);
+  const filterFree = () => {
+    setItemsFilterState(false);
+  };
+  itemsFilterState
+    ? (itemsToRender = CategoryItems)
+    : (itemsToRender = filteredFreeItems);
 
   return (
     <Box sx={wrapper}>
@@ -32,13 +45,26 @@ function CategoryPage() {
           />
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Typography sx={mainTitle}>
-            {" "}
-            Category / {chosenCategory?.title}{" "}
-          </Typography>
+          <Typography sx={mainTitle}>{chosenCategory?.title}</Typography>
+        </Box>
+        <Box sx={filterBox}>
+          <Button
+            sx={{ mr: 5, width: "150px", color: "white" }}
+            variant="contained"
+            onClick={showAll}
+          >
+            All
+          </Button>
+          <Button
+            sx={{ mr: 0, width: "150px", color: "white" }}
+            variant="contained"
+            onClick={filterFree}
+          >
+            Free
+          </Button>
         </Box>
         <Box sx={itemsContainer}>
-          {CategoryItems?.map((item: IListItem) => (
+          {itemsToRender?.map((item: IListItem) => (
             <Link
               to={`/items/${item.id}`}
               key={item.id}
@@ -64,10 +90,18 @@ const mainTitle: SxProps = {
   marginLeft: 3,
   fontSize: { xs: "20px", md: "30px", lg: "40px", xl: "40px" },
 };
+const filterBox: SxProps = {
+  display: "flex",
+  alignItems: "center",
+  width: "80%",
+  margin: "auto",
+  marginTop: "20px",
+  justifyContent: "center",
+};
 const categoryContainer: SxProps = {
   width: { xs: "100%", md: "90%", lg: "90%", xl: "90%" },
   position: "relative",
-  mt: 1,
+  mt: 10,
 };
 const categoryDiv: SxProps = {
   display: "flex",

@@ -23,7 +23,7 @@ const NotFound = () => {
         variant="contained"
         size="large"
         onClick={homePage}
-        sx={{ marginTop: "2rem" }}
+        sx={{ marginTop: "2rem", color: "white" }}
       >
         Take me home
       </Button>

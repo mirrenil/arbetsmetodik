@@ -1,5 +1,6 @@
+/* eslint-disable */
 import { Box, SxProps, Typography } from "@mui/material";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import AOS from "aos";
 import { useItems } from "../Contexts/ItemContext";
 import { useNavigate } from "react-router-dom";
@@ -7,10 +8,10 @@ import "aos/dist/aos.css";
 
 const CategoryCard = () => {
   const navigate = useNavigate();
-  AOS.init({once: true});
+  AOS.init({ once: true });
   const { categories, fetchCategoriesFromDb, setSelectedCategoryId } =
     useItems();
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState<boolean>(false);
 
   const slicedCategories = showMore ? categories : categories.slice(0, 4);
 
@@ -86,6 +87,31 @@ const CategoryCard = () => {
             />
           </Box>
         ))}
+        <Box
+          sx={categoryDiv}
+          onClick={() => {
+            navigate(`/category/free`);
+          }}
+          data-aos="fade-left"
+          data-aos-offset="200"
+          data-aos-duration="1000"
+        >
+          <Box sx={categoryTitleDiv}>
+            <Typography sx={categoryTitle}>Free</Typography>
+          </Box>
+          <Box
+            component="img"
+            sx={{
+              width: { xs: "150px", md: "150", lg: "200px", xl: "250px" },
+              height: { xs: "100px", md: "100px", lg: "150px", xl: "200px" },
+              borderRadius: "10px",
+            }}
+            alt=""
+            src={
+              "https://quantlabs.net/blog/wp-content/uploads/2021/08/free.jpg"
+            }
+          />
+        </Box>
       </Box>
     </Box>
   );
@@ -124,7 +150,7 @@ const categoryDiv: SxProps = {
 };
 const categoryTitleDiv: SxProps = {
   position: "absolute",
-  top: "50%",
+  top: "57%",
   left: "50%",
   width: { xs: "150px", md: "150px", lg: "200px", xl: "250px" },
   height: "30px",

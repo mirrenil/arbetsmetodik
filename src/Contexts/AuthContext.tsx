@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable */
 import React, {
   createContext,
-  MutableRefObject,
   useContext,
   useEffect,
   useState,
@@ -16,23 +15,21 @@ import {
   getAuth,
   User,
   UserInfo,
+  updateProfile,
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+
 interface AuthContext {
   signup: (
-    email: MutableRefObject<null | HTMLInputElement>,
-    password: MutableRefObject<null | HTMLInputElement>
+    email: string,
+    password: string,
+    displayName: string
   ) => Promise<any>;
-  login: (
-    email: MutableRefObject<null | HTMLInputElement>,
-    password: MutableRefObject<null | HTMLInputElement>
-  ) => Promise<any>;
+  login: (email: string, password: string) => Promise<any>;
   logout: () => void;
   currentUser?: UserInfo;
-  setRegisterEmail: (email: string) => void;
-  setRegisterPassword: (password: string) => void;
-  setLoginEmail: (email: string) => void;
-  setLoginPassword: (password: string) => void;
   googleSignIn: () => void;
 }
 
@@ -41,10 +38,6 @@ export const AuthContext = createContext<AuthContext>({
   login: async () => {},
   logout: () => {},
   currentUser: undefined,
-  setRegisterEmail: () => Promise,
-  setRegisterPassword: () => Promise,
-  setLoginEmail: () => Promise,
-  setLoginPassword: () => Promise,
   googleSignIn: () => Promise,
 });
 
@@ -54,43 +47,59 @@ export function useAuth() {
 
 export function AuthProvider({ children }: any) {
   const [currentUser, setCurrentUser] = useState<User>();
-  const [registerEmail, setRegisterEmail] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setCurrentUser(currentUser as User);
     });
-
     return unsubscribe;
   }, [onAuthStateChanged, auth, currentUser]);
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
-
     signInWithPopup(auth, provider);
+    navigate(`/profile/${auth.currentUser?.uid}`);
   };
 
-  const signup = async () => {
+  const addUserToDb = async (
+    email: string,
+    id: string,
+    displayName: string
+  ) => {
+    await setDoc(doc(db, "users", id), {
+      displayName: displayName,
+      email: email,
+    });
+  };
+
+  const signup = async (
+    email: string,
+    password: string,
+    displayName: string
+  ) => {
     try {
-      const user = await createUserWithEmailAndPassword(
-        auth,
-        registerEmail,
-        registerPassword
-      );
-      setCurrentUser(currentUser);
+      await createUserWithEmailAndPassword(auth, email, password).then(() => {
+        if (auth.currentUser) {
+          updateProfile(auth.currentUser, { displayName: displayName });
+        }
+      });
+      if (auth.currentUser && auth.currentUser.email) {
+        addUserToDb(auth.currentUser.email, auth.currentUser.uid, displayName);
+      }
+      login(email, password);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const login = async () => {
+  const login = async (email: string, password: string) => {
     try {
-      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      await signInWithEmailAndPassword(auth, email, password);
+
       if (auth.currentUser) {
         setCurrentUser(auth.currentUser);
+        navigate(`/profile/${auth.currentUser?.uid}`);
       } else {
         setCurrentUser(undefined);
       }
@@ -117,10 +126,6 @@ export function AuthProvider({ children }: any) {
         login,
         logout,
         currentUser,
-        setRegisterEmail,
-        setRegisterPassword,
-        setLoginEmail,
-        setLoginPassword,
         googleSignIn,
       }}
     >
