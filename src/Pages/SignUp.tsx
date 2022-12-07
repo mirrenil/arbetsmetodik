@@ -1,6 +1,5 @@
 import { Typography, Box, TextField, Button } from "@mui/material";
-import React, { FormEvent, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { FormEvent, useState } from "react";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
@@ -9,27 +8,27 @@ import { useFormik } from "formik";
 
 const validationSchema = yup.object({
   email: yup.string().required("Please enter your email address"),
+  displayName: yup.string().required("Display name is required"),
   password: yup.string().required("Please enter a password"),
   confirmPassword: yup.string().required("Please confirm your password"),
 });
 
 function SignUpPage() {
-  const { signup, setRegisterEmail, setRegisterPassword, googleSignIn } =
-    useAuth();
-  const emailRef = useRef<null | HTMLInputElement>(null);
-  const passwordRef = useRef<null | HTMLInputElement>(null);
-  const passwordConfirmationRef = useRef<null | HTMLInputElement>(null);
-  const navigate = useNavigate();
+  const { signup, googleSignIn } = useAuth();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmationPassword, setConfirmationPassword] = useState<string>("");
+  const [displayName, setDisplayedName] = useState<string>("");
 
-  const handleSignup = async () => {
-    if (passwordRef.current?.value !== passwordConfirmationRef.current?.value) {
-      return console.log("Passwords do not match");
+  const handleSignUp = async () => {
+    if (password !== confirmationPassword) {
+      return alert("Passwords do not match");
     }
+
     try {
-      await signup(emailRef, passwordRef);
-      navigate("/signin");
+      await signup(email, password, displayName);
     } catch (error) {
-      console.error(error);
+      console.log("error");
     }
   };
 
@@ -37,7 +36,6 @@ function SignUpPage() {
     e.preventDefault();
     try {
       googleSignIn();
-      navigate("/profile/`$currentUser.uid`");
     } catch (error) {
       console.error(error);
     }
@@ -46,13 +44,14 @@ function SignUpPage() {
   const formik = useFormik({
     initialValues: {
       email: "",
+      displayName,
       password: "",
       confirmPassword: "",
     },
     validationSchema: validationSchema,
     // eslint-disable-next-line
     onSubmit: (values) => {
-      handleSignup();
+      handleSignUp();
     },
   });
 
@@ -67,7 +66,10 @@ function SignUpPage() {
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <form
-          onSubmit={formik.handleSubmit}
+          onSubmit={(e) => {
+            e.preventDefault();
+            formik.handleSubmit();
+          }}
           style={{
             display: "flex",
             flexDirection: "column",
@@ -83,11 +85,25 @@ function SignUpPage() {
             value={formik.values.email}
             onChange={(e) => {
               formik.handleChange(e);
-              setRegisterEmail(e.target.value);
+              setEmail(e.target.value);
             }}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
-            ref={emailRef}
+          />
+          <TextField
+            id="displayName"
+            label="Display name"
+            name="displayName"
+            type="text"
+            onChange={(e) => {
+              formik.handleChange(e);
+              setDisplayedName(e.target.value);
+            }}
+            value={formik.values.displayName}
+            error={
+              formik.touched.displayName && Boolean(formik.errors.displayName)
+            }
+            helperText={formik.touched.displayName && formik.errors.displayName}
           />
           <TextField
             id="password"
@@ -97,11 +113,10 @@ function SignUpPage() {
             value={formik.values.password}
             onChange={(e) => {
               formik.handleChange(e);
-              setRegisterPassword(e.target.value);
+              setPassword(e.target.value);
             }}
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
-            ref={passwordRef}
           />
 
           <TextField
@@ -110,7 +125,10 @@ function SignUpPage() {
             label="Confirm Password"
             type="password"
             value={formik.values.confirmPassword}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              formik.handleChange(e);
+              setConfirmationPassword(e.target.value);
+            }}
             error={
               formik.touched.confirmPassword &&
               Boolean(formik.errors.confirmPassword)

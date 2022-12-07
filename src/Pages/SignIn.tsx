@@ -1,9 +1,9 @@
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Typography, Button, SxProps } from "@mui/material";
 import "../Assets/FormStyle.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
 import * as yup from "yup";
@@ -15,16 +15,13 @@ const validationSchema = yup.object({
 });
 
 function SignInPage() {
-  const { currentUser, login, setLoginEmail, setLoginPassword, googleSignIn } =
-    useAuth();
-  const emailRef = useRef<null | HTMLInputElement>(null);
-  const passwordRef = useRef<null | HTMLInputElement>(null);
-  const navigate = useNavigate();
+  const { currentUser, login, googleSignIn } = useAuth();
+  const [loginEmail, setLoginEmail] = useState<string>("");
+  const [loginPassword, setLoginPassword] = useState<string>("");
 
   const handleSignIn = async () => {
     try {
-      await login(emailRef, passwordRef);
-      navigate("/profile/`$currentUser.uid`");
+      await login(loginEmail, loginPassword);
     } catch (error) {
       console.error("login failed" + error);
     }
@@ -34,7 +31,6 @@ function SignInPage() {
     e.preventDefault();
     try {
       googleSignIn();
-      navigate("/profile/`$currentUser.uid`");
     } catch (error) {
       console.error(error);
     }
@@ -82,7 +78,6 @@ function SignInPage() {
                 }}
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
-                ref={emailRef}
               />
               <TextField
                 id="password"
@@ -98,7 +93,6 @@ function SignInPage() {
                   formik.touched.password && Boolean(formik.errors.password)
                 }
                 helperText={formik.touched.password && formik.errors.password}
-                ref={passwordRef}
               />
               <Button
                 color="primary"
