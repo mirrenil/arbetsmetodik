@@ -77,7 +77,6 @@ function ProfilePage() {
               alt="profile picture"
             />
           )}
-          {/* {currentUser.displayName ? ( */}
             <>
               <Typography
                 variant="h2"
@@ -100,24 +99,6 @@ function ProfilePage() {
                 <SettingsIcon />
               </button>
             </>
-          {/* ) : ( */}
-            {/* <>
-              <Typography variant="h5" style={{ marginTop: "1rem" }}>
-                Welcome to Chubby Dog! To get started, please set your username.
-              </Typography>
-              <Button
-                variant="contained"
-                onClick={handleOpen}
-                style={{
-                  cursor: "pointer",
-                  marginTop: "1rem",
-                  fontSize: "1rem",
-                }}
-              >
-                Press here to choose a username
-              </Button>
-            </> */}
-          {/* )} */}
           <Modal open={modalOpen} onClose={handleClose}>
             <Box sx={modalStyle}>
               <form onSubmit={handleNameChange}>
