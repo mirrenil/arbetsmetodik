@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Typography, Button, SxProps } from "@mui/material";
 import "../Assets/FormStyle.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
 import * as yup from "yup";

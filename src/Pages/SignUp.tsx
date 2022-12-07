@@ -1,6 +1,5 @@
 import { Typography, Box, TextField, Button } from "@mui/material";
 import React, { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
