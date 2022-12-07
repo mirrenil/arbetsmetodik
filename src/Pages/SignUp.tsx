@@ -6,7 +6,6 @@ import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import console from "console";
 
 const validationSchema = yup.object({
   email: yup.string().required("Please enter your email address"),
