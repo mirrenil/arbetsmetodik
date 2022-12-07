@@ -21,7 +21,7 @@ const FreeRentCategory = () => {
         />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Typography sx={mainTitle}> Category / Free to rent</Typography>
+        <Typography sx={mainTitle}> Free</Typography>
       </Box>
       <Box>
         <Box sx={itemsContainer}>
