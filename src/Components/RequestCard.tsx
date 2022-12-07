@@ -78,7 +78,7 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         gridTemplateRows: "repeat(4, 1fr)",
       }}
     >
-      <CardMedia sx={[imgStyle, grid.pic]} component="img" src={camera} />
+      <CardMedia sx={[imgStyle, grid.pic]} component="img" src={item?.image} />
       <Typography sx={[textContainer, grid.reqFrom]}>
         {isMySentRequest ? (
           <>
@@ -156,9 +156,9 @@ const grid = {
 };
 
 const imgStyle = {
-  height: "auto",
+  height: "5rem",
   width: "auto",
-  objectFit: "scale-down",
+  objectFit: "contain",
   marginRight: "1rem",
 };
 
