@@ -419,6 +419,7 @@ const itemContainer: SxProps = {
   width: { xs: "80%", md: "50%", lg: "50%", xl: "50%" },
   height: "50%",
   boxShadow: "none",
+  zIndex: -1,
 };
 
 const imageContainer: SxProps = {
@@ -483,6 +484,7 @@ const button: SxProps = {
   marginBottom: "2rem",
   width: "40%",
   height: "15%",
+  color: "white",
 };
 
 const crudItems = {
