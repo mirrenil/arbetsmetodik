@@ -45,10 +45,7 @@ function CategoryPage() {
           />
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Typography sx={mainTitle}>
-            {" "}
-            Category / {chosenCategory?.title}{" "}
-          </Typography>
+          <Typography sx={mainTitle}>{chosenCategory?.title}</Typography>
         </Box>
         <Box sx={filterBox}>
           <Button
@@ -59,7 +56,7 @@ function CategoryPage() {
             All
           </Button>
           <Button
-            sx={{ mr: 5, width: "150px", color: "white" }}
+            sx={{ mr: 0, width: "150px", color: "white" }}
             variant="contained"
             onClick={filterFree}
           >
@@ -98,12 +95,13 @@ const filterBox: SxProps = {
   alignItems: "center",
   width: "80%",
   margin: "auto",
+  marginTop: "20px",
   justifyContent: "center",
 };
 const categoryContainer: SxProps = {
   width: { xs: "100%", md: "90%", lg: "90%", xl: "90%" },
   position: "relative",
-  mt: 1,
+  mt: 10,
 };
 const categoryDiv: SxProps = {
   display: "flex",

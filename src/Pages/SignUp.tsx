@@ -142,7 +142,7 @@ function SignUpPage() {
             type="submit"
             color="primary"
             variant="contained"
-            sx={{ background: "#00C4BA" }}
+            sx={{ background: "#00C4BA", color: "white" }}
             className="buttonStyle"
           >
             Sign up
@@ -150,7 +150,11 @@ function SignUpPage() {
           <Typography variant="body1" align="center">
             OR
           </Typography>
-          <GoogleButton onClick={handleGoogleSignIn} />
+          <GoogleButton
+            label="Sign up with Google"
+            type="light"
+            onClick={handleGoogleSignIn}
+          />
         </form>
       </Box>
     </Box>

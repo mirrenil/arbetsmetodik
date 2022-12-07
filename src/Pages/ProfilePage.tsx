@@ -66,7 +66,12 @@ function ProfilePage() {
         <>
           {userImg ? (
             <img
-              style={{ width: "250px", height: "250px", borderRadius: "50%" }}
+              style={{
+                width: "250px",
+                height: "250px",
+                borderRadius: "50%",
+                marginTop: "3rem",
+              }}
               src={userImg}
               alt="profile picture"
             />
@@ -114,7 +119,11 @@ function ProfilePage() {
                     required
                     onChange={(e) => setUsername(e.target.value)}
                   />
-                  <Button variant="contained" type="submit">
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{ color: "white" }}
+                  >
                     Update
                   </Button>
                 </DialogContent>
