@@ -24,8 +24,7 @@ function SignUpPage() {
   const [confirmationPassword, setConfirmationPassword] = useState<string>("");
   const [displayName, setDisplayedName] = useState<string>("");
 
-  const handleSubmit = async (e?: FormEvent) => {
-    e!.preventDefault();
+  const handleSubmit = async () => {
     if (password !== confirmationPassword) {
       return setError("Passwords do not match");
     }
@@ -75,7 +74,7 @@ function SignUpPage() {
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <form
-          onSubmit={formik.handleSubmit}
+          onSubmit={(e) => {e.preventDefault(); formik.handleSubmit()}}
           style={{
             display: "flex",
             flexDirection: "column",
