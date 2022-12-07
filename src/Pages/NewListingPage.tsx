@@ -112,17 +112,18 @@ export default function NewListing() {
         <>
           {currentUser.displayName ? (
             <>
-              <form onSubmit={formik.handleSubmit} style={{ width: "100%", maxWidth: "400px" }}>
-                <h1 style={{textAlign: "center" }}>
-                Create a listing
-                </h1>
+              <form
+                onSubmit={formik.handleSubmit}
+                style={{ width: "100%", maxWidth: "400px" }}
+              >
+                <h1 style={{ textAlign: "center" }}>Create a listing</h1>
                 <Box
                   sx={{
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    marginTop: "2rem"
+                    marginTop: "2rem",
                   }}
                 >
                   <FormControl sx={textfieldStyle}>
@@ -216,13 +217,11 @@ export default function NewListing() {
                   <Button
                     color="primary"
                     variant="contained"
-                    sx={{ width: "12rem" }}
+                    sx={{ width: "12rem", color: "white" }}
                     type="submit"
-                    sx={{ color: "white" }}
                   >
                     Submit
                   </Button>
-                
                 </Box>
               </form>
             </>
@@ -233,9 +232,12 @@ export default function NewListing() {
                 listing
               </Typography>
               <Button
-                sx={{ display: "flex", justifyContent: "center" }}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  color: "white",
+                }}
                 variant="contained"
-                sx={{ color: "white" }}
                 onClick={() => navigate("/profile/:id")}
               >
                 Update profile
@@ -249,7 +251,7 @@ export default function NewListing() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <Typography variant="h5">
