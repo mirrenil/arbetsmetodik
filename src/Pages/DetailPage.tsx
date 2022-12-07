@@ -218,6 +218,7 @@ function DetailPage() {
                         <InputLabel id="category">Category</InputLabel>
                         <Select
                           id="category"
+                          name="category"
                           value={formik.values.category}
                           label="Category"
                           onChange={formik.handleChange}
@@ -234,6 +235,7 @@ function DetailPage() {
                         </Select>
                         <TextField
                           id="title"
+                          name="title"
                           autoFocus
                           margin="normal"
                           type="text"
@@ -249,6 +251,7 @@ function DetailPage() {
                         />
                         <TextField
                           id="description"
+                          name="description"
                           autoFocus
                           margin="normal"
                           type="text"
@@ -265,6 +268,8 @@ function DetailPage() {
                           }
                         />
                         <TextField
+                          id="price"
+                          name="price"
                           autoFocus
                           margin="normal"
                           type="number"
@@ -279,6 +284,8 @@ function DetailPage() {
                           }
                         />
                         <TextField
+                          id="location"
+                          name="location"
                           autoFocus
                           margin="normal"
                           type="text"
@@ -294,6 +301,8 @@ function DetailPage() {
                           }
                         />
                         <TextField
+                          id="image"
+                          name="image"
                           autoFocus
                           margin="normal"
                           type="text"
