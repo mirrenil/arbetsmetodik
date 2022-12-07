@@ -56,11 +56,11 @@ const theme = createTheme({
 function App() {
   return (
     <div>
-      <AuthProvider>
-        <UserProvider>
-          <ItemsContextProvide>
-            <ThemeProvider theme={theme}>
-              <BrowserRouter>
+      <BrowserRouter>
+        <AuthProvider>
+          <UserProvider>
+            <ItemsContextProvide>
+              <ThemeProvider theme={theme}>
                 <Routes>
                   <Route path="/" element={<Layout />}>
                     <Route index element={<StartPage />} />
@@ -79,11 +79,11 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                   </Route>
                 </Routes>
-              </BrowserRouter>
-            </ThemeProvider>
-          </ItemsContextProvide>
-        </UserProvider>
-      </AuthProvider>
+              </ThemeProvider>
+            </ItemsContextProvide>
+          </UserProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </div>
   );
 }

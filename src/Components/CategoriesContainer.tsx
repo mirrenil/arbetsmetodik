@@ -5,14 +5,13 @@ import AOS from "aos";
 import { useItems } from "../Contexts/ItemContext";
 import { useNavigate } from "react-router-dom";
 import "aos/dist/aos.css";
-import freePriceImage from "../Assets/Images/free.jpg";
 
 const CategoryCard = () => {
   const navigate = useNavigate();
   AOS.init({ once: true });
   const { categories, fetchCategoriesFromDb, setSelectedCategoryId } =
     useItems();
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState<boolean>(false);
 
   const slicedCategories = showMore ? categories : categories.slice(0, 4);
 
@@ -108,7 +107,9 @@ const CategoryCard = () => {
               borderRadius: "10px",
             }}
             alt=""
-            src={freePriceImage}
+            src={
+              "https://quantlabs.net/blog/wp-content/uploads/2021/08/free.jpg"
+            }
           />
         </Box>
       </Box>
@@ -149,7 +150,7 @@ const categoryDiv: SxProps = {
 };
 const categoryTitleDiv: SxProps = {
   position: "absolute",
-  top: "50%",
+  top: "57%",
   left: "50%",
   width: { xs: "150px", md: "150px", lg: "200px", xl: "250px" },
   height: "30px",

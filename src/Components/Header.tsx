@@ -142,12 +142,6 @@ const Header = () => {
               data-aos-offset="200"
               data-aos-duration="1000"
             >
-              <Link to="/signup" style={{ textDecoration: "none" }}>
-                <Box sx={navItem} onClick={() => setMenuOpen(false)}>
-                  <SensorOccupiedIcon sx={navMenuIcon} />
-                  <Typography sx={navItemText}>Sign Up</Typography>
-                </Box>
-              </Link>
               <Link to="/" style={{ textDecoration: "none" }}>
                 <Box sx={navItem} onClick={() => setMenuOpen(false)}>
                   <HelpOutlineIcon sx={navMenuIcon} />
@@ -195,12 +189,20 @@ const Header = () => {
                   </Box>
                 </>
               ) : (
-                <Link to="/signin" style={{ textDecoration: "none" }}>
-                  <Box sx={navItem} onClick={() => setMenuOpen(false)}>
-                    <LoginIcon sx={navMenuIcon} />
-                    <Typography sx={navItemText}>Login</Typography>
-                  </Box>
-                </Link>
+                <>
+                  <Link to="/signin" style={{ textDecoration: "none" }}>
+                    <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                      <LoginIcon sx={navMenuIcon} />
+                      <Typography sx={navItemText}>Login</Typography>
+                    </Box>
+                  </Link>
+                  <Link to="/signup" style={{ textDecoration: "none" }}>
+                    <Box sx={navItem} onClick={() => setMenuOpen(false)}>
+                      <SensorOccupiedIcon sx={navMenuIcon} />
+                      <Typography sx={navItemText}>Sign Up</Typography>
+                    </Box>
+                  </Link>
+                </>
               )}
             </ul>
           </Box>

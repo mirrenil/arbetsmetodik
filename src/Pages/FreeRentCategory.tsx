@@ -4,7 +4,6 @@ import { IListItem } from "../Interfaces";
 import { useItems } from "../Contexts/ItemContext";
 import ItemCard from "../Components/ItemCard";
 import { Link } from "react-router-dom";
-import freePriceImage from "../Assets/Images/free.jpg";
 
 const FreeRentCategory = () => {
   const { fetchItemsFromDb, items } = useItems();
@@ -18,11 +17,11 @@ const FreeRentCategory = () => {
           component="img"
           sx={categoryImg}
           alt="free Price Image"
-          src={freePriceImage}
+          src={"https://quantlabs.net/blog/wp-content/uploads/2021/08/free.jpg"}
         />
       </Box>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Typography sx={mainTitle}> Category / Free to rent</Typography>
+        <Typography sx={mainTitle}> Free</Typography>
       </Box>
       <Box>
         <Box sx={itemsContainer}>

@@ -1,9 +1,9 @@
-import React, { FormEvent, useRef } from "react";
+import React, { FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Typography, Button, SxProps } from "@mui/material";
 import "../Assets/FormStyle.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,19 +17,13 @@ const validationSchema = yup.object({
 });
 
 function SignInPage() {
-  const { currentUser, login, setLoginEmail, setLoginPassword, googleSignIn } =
-    useAuth();
-  const emailRef = useRef<null | HTMLInputElement>(null);
-  const passwordRef = useRef<null | HTMLInputElement>(null);
-  const navigate = useNavigate();
+  const { currentUser, login, googleSignIn } = useAuth();
+  const [loginEmail, setLoginEmail] = useState<string>("");
+  const [loginPassword, setLoginPassword] = useState<string>("");
 
   const handleSignIn = async () => {
     try {
-      await login(emailRef, passwordRef);
-      navigate("/profile/:id");
-      toast.success("You are now signed in", {
-        autoClose: 1000,
-      });
+      await login(loginEmail, loginPassword);
     } catch (error) {
       console.error("login failed" + error);
       toast.warn("Failed to sign in", {
@@ -43,11 +37,6 @@ function SignInPage() {
     e.preventDefault();
     try {
       googleSignIn();
-      navigate("/");
-      toast.success("You are now signed in", {
-        autoClose: 1000,
-        theme: "colored",
-      });
     } catch (error) {
       console.error(error);
       toast.warn("Failed to sign in", {
@@ -62,7 +51,7 @@ function SignInPage() {
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: () => {
+    onSubmit: (values) => {
       handleSignIn();
     },
   });
@@ -102,7 +91,6 @@ function SignInPage() {
                 }}
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
-                ref={emailRef}
               />
               <TextField
                 id="password"
@@ -118,7 +106,6 @@ function SignInPage() {
                   formik.touched.password && Boolean(formik.errors.password)
                 }
                 helperText={formik.touched.password && formik.errors.password}
-                ref={passwordRef}
               />
               <Button
                 color="primary"
@@ -132,10 +119,7 @@ function SignInPage() {
                 OR
               </Typography>
               <GoogleButton onClick={handleGoogleSignIn} />
-              <Link
-                to="/signup"
-                style={{ textDecoration: "none", cursor: "pointer" }}
-              >
+              <Link to="/signup">
                 <Typography>
                   Don&apos;t have an account? Sign up here!
                 </Typography>
