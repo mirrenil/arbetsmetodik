@@ -52,10 +52,6 @@ const validationSchema = yup.object({
 
 const categories = [
   {
-    value: "Please choose a category",
-    title: "Please choose a category",
-  },
-  {
     value: "Electronics",
     title: "Electronics",
   },
@@ -101,12 +97,12 @@ function DetailPage() {
 
   const formik = useFormik({
     initialValues: {
-      category: item?.category,
-      title: item?.title,
-      price: item?.price,
-      description: item?.description,
-      location: item?.location,
-      image: item?.image,
+      category: "",
+      title: "",
+      price: "",
+      description: "",
+      location: "",
+      image: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -221,7 +217,8 @@ function DetailPage() {
                         </DialogContentText>
                         <InputLabel id="category">Category</InputLabel>
                         <Select
-                          value={""}
+                          id="category"
+                          value={formik.values.category}
                           label="Category"
                           onChange={formik.handleChange}
                           error={
@@ -236,6 +233,7 @@ function DetailPage() {
                           ))}
                         </Select>
                         <TextField
+                          id="title"
                           autoFocus
                           margin="normal"
                           type="text"
@@ -250,6 +248,7 @@ function DetailPage() {
                           }
                         />
                         <TextField
+                          id="description"
                           autoFocus
                           margin="normal"
                           type="text"
