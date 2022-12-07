@@ -20,6 +20,7 @@ import {
 } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 interface AuthContext {
   signup: (
@@ -47,6 +48,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }: any) {
   const [currentUser, setCurrentUser] = useState<User>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -58,6 +60,7 @@ export function AuthProvider({ children }: any) {
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider);
+    navigate(`/profile/${auth.currentUser?.uid}`);
   };
 
   const addUserToDb = async (
@@ -78,8 +81,8 @@ export function AuthProvider({ children }: any) {
   ) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password).then(() => {
-        if(auth.currentUser) {
-         updateProfile(auth.currentUser, {displayName: displayName})
+        if (auth.currentUser) {
+          updateProfile(auth.currentUser, { displayName: displayName });
         }
       });
       if (auth.currentUser && auth.currentUser.email) {
@@ -97,6 +100,7 @@ export function AuthProvider({ children }: any) {
 
       if (auth.currentUser) {
         setCurrentUser(auth.currentUser);
+        navigate(`/profile/${auth.currentUser?.uid}`);
       } else {
         setCurrentUser(undefined);
       }

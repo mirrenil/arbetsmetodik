@@ -32,14 +32,12 @@ function SignUpPage() {
     } catch (error) {
       console.log("error");
     }
-    navigate(`/profile/${currentUser?.uid}`);
   };
 
   const handleGoogleSignIn = (e: FormEvent) => {
     e.preventDefault();
     try {
       googleSignIn();
-      navigate(`/profile/${currentUser?.uid}`);
     } catch (error) {
       console.error(error);
     }
