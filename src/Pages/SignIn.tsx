@@ -25,7 +25,7 @@ function SignInPage() {
   const handleSignIn = async () => {
     try {
       await login(loginEmail, loginPassword);
-      navigate("/profile/:id");
+      navigate(`/profile/${currentUser?.uid}`);
     } catch (error) {
       console.error("login failed" + error);
     }
@@ -35,7 +35,7 @@ function SignInPage() {
     e.preventDefault();
     try {
       googleSignIn();
-      navigate("/");
+      navigate(`/profile/${currentUser?.uid}`);
     } catch (error) {
       console.error(error);
     }
