@@ -33,8 +33,28 @@ import Dave from "../Assets/Images/Dave.png";
 import { useAuth } from "../Contexts/AuthContext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Clear, Edit } from "@mui/icons-material";
+import * as yup from "yup";
+import { useFormik } from "formik";
+
+const validationSchema = yup.object({
+  category: yup.string().required("Category is required"),
+  title: yup.string().required("Please choose a title"),
+  price: yup.number().required("Please set a price in numbers"),
+  description: yup.string().required("Please provide a description"),
+  location: yup
+    .string()
+    .required("Please provide a district in Gothenburg (ex. Hisingen)"),
+  image: yup
+    .string()
+    .min(8, "The Image URL should be of minimum 8 characters length")
+    .required("Example: https://minhast.se/uploads/GettyImages.jpg"),
+});
 
 const categories = [
+  {
+    value: "Please choose a category",
+    title: "Please choose a category",
+  },
   {
     value: "Electronics",
     title: "Electronics",
@@ -78,12 +98,21 @@ function DetailPage() {
   const handleClose = () => setModalOpen(false);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [item, setItem] = useState<IListItem>();
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [price, setPrice] = useState<string>("");
-  const [location, setLocation] = useState<string>("");
-  const [image, setImage] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
+
+  const formik = useFormik({
+    initialValues: {
+      category: item?.category,
+      title: item?.title,
+      price: item?.price,
+      description: item?.description,
+      location: item?.location,
+      image: item?.image,
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      updateListing();
+    },
+  });
 
   const handleSendRequest = async (e?: Event) => {
     const newRequest = {
@@ -108,12 +137,12 @@ function DetailPage() {
     if (id) {
       const itemToUpdate = doc(db, "listings", id);
       await updateDoc(itemToUpdate, {
-        title: title,
-        description: description,
-        price: price,
-        location: location,
-        image: image,
-        category: category,
+        title: formik.values.title,
+        description: formik.values.description,
+        price: formik.values.price,
+        location: formik.values.location,
+        image: formik.values.image,
+        category: formik.values.category,
       });
       handleClose();
     } else {
@@ -126,7 +155,7 @@ function DetailPage() {
         </Box>
       );
     }
-  }, [id, title, description, price, location, image, category]);
+  }, [id, formik.values]);
 
   useEffect(() => {
     async function setDocumentData() {
@@ -185,22 +214,20 @@ function DetailPage() {
                 </Box>
                 <Modal open={modalOpen} onClose={handleClose}>
                   <Box sx={modalStyle}>
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        updateListing();
-                      }}
-                    >
+                    <form onSubmit={formik.handleSubmit}>
                       <DialogContent sx={crudModal}>
-                        <DialogContentText>
+                        <DialogContentText sx={{ fontSize: "2rem" }}>
                           Update your listing
                         </DialogContentText>
                         <InputLabel id="category">Category</InputLabel>
                         <Select
-                          name="categories"
-                          value={category}
+                          value={""}
                           label="Category"
-                          onChange={(e) => setCategory(e.target.value)}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.category &&
+                            Boolean(formik.errors.category)
+                          }
                         >
                           {categories.map((chooseCategory, index) => (
                             <MenuItem key={index} value={chooseCategory.title}>
@@ -213,51 +240,77 @@ function DetailPage() {
                           margin="normal"
                           type="text"
                           label="Title"
-                          variant="standard"
-                          value={title || ""}
-                          onChange={(e) => setTitle(e.target.value)}
+                          value={formik.values.title}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.title && Boolean(formik.errors.title)
+                          }
+                          helperText={
+                            formik.touched.title && formik.errors.title
+                          }
                         />
                         <TextField
                           autoFocus
                           margin="normal"
                           type="text"
                           label="Description"
-                          variant="standard"
-                          value={description || ""}
-                          onChange={(e) => setDescription(e.target.value)}
+                          value={formik.values.description}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.description &&
+                            Boolean(formik.errors.description)
+                          }
+                          helperText={
+                            formik.touched.description &&
+                            formik.errors.description
+                          }
                         />
                         <TextField
                           autoFocus
                           margin="normal"
                           type="number"
                           label="Price"
-                          variant="standard"
-                          value={price || ""}
-                          onChange={(e) => setPrice(e.target.value)}
+                          value={formik.values.price}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.price && Boolean(formik.errors.price)
+                          }
+                          helperText={
+                            formik.touched.price && formik.errors.price
+                          }
                         />
                         <TextField
                           autoFocus
                           margin="normal"
                           type="text"
                           label="Location"
-                          variant="standard"
-                          value={location || ""}
-                          onChange={(e) => setLocation(e.target.value)}
+                          value={formik.values.location}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.location &&
+                            Boolean(formik.errors.location)
+                          }
+                          helperText={
+                            formik.touched.location && formik.errors.location
+                          }
                         />
                         <TextField
                           autoFocus
                           margin="normal"
                           type="text"
                           label="Image"
-                          variant="standard"
-                          value={image || ""}
-                          onChange={(e) => setImage(e.target.value)}
+                          value={formik.values.image}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.image && Boolean(formik.errors.image)
+                          }
+                          helperText={
+                            formik.touched.image && formik.errors.image
+                          }
                         />
                         <Button
                           variant="contained"
-                          onClick={() => {
-                            updateListing();
-                          }}
+                          type="submit"
                           sx={{ marginTop: "1.5rem" }}
                         >
                           Update Listing
