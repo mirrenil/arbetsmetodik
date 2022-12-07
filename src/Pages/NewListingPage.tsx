@@ -114,7 +114,7 @@ export default function NewListing() {
             <>
               <form
                 onSubmit={formik.handleSubmit}
-                style={{ width: "100%", maxWidth: "400px" }}
+                style={{ width: "95%", maxWidth: "400px" }}
               >
                 <h1 style={{ textAlign: "center" }}>Create a listing</h1>
                 <Box
@@ -281,6 +281,8 @@ const wrapper: SxProps = {
   justifyContent: "center",
   flexDirection: "column",
   alignItems: "center",
+  position: "relative",
+  zIndex: "100",
   marginTop: { xs: "100px", md: "200px", lg: "100px", xl: "100px" },
 };
 const textfieldStyle: SxProps = {

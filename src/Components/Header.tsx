@@ -16,7 +16,7 @@ import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import backGroundImg from "../Assets/Images/DesktopHeaderBackground.png";
 import logoImg from "../Assets/Images/logo.png";
 import { useAuth } from "../Contexts/AuthContext";
-import MobileHeader from "../Assets/Images/mobileHeader.png";
+import MobileHeader from "../Assets/Images/mobileHeader.svg";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -43,7 +43,6 @@ const Header = () => {
           src={MobileHeader}
           alt="mobile header background"
           sx={{
-            height: "170px",
             width: "900px",
           }}
         />
@@ -314,7 +313,7 @@ const navBoxInnerMobile: SxProps = {
 const headerBackground: SxProps = {
   display: { xs: "block", md: "none", lg: "none", xl: "none" },
   position: "absolute",
-  top: "-5px",
+  top: "-20px",
   width: "100%",
   zIndex: "2",
   overflowX: "hidden",
