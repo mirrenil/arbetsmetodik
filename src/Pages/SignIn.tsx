@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef } from "react";
+import React, { FormEvent, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Typography, Button, SxProps } from "@mui/material";
@@ -24,7 +24,7 @@ function SignInPage() {
   const handleSignIn = async () => {
     try {
       await login(emailRef, passwordRef);
-      navigate("/profile/:id");
+      navigate("/profile/`$currentUser.uid`");
     } catch (error) {
       console.error("login failed" + error);
     }
@@ -34,7 +34,7 @@ function SignInPage() {
     e.preventDefault();
     try {
       googleSignIn();
-      navigate("/");
+      navigate("/profile/`$currentUser.uid`");
     } catch (error) {
       console.error(error);
     }
@@ -46,7 +46,6 @@ function SignInPage() {
       password: "",
     },
     validationSchema: validationSchema,
-    // eslint-disable-next-line
     onSubmit: (values) => {
       handleSignIn();
     },
@@ -104,7 +103,7 @@ function SignInPage() {
               <Button
                 color="primary"
                 variant="contained"
-                sx={{ background: "#00C4BA", color: "white" }}
+                sx={{ background: "#00C4BA" }}
                 type="submit"
               >
                 Sign in
@@ -112,7 +111,7 @@ function SignInPage() {
               <Typography variant="body1" align="center">
                 OR
               </Typography>
-              <GoogleButton type="light" onClick={handleGoogleSignIn} />
+              <GoogleButton onClick={handleGoogleSignIn} />
               <Link to="/signup">
                 <Typography>
                   Don&apos;t have an account? Sign up here!
@@ -134,7 +133,6 @@ const wrapper: SxProps = {
   minHeight: "500px",
   display: "flex",
   justifyContent: "center",
-  zIndex: "100",
 };
 
 export default SignInPage;

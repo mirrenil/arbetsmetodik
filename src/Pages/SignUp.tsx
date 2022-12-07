@@ -37,7 +37,7 @@ function SignUpPage() {
     e.preventDefault();
     try {
       googleSignIn();
-      navigate("/profile/:id");
+      navigate("/profile/`$currentUser.uid`");
     } catch (error) {
       console.error(error);
     }
