@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable */
 import React, {
   createContext,
   MutableRefObject,
@@ -80,7 +80,6 @@ export function AuthProvider({ children }: any) {
         registerEmail,
         registerPassword
       );
-      setCurrentUser(currentUser);
     } catch (error) {
       console.error(error);
     }

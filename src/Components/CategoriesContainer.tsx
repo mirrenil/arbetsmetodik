@@ -1,13 +1,15 @@
+/* eslint-disable */
 import { Box, SxProps, Typography } from "@mui/material";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import AOS from "aos";
 import { useItems } from "../Contexts/ItemContext";
 import { useNavigate } from "react-router-dom";
 import "aos/dist/aos.css";
+import freePriceImage from "../Assets/Images/free.jpg";
 
 const CategoryCard = () => {
   const navigate = useNavigate();
-  AOS.init({once: true});
+  AOS.init({ once: true });
   const { categories, fetchCategoriesFromDb, setSelectedCategoryId } =
     useItems();
   const [showMore, setShowMore] = useState(false);
@@ -86,6 +88,29 @@ const CategoryCard = () => {
             />
           </Box>
         ))}
+        <Box
+          sx={categoryDiv}
+          onClick={() => {
+            navigate(`/category/free`);
+          }}
+          data-aos="fade-left"
+          data-aos-offset="200"
+          data-aos-duration="1000"
+        >
+          <Box sx={categoryTitleDiv}>
+            <Typography sx={categoryTitle}>Free</Typography>
+          </Box>
+          <Box
+            component="img"
+            sx={{
+              width: { xs: "150px", md: "150", lg: "200px", xl: "250px" },
+              height: { xs: "100px", md: "100px", lg: "150px", xl: "200px" },
+              borderRadius: "10px",
+            }}
+            alt=""
+            src={freePriceImage}
+          />
+        </Box>
       </Box>
     </Box>
   );

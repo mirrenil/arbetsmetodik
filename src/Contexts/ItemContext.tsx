@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { getDocs, collection } from "firebase/firestore";
 import React, { createContext, useContext, useState } from "react";
 import { db } from "../firebase";
@@ -31,10 +32,8 @@ export default function ItemProvider(props: any) {
     const itemDataWithId: any[] = [];
     const querySnapshot = await getDocs(collection(db, "listings"));
     querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
       const data = doc.data();
       data["id"] = doc.id;
-      // doc.data() is never undefined for query doc snapshots
       itemDataWithId.push(data);
       setItems(itemDataWithId);
     });
@@ -46,7 +45,6 @@ export default function ItemProvider(props: any) {
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       data["id"] = doc.id;
-      // doc.data() is never undefined for query doc snapshots
       categoryDataWithId.push(data);
       setCategories(categoryDataWithId);
     });
