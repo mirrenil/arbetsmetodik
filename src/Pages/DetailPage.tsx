@@ -342,8 +342,8 @@ function DetailPage() {
 }
 
 const wrapper: SxProps = {
-  position: { xs: "static", md: "relative", lg: "relative", xl: "relative" },
-  top: { xs: "0", md: "150px", lg: "150px", xl: "150px" },
+  position: { xs: "relative", md: "relative", lg: "relative", xl: "relative" },
+  top: { xs: "60px", md: "170px", lg: "150px", xl: "150px" },
   width: "100%",
   height: "100%",
   display: "flex",
@@ -364,8 +364,10 @@ const itemContainer: SxProps = {
 const imageContainer: SxProps = {
   display: "flex",
   alignItems: "center",
-  maxHeight: "600px",
-  maxWidth: "600px",
+  maxHeight: { xs: "400px", md: "500px", lg: "600px", xl: "600px" },
+  // maxHeight: "600px",
+  // maxWidth: "600px",
+  maxWidth: { xs: "400px", md: "500px", lg: "600px", xl: "600px" },
 };
 
 const infoContainer: CSSProperties = {

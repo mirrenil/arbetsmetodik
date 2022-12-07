@@ -133,6 +133,7 @@ const wrapper: SxProps = {
   minHeight: "500px",
   display: "flex",
   justifyContent: "center",
+  zIndex: "100",
 };
 
 export default SignInPage;

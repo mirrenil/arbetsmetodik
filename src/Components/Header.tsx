@@ -44,6 +44,7 @@ const Header = () => {
           alt="mobile header background"
           sx={{
             height: "170px",
+            width: "900px",
           }}
         />
       </Box>
