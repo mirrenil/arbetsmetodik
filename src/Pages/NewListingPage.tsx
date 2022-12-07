@@ -82,7 +82,6 @@ export default function NewListing() {
         price: formik.values.price,
         location: formik.values.location,
         image: formik.values.imageUrl,
-        authorID,
         createdAt: Timestamp.now(),
       });
       navigate("/");
