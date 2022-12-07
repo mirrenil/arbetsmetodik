@@ -6,7 +6,7 @@ import "../Assets/FormStyle.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -17,7 +17,7 @@ const validationSchema = yup.object({
 });
 
 function SignInPage() {
-  const { currentUser, login, googleSignIn } = useAuth();
+  const { currentUser, login, googleSignIn, errorMessage } = useAuth();
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
 
@@ -26,22 +26,16 @@ function SignInPage() {
       await login(loginEmail, loginPassword);
     } catch (error) {
       console.error("login failed" + error);
-      toast.warn("Failed to sign in", {
-        autoClose: 1500,
-        theme: "colored",
-      });
     }
   };
 
   const handleGoogleSignIn = (e: FormEvent) => {
     e.preventDefault();
+
     try {
       googleSignIn();
     } catch (error) {
       console.error(error);
-      toast.warn("Failed to sign in", {
-        autoClose: 1500,
-      });
     }
   };
 
@@ -51,6 +45,7 @@ function SignInPage() {
       password: "",
     },
     validationSchema: validationSchema,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onSubmit: (values) => {
       handleSignIn();
     },
@@ -115,6 +110,11 @@ function SignInPage() {
               >
                 Sign in
               </Button>
+              {errorMessage ? (
+                <Typography align="center" color="red">
+                  Email and password do not match
+                </Typography>
+              ) : null}
               <Typography variant="body1" align="center">
                 OR
               </Typography>
@@ -137,7 +137,7 @@ const wrapper: SxProps = {
   position: { xs: "static", md: "relative", lg: "relative", xl: "relative" },
   top: { xs: "0", md: "150px", lg: "100px", xl: "100px" },
   width: "100%",
-  minHeight: "500px",
+  minHeight: "700px",
   display: "flex",
   justifyContent: "center",
 };

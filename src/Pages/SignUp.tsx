@@ -3,7 +3,7 @@ import React, { FormEvent, useState } from "react";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -16,7 +16,7 @@ const validationSchema = yup.object({
 });
 
 function SignUpPage() {
-  const { signup, googleSignIn } = useAuth();
+  const { signup, googleSignIn, errorMessage } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmationPassword, setConfirmationPassword] = useState<string>("");
@@ -30,10 +30,7 @@ function SignUpPage() {
     try {
       await signup(email, password, displayName);
     } catch (error) {
-      toast.warn("Failed to create an account!, pleas try again", {
-        autoClose: 1000,
-        theme: "colored",
-      });
+      console.log(error);
     }
   };
 
@@ -41,17 +38,8 @@ function SignUpPage() {
     e.preventDefault();
     try {
       googleSignIn();
-
-      toast.success("You account was successfully registered!", {
-        autoClose: 1000,
-        theme: "colored",
-      });
     } catch (error) {
       console.error(error);
-      toast.warn("something went wrong!", {
-        autoClose: 1000,
-        theme: "colored",
-      });
     }
   };
 
@@ -152,6 +140,11 @@ function SignUpPage() {
               formik.touched.confirmPassword && formik.errors.confirmPassword
             }
           />
+          {errorMessage ? (
+            <Typography color="red" align="center">
+              Something went wrong, please try again
+            </Typography>
+          ) : null}
           <Button
             type="submit"
             color="primary"

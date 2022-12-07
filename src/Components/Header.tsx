@@ -32,12 +32,6 @@ const Header = () => {
 
   const handleSubmit = () => {
     logout();
-    toast.success("You are logged out", {
-      autoClose: 1000,
-      pauseOnHover: true,
-      theme: "dark",
-    });
-    // notify();
     navigate("/");
   };
 

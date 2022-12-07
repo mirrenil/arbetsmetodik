@@ -63,15 +63,12 @@ const categories = [
     value: "Cars",
     title: "Cars",
   },
-  {
-    value: "Other",
-    title: "Other",
-  },
 ];
 
 export default function NewListing() {
   const { currentUser } = useAuth();
   const [authorID, setAuthorID] = useState(currentUser?.uid);
+  const [errorMessage, setErrorMessage] = useState<boolean>(false);
   const listingsRef = collection(db, "listings");
   const navigate = useNavigate();
 
@@ -86,6 +83,14 @@ export default function NewListing() {
         image: formik.values.imageUrl,
         authorID,
         createdAt: Timestamp.now(),
+      }).catch((error) => {
+        alert(error.message);
+        setErrorMessage(true);
+        toast.warn("Your account did not register", {
+          autoClose: 1000,
+          theme: "colored",
+          delay: 3000,
+        });
       });
       navigate("/");
       toast.success("Your item has been added", {
@@ -94,10 +99,6 @@ export default function NewListing() {
       });
     } catch (error) {
       console.error("Error adding document: ", error);
-      toast.warn("Something went wrong pleas try again", {
-        autoClose: 2000,
-        theme: "colored",
-      });
     }
   };
 
@@ -225,6 +226,11 @@ export default function NewListing() {
                       formik.touched.imageUrl && formik.errors.imageUrl
                     }
                   />
+                  {errorMessage ? (
+                    <Typography>
+                      Something went wrong, please try again
+                    </Typography>
+                  ) : null}
                   <Button
                     color="primary"
                     variant="contained"
@@ -279,6 +285,7 @@ const wrapper: SxProps = {
   flexDirection: "column",
   alignItems: "center",
   height: { xs: "80vh", md: "70vh", lg: "70vh", xl: "70vh" },
+  minHeight: "1000px",
   marginTop: { xs: "100px", md: "200px", lg: "100px", xl: "100px" },
 };
 const textfieldStyle: SxProps = {

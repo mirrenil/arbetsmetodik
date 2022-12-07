@@ -41,7 +41,7 @@ function ProfilePage() {
     // updates in db
     await setDoc(doc(db, "users", currentUser!.uid), {
       displayName: username,
-      email: currentUser?.email
+      email: currentUser?.email,
     });
     handleClose();
   };
@@ -60,6 +60,7 @@ function ProfilePage() {
         alignItems: "center",
         height: "100%",
         margin: "2rem",
+        minHeight: "500px",
       }}
     >
       {currentUser ? (
@@ -82,28 +83,24 @@ function ProfilePage() {
               alt="profile picture"
             />
           )}
-            <>
-              <Typography
-                variant="h2"
-                component="h2"
-                sx={{ marginTop: "1rem" }}
-              >
-                {currentUser?.displayName}
-              </Typography>
-              <button
-                onClick={handleOpen}
-                style={{
-                  border: "none",
-                  backgroundColor: "transparent",
-                  cursor: "pointer",
-                  marginTop: "1rem",
-                  fontSize: "1.5rem",
-                }}
-              >
-                Update your username
-                <SettingsIcon />
-              </button>
-            </>
+          <>
+            <Typography variant="h2" component="h2" sx={{ marginTop: "1rem" }}>
+              {currentUser?.displayName}
+            </Typography>
+            <button
+              onClick={handleOpen}
+              style={{
+                border: "none",
+                backgroundColor: "transparent",
+                cursor: "pointer",
+                marginTop: "1rem",
+                fontSize: "1.5rem",
+              }}
+            >
+              Update your username
+              <SettingsIcon />
+            </button>
+          </>
           <Modal open={modalOpen} onClose={handleClose}>
             <Box sx={modalStyle}>
               <form onSubmit={handleNameChange}>
