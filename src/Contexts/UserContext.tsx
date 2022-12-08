@@ -6,7 +6,6 @@ import { auth, db } from "../firebase";
 import { IRequest } from "../Interfaces";
 import { useAuth } from "./AuthContext";
 
-
 interface UserContextValue {
   myReceivedRequests: IRequest[];
   mySentRequests: IRequest[];
@@ -33,35 +32,38 @@ export function UserProvider({ children }: any) {
 
   useEffect(() => {
     getMyReceivedRequests();
-    getMySentRequests()
-  }, [currentUser]);
+    getMySentRequests();
+  }, []);
 
   const getMyReceivedRequests = async () => {
+    let newList: IRequest[] = [];
     const requests = await getReqs("requests", "toUser");
-    if (requests?.length) {
-      requests.forEach((req) => {
-        let alreadyAdded = checkIfAlreadyAdded(req.itemId, myReceivedRequests);
-        if (!alreadyAdded) {
-          setMyReceivedRequests((reqs) => [...reqs, req]);
-        }
-      });
+    if (requests) {
+      for (let req of requests) {
+        newList.push(req);
+      }
+      return setMyReceivedRequests(newList);
     }
   };
 
   const getMySentRequests = async () => {
-    const requests = await getReqs("requests", "fromUserId");
-    if (requests) {
-      requests.forEach((req) => {
-        let alreadyAdded = checkIfAlreadyAdded(req.itemId, mySentRequests);
-        if (!alreadyAdded) {
-          setMySentRequests((reqs) => [...reqs, req]);
+    let newList: IRequest[] = [];
+    try {
+      const requests = await getReqs("requests", "fromUserId");
+      if (requests) {
+        for (let req of requests) {
+          newList.push(req);
         }
-      });
+        return setMySentRequests(newList);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const getReqs = async (dbCollection: string, property: string) => {
     const newReq: IRequest[] = [];
+
     try {
       const data = query(
         collection(db, `${dbCollection}`),
@@ -87,17 +89,11 @@ export function UserProvider({ children }: any) {
     }
   };
 
-  const checkIfAlreadyAdded = (reqItemId: string, array: IRequest[]) => {
-    for(let item of array) {
-      return item.itemId === reqItemId
-    }
-  };
-
   return (
     <UserContext.Provider
       value={{
         myReceivedRequests,
-        mySentRequests,
+        mySentRequests
       }}
     >
       {children}
