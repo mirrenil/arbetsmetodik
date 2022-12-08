@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+/* eslint-disable */
+import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
 import {
   collection,
   getDocs,
@@ -22,26 +24,134 @@ import {
   DialogContentText,
   Modal,
   TextField,
+  InputLabel,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import { CSSProperties } from "@mui/styled-engine";
 import Dave from "../Assets/Images/Dave.png";
 import { useAuth } from "../Contexts/AuthContext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Clear, Edit } from "@mui/icons-material";
+import * as yup from "yup";
+import { useFormik } from "formik";
+
+const validationSchema = yup.object({
+  category: yup.string().required("Category is required"),
+  title: yup.string().required("Please choose a title"),
+  price: yup.number().required("Please set a price in numbers"),
+  description: yup.string().required("Please provide a description"),
+  location: yup
+    .string()
+    .required("Please provide a district in Gothenburg (ex. Hisingen)"),
+  image: yup
+    .string()
+    .min(8, "The Image URL should be of minimum 8 characters length")
+    .required("Example: https://minhast.se/uploads/GettyImages.jpg"),
+});
+
+const categories = [
+  {
+    value: "Electronics",
+    title: "Electronics",
+  },
+  {
+    value: "Film & Photography",
+    title: "Film & Photography",
+  },
+  {
+    value: "Home",
+    title: "Home",
+  },
+  {
+    value: "Clothing",
+    title: "Clothing",
+  },
+  {
+    value: "Tools",
+    title: "Tools",
+  },
+  {
+    value: "Gaming",
+    title: "Gaming",
+  },
+  {
+    value: "Cars",
+    title: "Cars",
+  },
+  {
+    value: "Other",
+    title: "Other",
+  },
+];
 
 function DetailPage() {
   const listingCollection = collection(db, "listings");
   const { id } = useParams();
-  const [item, setItem] = useState<IListItem>();
   const { currentUser } = useAuth();
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
-  const [title, setTitle] = useState<string>("");
-  // const [description, setDescription] = useState<string>("");
-  // const [price, setPrice] = useState<string>("");
-  // const [image, setImage] = useState<string>("");
-  // const [location, setLocation] = useState<string>("");
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [item, setItem] = useState<IListItem>();
+
+  const formik = useFormik({
+    initialValues: {
+      category: "",
+      title: "",
+      price: "",
+      description: "",
+      location: "",
+      image: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      updateListing();
+    },
+  });
+
+  const handleSendRequest = async (e?: Event) => {
+    const newRequest = {
+      accepted: false,
+      createdAt: new Date(),
+      fromUserId: currentUser?.uid,
+      fromUserName: currentUser?.displayName,
+      itemId: item?.id,
+      priceTotal: item?.price,
+      toUser: item?.authorID,
+    };
+    const docRef = await addDoc(collection(db, "requests"), newRequest);
+  };
+
+  const deleteListing = async (id: string) => {
+    const itemToRemove = doc(db, "listings", id);
+    await deleteDoc(itemToRemove);
+    navigate("/profile/:id");
+  };
+
+  const updateListing = useCallback(async () => {
+    if (id) {
+      const itemToUpdate = doc(db, "listings", id);
+      await updateDoc(itemToUpdate, {
+        title: formik.values.title,
+        description: formik.values.description,
+        price: formik.values.price,
+        location: formik.values.location,
+        image: formik.values.image,
+        category: formik.values.category,
+      });
+      handleClose();
+    } else {
+      return (
+        <Box>
+          <Typography variant="h4">Error</Typography>
+          <Button variant="contained" onClick={() => navigate(-1)}>
+            Take me back
+          </Button>
+        </Box>
+      );
+    }
+  }, [id, formik.values]);
 
   useEffect(() => {
     async function setDocumentData() {
@@ -58,37 +168,7 @@ function DetailPage() {
       return setItem(listingProvided);
     }
     setDocumentData();
-  }, []);
-
-  const handleSendRequest = async (e?: Event) => {
-    const newRequest = {
-      accepted: false,
-      createdAt: new Date(),
-      fromUser: currentUser?.uid,
-      itemId: item?.id,
-      priceTotal: item?.price,
-      toUser: item?.authorID,
-    };
-    const docRef = await addDoc(collection(db, "requests"), newRequest);
-  };
-
-  const deleteListing = async (id: string) => {
-    const itemToRemove = doc(db, "listings", id);
-    await deleteDoc(itemToRemove);
-    alert("Listing with id " + id + " has been deleted");
-  };
-
-  const updateListing = async (id: string) => {
-    const itemToUpdate = doc(db, "listings", id);
-    await updateDoc(itemToUpdate, {
-      title: title,
-      // price: price,
-      // description: description,
-      // image: image,
-      // location: location,
-    });
-    alert("Listing with id " + id + " has been updated");
-  };
+  }, [updateListing, modalOpen]);
 
   return (
     <Box sx={wrapper}>
@@ -112,7 +192,7 @@ function DetailPage() {
                       cursor: "pointer",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => deleteListing(item?.id as string)}
+                    onClick={() => deleteListing(id as string)}
                   >
                     <Clear />
                   </button>
@@ -130,63 +210,112 @@ function DetailPage() {
                 </Box>
                 <Modal open={modalOpen} onClose={handleClose}>
                   <Box sx={modalStyle}>
-                    <form onSubmit={() => updateListing(item?.id as string)}>
+                    <form onSubmit={formik.handleSubmit}>
                       <DialogContent sx={crudModal}>
-                        <DialogContentText>
-                          <Typography variant="h6" component="h6">
-                            Update your listing
-                          </Typography>
+                        <DialogContentText sx={{ fontSize: "2rem" }}>
+                          Update your listing
                         </DialogContentText>
+                        <InputLabel id="category">Category</InputLabel>
+                        <Select
+                          id="category"
+                          name="category"
+                          value={formik.values.category}
+                          label="Category"
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.category &&
+                            Boolean(formik.errors.category)
+                          }
+                        >
+                          {categories.map((chooseCategory, index) => (
+                            <MenuItem key={index} value={chooseCategory.title}>
+                              {chooseCategory.title}
+                            </MenuItem>
+                          ))}
+                        </Select>
                         <TextField
+                          id="title"
+                          name="title"
                           autoFocus
                           margin="normal"
                           type="text"
                           label="Title"
-                          variant="standard"
-                          value={title || ""}
-                          required
-                          onChange={(e) => setTitle(e.target.value)}
+                          value={formik.values.title}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.title && Boolean(formik.errors.title)
+                          }
+                          helperText={
+                            formik.touched.title && formik.errors.title
+                          }
                         />
-                        {/* <TextField
-                          autoFocus
-                          margin="normal"
-                          type="number"
-                          label="Price"
-                          variant="standard"
-                          value={price || ""}
-                          required
-                          onChange={(e) => setPrice(e.target.value)}
-                        /> */}
-                        {/* <TextField
+                        <TextField
+                          id="description"
+                          name="description"
                           autoFocus
                           margin="normal"
                           type="text"
                           label="Description"
-                          variant="standard"
-                          value={description || ""}
-                          required
-                          onChange={(e) => setDescription(e.target.value)}
-                        /> */}
-                        {/* <TextField
+                          value={formik.values.description}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.description &&
+                            Boolean(formik.errors.description)
+                          }
+                          helperText={
+                            formik.touched.description &&
+                            formik.errors.description
+                          }
+                        />
+                        <TextField
+                          id="price"
+                          name="price"
+                          autoFocus
+                          margin="normal"
+                          type="number"
+                          label="Price"
+                          value={formik.values.price}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.price && Boolean(formik.errors.price)
+                          }
+                          helperText={
+                            formik.touched.price && formik.errors.price
+                          }
+                        />
+                        <TextField
+                          id="location"
+                          name="location"
                           autoFocus
                           margin="normal"
                           type="text"
                           label="Location"
-                          variant="standard"
-                          value={location || ""}
-                          required
-                          onChange={(e) => setLocation(e.target.value)}
-                        /> */}
-                        {/* <TextField
+                          value={formik.values.location}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.location &&
+                            Boolean(formik.errors.location)
+                          }
+                          helperText={
+                            formik.touched.location && formik.errors.location
+                          }
+                        />
+                        <TextField
+                          id="image"
+                          name="image"
                           autoFocus
                           margin="normal"
                           type="text"
-                          label="Image URL"
-                          variant="standard"
-                          value={image || ""}
-                          required
-                          onChange={(e) => setImage(e.target.value)}
-                        /> */}
+                          label="Image"
+                          value={formik.values.image}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.image && Boolean(formik.errors.image)
+                          }
+                          helperText={
+                            formik.touched.image && formik.errors.image
+                          }
+                        />
                         <Button
                           variant="contained"
                           type="submit"
@@ -222,7 +351,11 @@ function DetailPage() {
               {item?.description}
             </Typography>
             <Box>
-              <Typography sx={location} variant="body2" color="text.primary">
+              <Typography
+                sx={listingLocation}
+                variant="body2"
+                color="text.primary"
+              >
                 {item?.location}
                 <LocationOnIcon sx={{ fontSize: "1rem" }} />
               </Typography>
@@ -270,12 +403,13 @@ function DetailPage() {
 }
 
 const wrapper: SxProps = {
-  position: { xs: "static", md: "relative", lg: "relative", xl: "relative" },
-  top: { xs: "0", md: "150px", lg: "150px", xl: "150px" },
+  position: "relative",
+  top: { xs: "60px", md: "170px", lg: "150px", xl: "150px" },
   width: "100%",
   height: "100%",
   display: "flex",
   justifyContent: "center",
+  marginBottom: "10rem",
 };
 
 const itemContainer: SxProps = {
@@ -291,8 +425,8 @@ const itemContainer: SxProps = {
 const imageContainer: SxProps = {
   display: "flex",
   alignItems: "center",
-  maxHeight: "600px",
-  maxWidth: "600px",
+  maxHeight: { xs: "400px", md: "500px", lg: "600px", xl: "600px" },
+  maxWidth: { xs: "400px", md: "500px", lg: "600px", xl: "600px" },
 };
 
 const infoContainer: CSSProperties = {
@@ -315,7 +449,7 @@ const descLocation: SxProps = {
   justifyContent: "space-between",
 };
 
-const location: SxProps = {
+const listingLocation: SxProps = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -350,6 +484,7 @@ const button: SxProps = {
   marginBottom: "2rem",
   width: "40%",
   height: "15%",
+  color: "white",
 };
 
 const crudItems = {
@@ -363,7 +498,6 @@ const modalStyle = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  height: 500,
   bgcolor: "background.paper",
   border: "none",
   borderRadius: "6px",

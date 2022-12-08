@@ -15,6 +15,7 @@ import ItemsContextProvide from "./Contexts/ItemContext";
 import HowItWorks from "./Pages/HowItWorks";
 import UserProvider from "./Contexts/UserContext";
 import NotFound from "./NotFound";
+import FreeRentCategory from "./Pages/FreeRentCategory";
 
 const theme = createTheme({
   status: {
@@ -55,16 +56,20 @@ const theme = createTheme({
 function App() {
   return (
     <div>
-      <AuthProvider>
-        <UserProvider>
-          <ItemsContextProvide>
-            <ThemeProvider theme={theme}>
-              <BrowserRouter>
+      <BrowserRouter>
+        <AuthProvider>
+          <UserProvider>
+            <ItemsContextProvide>
+              <ThemeProvider theme={theme}>
                 <Routes>
                   <Route path="/" element={<Layout />}>
                     <Route index element={<StartPage />} />
                     <Route path="/items/:id" element={<DetailPage />} />
                     <Route path="/category/:name" element={<CategoryPage />} />
+                    <Route
+                      path="/category/free"
+                      element={<FreeRentCategory />}
+                    />
                     <Route path="/signup" element={<SignUpPage />} />
                     <Route path="/signin" element={<SignInPage />} />
                     <Route path="/profile/:id" element={<ProfilePage />} />
@@ -74,11 +79,11 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                   </Route>
                 </Routes>
-              </BrowserRouter>
-            </ThemeProvider>
-          </ItemsContextProvide>
-        </UserProvider>
-      </AuthProvider>
+              </ThemeProvider>
+            </ItemsContextProvide>
+          </UserProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </div>
   );
 }

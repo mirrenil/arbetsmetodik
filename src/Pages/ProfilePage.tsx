@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   Box,
   TextField,
@@ -6,6 +7,7 @@ import {
   DialogContentText,
   Modal,
   Button,
+  SxProps,
 } from "@mui/material";
 import React, { FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -17,6 +19,10 @@ import ItemCard from "../Components/ItemCard";
 import { IListItem } from "../Interfaces";
 import { updateProfile, User } from "firebase/auth";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { useNavigate } from "react-router-dom";
+import { setDoc, doc } from "firebase/firestore";
+import { db } from "../firebase";
+
 
 function ProfilePage() {
   const { fetchItemsFromDb, items } = useItems();
@@ -26,14 +32,21 @@ function ProfilePage() {
   const handleClose = () => setModalOpen(false);
   const [username, setUsername] = useState(currentUser?.displayName);
   const userImg: any = currentUser?.photoURL;
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleNameChange = async (e: FormEvent) => {
     e.preventDefault();
     let userObject = {
       displayName: username,
     };
     userObject = { ...userObject };
+    //updates in auth
     await updateProfile(currentUser as User, userObject);
+    // updates in db
+    await setDoc(doc(db, "users", currentUser!.uid), {
+      displayName: username,
+      email: currentUser?.email
+    });
     handleClose();
   };
 
@@ -44,20 +57,17 @@ function ProfilePage() {
   }, []);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "100%",
-        margin: "2rem",
-      }}
-    >
+    <Box sx={wrapper}>
       {currentUser ? (
         <>
           {userImg ? (
             <img
-              style={{ width: "250px", height: "250px", borderRadius: "50%" }}
+              style={{
+                width: "250px",
+                height: "250px",
+                borderRadius: "50%",
+                marginTop: "3rem",
+              }}
               src={userImg}
               alt="profile picture"
             />
@@ -68,7 +78,6 @@ function ProfilePage() {
               alt="profile picture"
             />
           )}
-          {currentUser.displayName ? (
             <>
               <Typography
                 variant="h2"
@@ -91,27 +100,9 @@ function ProfilePage() {
                 <SettingsIcon />
               </button>
             </>
-          ) : (
-            <>
-              <Typography variant="h5" style={{ marginTop: "1rem" }}>
-                Welcome to Chubby Dog! To get started, please set your username.
-              </Typography>
-              <Button
-                variant="contained"
-                onClick={handleOpen}
-                style={{
-                  cursor: "pointer",
-                  marginTop: "1rem",
-                  fontSize: "1rem",
-                }}
-              >
-                Press here to choose a username
-              </Button>
-            </>
-          )}
           <Modal open={modalOpen} onClose={handleClose}>
             <Box sx={modalStyle}>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleNameChange}>
                 <DialogContent>
                   <DialogContentText>Update your username:</DialogContentText>
                   <TextField
@@ -124,7 +115,11 @@ function ProfilePage() {
                     required
                     onChange={(e) => setUsername(e.target.value)}
                   />
-                  <Button variant="contained" type="submit">
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{ color: "white" }}
+                  >
                     Update
                   </Button>
                 </DialogContent>
@@ -161,16 +156,68 @@ function ProfilePage() {
           </Box>
         </>
       ) : (
-        <>
+        <Box sx={notSignedIn}>
           <Typography variant="h5">
-            You need to be signed in to view this page
+            Looks like you are not signed in!
           </Typography>
-          <Link to="/signin">Sign in now!</Link>
-        </>
+          <Box sx={buttonBox}>
+            <Button
+              color="primary"
+              variant="contained"
+              sx={signButton}
+              onClick={() => navigate("/signin")}
+            >
+              Sign in
+            </Button>
+            <Typography variant="subtitle2">
+              Dont have an account yet?
+            </Typography>
+            <Button
+              color="primary"
+              variant="contained"
+              sx={signButton}
+              onClick={() => navigate("/signup")}
+            >
+              Sign up
+            </Button>
+          </Box>
+        </Box>
       )}
     </Box>
   );
 }
+
+const wrapper: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  height: { xs: "80vh", md: "70vh", lg: "70vh", xl: "70vh" },
+  margin: "2rem",
+};
+
+const notSignedIn: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  textAlign: "center",
+  height: "300px",
+};
+
+const buttonBox: SxProps = {
+  display: "flex",
+  justifyContent: "space-around",
+  flexDirection: "column",
+  alignItems: "center",
+  marginTop: "3rem",
+  height: "50%",
+};
+
+const signButton: SxProps = {
+  width: "200px",
+  color: "white",
+  background: "#00C4BA",
+};
 
 const modalStyle = {
   position: "absolute",
