@@ -1,9 +1,11 @@
 /* eslint-disable */
 import { collection, where, getDocs, query } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { db } from "../firebase";
+import { useCookies } from "react-cookie";
+import { auth, db } from "../firebase";
 import { IRequest } from "../Interfaces";
 import { useAuth } from "./AuthContext";
+
 
 interface UserContextValue {
   myReceivedRequests: IRequest[];
@@ -27,10 +29,11 @@ export function UserProvider({ children }: any) {
   const [myReceivedRequests, setMyReceivedRequests] = useState<IRequest[]>([]);
   const [mySentRequests, setMySentRequests] = useState<IRequest[]>([]);
   const { currentUser } = useAuth();
+  const [cookies, setCookie] = useCookies(["user"]);
 
   useEffect(() => {
     getMyReceivedRequests();
-    getMySentRequests();
+    getMySentRequests()
   }, [currentUser]);
 
   const getMyReceivedRequests = async () => {
@@ -47,7 +50,7 @@ export function UserProvider({ children }: any) {
 
   const getMySentRequests = async () => {
     const requests = await getReqs("requests", "fromUserId");
-    if (requests?.length) {
+    if (requests) {
       requests.forEach((req) => {
         let alreadyAdded = checkIfAlreadyAdded(req.itemId, mySentRequests);
         if (!alreadyAdded) {
@@ -62,7 +65,7 @@ export function UserProvider({ children }: any) {
     try {
       const data = query(
         collection(db, `${dbCollection}`),
-        where(`${property}`, "==", `${currentUser?.uid}`)
+        where(`${property}`, "==", `${cookies.user.uid}`)
       );
       const req = await getDocs(data);
       req.forEach((doc) => {

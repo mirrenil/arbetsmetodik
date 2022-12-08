@@ -20,6 +20,7 @@ import {
 import { auth, db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 interface AuthContext {
   signup: (
@@ -29,7 +30,7 @@ interface AuthContext {
   ) => Promise<any>;
   login: (email: string, password: string) => Promise<any>;
   logout: () => void;
-  currentUser?: UserInfo;
+  currentUser?: User;
   googleSignIn: () => void;
 }
 
@@ -48,13 +49,20 @@ export function useAuth() {
 export function AuthProvider({ children }: any) {
   const [currentUser, setCurrentUser] = useState<User>();
   const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(["user"]);
+
+  const handleCookie = (user: any) => {
+    setCookie('user', user, {
+      path: '/'
+    })
+  }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setCurrentUser(currentUser as User);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user as User);
     });
     return unsubscribe;
-  }, [onAuthStateChanged, auth, currentUser]);
+  }, [onAuthStateChanged, auth]);
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
@@ -98,6 +106,7 @@ export function AuthProvider({ children }: any) {
       await signInWithEmailAndPassword(auth, email, password);
 
       if (auth.currentUser) {
+        handleCookie(auth.currentUser)
         setCurrentUser(auth.currentUser);
         navigate(`/profile/${auth.currentUser?.uid}`);
       } else {

@@ -115,9 +115,9 @@ function DetailPage() {
   });
 
   useEffect(() => {
-    getItem();
     ifUserHasRequestOnItem();
-  }, []);
+    getItem();
+  }, [mySentRequests, currentUser]);
 
   const ifUserHasRequestOnItem = () => {
     for (let req of mySentRequests) {
@@ -138,8 +138,12 @@ function DetailPage() {
       priceTotal: item?.price,
       toUser: item?.authorID,
     };
-    const docRef = await addDoc(collection(db, "requests"), newRequest);
-    setReqSent(true);
+    try {
+      await addDoc(collection(db, "requests"), newRequest);
+      setReqSent(true);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const deleteListing = async (id: string) => {
@@ -203,7 +207,7 @@ function DetailPage() {
           price: item.price,
           category: item.category,
           location: item.location,
-          id: item.id
+          id: item.id,
         });
       }
     }
