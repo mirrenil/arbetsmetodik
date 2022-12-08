@@ -12,6 +12,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import { useUser } from "../Contexts/UserContext";
 
 interface Props {
   request: IRequest;
@@ -22,6 +23,7 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   const [receiver, setReceiver] = useState<IUser>();
   const [item, setItem] = useState<IListItem>();
   const theme = useTheme();
+  const { deleteRequest } = useUser();
 
   useEffect(() => {
     getReceiver();
@@ -63,6 +65,10 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
       }
     });
   };
+
+  const handleDeleteRequest = () => {
+    deleteRequest(request.id)
+  }
 
   return (
     <Box
@@ -112,7 +118,10 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         projector for a couple of days. Cheers!
       </Typography>
       {isMySentRequest ? (
-        <Typography>Pending...</Typography>
+        <>
+          <Typography>Pending...</Typography>
+          <Button variant="contained" onClick={handleDeleteRequest}>Delete request</Button>
+        </>
       ) : (
         <div style={buttonsContainer}>
           <Button sx={[button, decline]}>Decline</Button>

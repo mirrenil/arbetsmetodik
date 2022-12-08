@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { collection, where, getDocs, query } from "firebase/firestore";
+import { collection, where, getDocs, query, deleteDoc, doc } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { auth, db } from "../firebase";
@@ -11,6 +11,7 @@ interface UserContextValue {
   mySentRequests: IRequest[];
   setMyReceivedRequests?: () => void;
   setMySentRequests?: () => void;
+  deleteRequest: (a: string) => void;
 }
 
 export const UserContext = createContext<UserContextValue>({
@@ -18,6 +19,7 @@ export const UserContext = createContext<UserContextValue>({
   mySentRequests: [],
   setMyReceivedRequests: () => [],
   setMySentRequests: () => [],
+  deleteRequest: () => {}
 });
 
 export function useUser() {
@@ -89,11 +91,22 @@ export function UserProvider({ children }: any) {
     }
   };
 
+  const deleteRequest = async (reqId: string) => {
+    try {
+      await deleteDoc(doc(db, "requests", reqId));
+      getMyReceivedRequests();
+      getMySentRequests();
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
   return (
     <UserContext.Provider
       value={{
         myReceivedRequests,
-        mySentRequests
+        mySentRequests,
+        deleteRequest
       }}
     >
       {children}
