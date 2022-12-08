@@ -16,7 +16,7 @@ import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import backGroundImg from "../Assets/Images/DesktopHeaderBackground.png";
 import logoImg from "../Assets/Images/logo.png";
 import { useAuth } from "../Contexts/AuthContext";
-import MobileHeader from "../Assets/Images/mobileHeader.png";
+import MobileHeader from "../Assets/Images/mobileHeader.svg";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -43,7 +43,7 @@ const Header = () => {
           src={MobileHeader}
           alt="mobile header background"
           sx={{
-            height: "170px",
+            width: "900px",
           }}
         />
       </Box>
@@ -96,7 +96,7 @@ const Header = () => {
                 </Link>
               </Box>
             ) : (
-              <Link to="/profile/:id" style={{ textDecoration: "none" }}>
+              <Link to="/signin" style={{ textDecoration: "none" }}>
                 <AccountCircleIcon
                   sx={{
                     cursor: "pointer",
@@ -128,9 +128,13 @@ const Header = () => {
           data-aos-offset="200"
           data-aos-duration="1000"
         >
-          <Box sx={UlDiv}>
+          <Box>
             <ul
-              style={{ listStyle: "none", marginTop: "4em" }}
+              style={{
+                listStyle: "none",
+                padding: "0 1rem 1rem 1rem",
+                margin: "0",
+              }}
               data-aos="fade-left"
               data-aos-offset="200"
               data-aos-duration="1000"
@@ -309,7 +313,7 @@ const navBoxInnerMobile: SxProps = {
 const headerBackground: SxProps = {
   display: { xs: "block", md: "none", lg: "none", xl: "none" },
   position: "absolute",
-  top: "-5px",
+  top: "-20px",
   width: "100%",
   zIndex: "2",
   overflowX: "hidden",
@@ -334,21 +338,17 @@ const logoImgStyle: SxProps = {};
 
 const mobileMenuList: SxProps = {
   width: "250px",
-  height: "400px",
+  zIndex: "100",
   display: { xs: "flex", md: "none", lg: "none", xl: "none" },
   alignItems: "flex-start",
   justifyContent: "center",
   position: "absolute",
   right: "0",
-  top: "100px",
-  backgroundColor: "rgb(255, 255, 255)",
+  top: "50px",
+  backgroundColor: "rgb(241, 241, 241)",
   borderRadius: "5px",
-  zIndex: "1",
 };
-const UlDiv: SxProps = {
-  backgroundColor: "rgb(255, 255, 255)",
-  mt: "20%",
-};
+
 const navItem: SxProps = {
   marginTop: "1em",
   cursor: "pointer",

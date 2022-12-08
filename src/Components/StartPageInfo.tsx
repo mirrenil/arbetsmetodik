@@ -7,7 +7,7 @@ import infoSecImg from "../Assets/Images/infoSecImg.png";
 import "aos/dist/aos.css";
 
 const StartPageInfo = () => {
-  AOS.init({once: true});
+  AOS.init({ once: true });
 
   return (
     <Box sx={mainPageInfoBox}>
@@ -116,7 +116,6 @@ const StartPageInfo = () => {
 };
 const mainPageInfoBox: SxProps = {
   display: { xs: "none", md: "block", lg: "block", xl: "block" },
-  // height: { xs: 'none', md:'1200px', lg: '1900px', xl: '1900px'},
   mt: 10,
   position: "relative",
 };
