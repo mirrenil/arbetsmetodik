@@ -149,7 +149,7 @@ export function AuthProvider({ children }: any) {
         toast.success("You are logged out", {
           autoClose: 500,
           pauseOnHover: true,
-          theme: "dark",
+          theme: "colored",
         });
       })
       .catch((error) => {
