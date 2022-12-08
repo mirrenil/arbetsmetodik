@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   collection,
   getDocs,
+  getDoc,
   addDoc,
   deleteDoc,
   doc,
@@ -35,6 +36,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Clear, Edit } from "@mui/icons-material";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { useUser } from "../Contexts/UserContext";
 
 const validationSchema = yup.object({
   category: yup.string().required("Category is required"),
@@ -95,6 +97,7 @@ function DetailPage() {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [item, setItem] = useState<IListItem>();
   const [reqSent, setReqSent] = useState<boolean>(false);
+  const { mySentRequests } = useUser();
 
   const formik = useFormik({
     initialValues: {
@@ -110,6 +113,20 @@ function DetailPage() {
       updateListing();
     },
   });
+
+  useEffect(() => {
+    getItem();
+    ifUserHasRequestOnItem();
+  }, []);
+
+  const ifUserHasRequestOnItem = () => {
+    for (let req of mySentRequests) {
+      if (id === req.itemId) {
+        return setReqSent(true);
+      }
+    }
+    return setReqSent(false);
+  };
 
   const handleSendRequest = async (e?: Event) => {
     const newRequest = {
@@ -171,6 +188,26 @@ function DetailPage() {
     }
     setDocumentData();
   }, [updateListing, modalOpen]);
+
+  const getItem = async () => {
+    if (id) {
+      const docRef: any = doc(db, "listings", id);
+      const docSnap: any = await getDoc(docRef);
+      const item = docSnap.data();
+      if (item) {
+        setItem({
+          authorID: item.authorID,
+          title: item.title,
+          description: item.description,
+          image: item.image,
+          price: item.price,
+          category: item.category,
+          location: item.location,
+          id: item.id
+        });
+      }
+    }
+  };
 
   return (
     <Box sx={wrapper}>
