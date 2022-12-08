@@ -29,8 +29,6 @@ export function UserProvider({ children }: any) {
   const { currentUser } = useAuth();
 
   useEffect(() => {
-    setMyReceivedRequests([]);
-    setMySentRequests([])
     getMyReceivedRequests();
     getMySentRequests();
   }, [currentUser]);
@@ -39,17 +37,22 @@ export function UserProvider({ children }: any) {
     const requests = await getReqs("requests", "toUser");
     if (requests?.length) {
       requests.forEach((req) => {
-        setMyReceivedRequests((reqs) => [...reqs, req]);
+        let alreadyAdded = checkIfAlreadyAdded(req.itemId, myReceivedRequests);
+        if (!alreadyAdded) {
+          setMyReceivedRequests((reqs) => [...reqs, req]);
+        }
       });
     }
   };
 
   const getMySentRequests = async () => {
-    const requests = await getReqs('requests', 'fromUserId');
-
+    const requests = await getReqs("requests", "fromUserId");
     if (requests?.length) {
       requests.forEach((req) => {
-        setMySentRequests((reqs) => [...reqs, req]);
+        let alreadyAdded = checkIfAlreadyAdded(req.itemId, mySentRequests);
+        if (!alreadyAdded) {
+          setMySentRequests((reqs) => [...reqs, req]);
+        }
       });
     }
   };
@@ -78,6 +81,12 @@ export function UserProvider({ children }: any) {
       return newReq;
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const checkIfAlreadyAdded = (reqItemId: string, array: IRequest[]) => {
+    for(let item of array) {
+      return item.itemId === reqItemId
     }
   };
 
