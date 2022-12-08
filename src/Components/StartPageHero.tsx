@@ -19,7 +19,6 @@ const StartPageHero = () => {
       <Box>
         {/* Header will go here from layout */}
         <Box sx={mobileBox}>
-          
           <Box sx={{ mt: 10 }}>
             <Box sx={logoAndHeroText}>
               <Typography sx={{ fontSize: "1.5em", fontweight: "900" }}>
@@ -70,7 +69,7 @@ const StartPageHero = () => {
                     }}
                     aria-label="search"
                   >
-                    <SearchIcon sx={{fill: '#FFFFFF'}}/>
+                    <SearchIcon sx={{ fill: "#FFFFFF" }} />
                   </IconButton>
                 </Paper>
               </Box>
@@ -79,7 +78,7 @@ const StartPageHero = () => {
         </Box>
       </Box>
       <Box sx={desktopBox}>
-      <Box sx={mainLogoDiv}>
+        <Box sx={mainLogoDiv}>
           <Box sx={deskMainLogo}>
             <Avatar alt="Logo" src={logoImg} sx={mainLogo} />
             <Typography sx={mainDeskText}>
@@ -92,16 +91,16 @@ const StartPageHero = () => {
           </Box>
         </Box>
         <Box sx={DesktopMainHeroImgDiv}>
-        <Box
-          component="img"
-          sx={{
-            width: "100%", 
-            height: "100%", 
-            margin: "auto"
-          }}
-          alt="Hero image"
-          src={DesktopMainHeroImg}
-        />
+          <Box
+            component="img"
+            sx={{
+              width: "100%",
+              height: "100%",
+              margin: "auto",
+            }}
+            alt="Hero image"
+            src={DesktopMainHeroImg}
+          />
         </Box>
       </Box>
     </>
@@ -127,23 +126,21 @@ const searchBox: SxProps = {
 const desktopBox: SxProps = {
   display: { xs: "none", md: "block", lg: "block", xl: "block" },
   userSelect: "none",
- 
 };
 const mainLogoDiv: SxProps = {
-  // width: '1
-  display: { xs: 'none', md:'flex', lg: 'flex', xl: 'flex' },
-  textAlign: 'center',
-  width: '100%',
-  justifyContent: 'center',
-  alignItems: 'center',
-}
+  display: { xs: "none", md: "flex", lg: "flex", xl: "flex" },
+  textAlign: "center",
+  width: "100%",
+  justifyContent: "center",
+  alignItems: "center",
+};
 const deskMainLogo: SxProps = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexDirection: 'column',
-  mt: {xs: 'none', md: '5em', lg: '0em', xl: '0em'}
-}
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexDirection: "column",
+  mt: { xs: "none", md: "5em", lg: "0em", xl: "0em" },
+};
 const mainLogo: SxProps = {
   width: "200px",
   height: "200px",
@@ -160,6 +157,6 @@ const deskText: SxProps = {
 const DesktopMainHeroImgDiv: SxProps = {
   width: "50%",
   margin: "auto",
-  mt: '2em',
+  mt: "2em",
 };
 export default StartPageHero;

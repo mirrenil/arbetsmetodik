@@ -118,7 +118,7 @@ function SignInPage() {
               <Typography variant="body1" align="center">
                 OR
               </Typography>
-              <GoogleButton onClick={handleGoogleSignIn} />
+              <GoogleButton type="light" onClick={handleGoogleSignIn} />
               <Link to="/signup">
                 <Typography>
                   Don&apos;t have an account? Sign up here!
@@ -140,6 +140,7 @@ const wrapper: SxProps = {
   minHeight: "700px",
   display: "flex",
   justifyContent: "center",
+  zIndex: "100",
 };
 
 export default SignInPage;

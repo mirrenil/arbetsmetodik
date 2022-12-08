@@ -126,7 +126,7 @@ export default function NewListing() {
             <>
               <form
                 onSubmit={formik.handleSubmit}
-                style={{ width: "100%", maxWidth: "400px" }}
+                style={{ width: "95%", maxWidth: "400px" }}
               >
                 <h1 style={{ textAlign: "center" }}>Create a listing</h1>
                 <Box
@@ -263,18 +263,31 @@ export default function NewListing() {
           )}
         </>
       ) : (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <Box sx={notSignedIn}>
           <Typography variant="h5">
-            You need to be signed in to create a listing
+            You need to be signed in to create a listing!
           </Typography>
-          <Button onClick={() => navigate("/signin")}></Button>
+          <Box sx={buttonBox}>
+            <Button
+              color="primary"
+              variant="contained"
+              sx={signButton}
+              onClick={() => navigate("/signin")}
+            >
+              Sign in
+            </Button>
+            <Typography variant="subtitle2">
+              Dont have an account yet?
+            </Typography>
+            <Button
+              color="primary"
+              variant="contained"
+              sx={signButton}
+              onClick={() => navigate("/signup")}
+            >
+              Sign up
+            </Button>
+          </Box>
         </Box>
       )}
     </Box>
@@ -282,14 +295,39 @@ export default function NewListing() {
 }
 const wrapper: SxProps = {
   display: "flex",
+  justifyContent: "center",
   flexDirection: "column",
   alignItems: "center",
-  height: { xs: "80vh", md: "70vh", lg: "70vh", xl: "70vh" },
-  minHeight: "1000px",
+  position: "relative",
+  zIndex: "100",
   marginTop: { xs: "100px", md: "200px", lg: "100px", xl: "100px" },
 };
 const textfieldStyle: SxProps = {
   marginBottom: "1rem",
   boxSizing: "border-box",
   width: "100%",
+};
+
+const notSignedIn: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  textAlign: "center",
+  height: "300px",
+};
+
+const buttonBox: SxProps = {
+  display: "flex",
+  justifyContent: "space-around",
+  flexDirection: "column",
+  alignItems: "center",
+  marginTop: "3rem",
+  height: "50%",
+};
+
+const signButton: SxProps = {
+  width: "200px",
+  color: "white",
+  background: "#00C4BA",
 };

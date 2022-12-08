@@ -33,6 +33,22 @@ import Dave from "../Assets/Images/Dave.png";
 import { useAuth } from "../Contexts/AuthContext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Clear, Edit } from "@mui/icons-material";
+import * as yup from "yup";
+import { useFormik } from "formik";
+
+const validationSchema = yup.object({
+  category: yup.string().required("Category is required"),
+  title: yup.string().required("Please choose a title"),
+  price: yup.number().required("Please set a price in numbers"),
+  description: yup.string().required("Please provide a description"),
+  location: yup
+    .string()
+    .required("Please provide a district in Gothenburg (ex. Hisingen)"),
+  image: yup
+    .string()
+    .min(8, "The Image URL should be of minimum 8 characters length")
+    .required("Example: https://minhast.se/uploads/GettyImages.jpg"),
+});
 
 const categories = [
   {
@@ -78,12 +94,21 @@ function DetailPage() {
   const handleClose = () => setModalOpen(false);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [item, setItem] = useState<IListItem>();
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [price, setPrice] = useState<string>("");
-  const [location, setLocation] = useState<string>("");
-  const [image, setImage] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
+
+  const formik = useFormik({
+    initialValues: {
+      category: "",
+      title: "",
+      price: "",
+      description: "",
+      location: "",
+      image: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      updateListing();
+    },
+  });
 
   const handleSendRequest = async (e?: Event) => {
     const newRequest = {
@@ -108,12 +133,12 @@ function DetailPage() {
     if (id) {
       const itemToUpdate = doc(db, "listings", id);
       await updateDoc(itemToUpdate, {
-        title: title,
-        description: description,
-        price: price,
-        location: location,
-        image: image,
-        category: category,
+        title: formik.values.title,
+        description: formik.values.description,
+        price: formik.values.price,
+        location: formik.values.location,
+        image: formik.values.image,
+        category: formik.values.category,
       });
       handleClose();
     } else {
@@ -126,7 +151,7 @@ function DetailPage() {
         </Box>
       );
     }
-  }, [id, title, description, price, location, image, category]);
+  }, [id, formik.values]);
 
   useEffect(() => {
     async function setDocumentData() {
@@ -185,22 +210,22 @@ function DetailPage() {
                 </Box>
                 <Modal open={modalOpen} onClose={handleClose}>
                   <Box sx={modalStyle}>
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        updateListing();
-                      }}
-                    >
+                    <form onSubmit={formik.handleSubmit}>
                       <DialogContent sx={crudModal}>
-                        <DialogContentText>
+                        <DialogContentText sx={{ fontSize: "2rem" }}>
                           Update your listing
                         </DialogContentText>
                         <InputLabel id="category">Category</InputLabel>
                         <Select
-                          name="categories"
-                          value={category}
+                          id="category"
+                          name="category"
+                          value={formik.values.category}
                           label="Category"
-                          onChange={(e) => setCategory(e.target.value)}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.category &&
+                            Boolean(formik.errors.category)
+                          }
                         >
                           {categories.map((chooseCategory, index) => (
                             <MenuItem key={index} value={chooseCategory.title}>
@@ -209,56 +234,92 @@ function DetailPage() {
                           ))}
                         </Select>
                         <TextField
+                          id="title"
+                          name="title"
                           autoFocus
                           margin="normal"
                           type="text"
                           label="Title"
-                          variant="standard"
-                          value={title || ""}
-                          onChange={(e) => setTitle(e.target.value)}
+                          value={formik.values.title}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.title && Boolean(formik.errors.title)
+                          }
+                          helperText={
+                            formik.touched.title && formik.errors.title
+                          }
                         />
                         <TextField
+                          id="description"
+                          name="description"
                           autoFocus
                           margin="normal"
                           type="text"
                           label="Description"
-                          variant="standard"
-                          value={description || ""}
-                          onChange={(e) => setDescription(e.target.value)}
+                          value={formik.values.description}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.description &&
+                            Boolean(formik.errors.description)
+                          }
+                          helperText={
+                            formik.touched.description &&
+                            formik.errors.description
+                          }
                         />
                         <TextField
+                          id="price"
+                          name="price"
                           autoFocus
                           margin="normal"
                           type="number"
                           label="Price"
-                          variant="standard"
-                          value={price || ""}
-                          onChange={(e) => setPrice(e.target.value)}
+                          value={formik.values.price}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.price && Boolean(formik.errors.price)
+                          }
+                          helperText={
+                            formik.touched.price && formik.errors.price
+                          }
                         />
                         <TextField
+                          id="location"
+                          name="location"
                           autoFocus
                           margin="normal"
                           type="text"
                           label="Location"
-                          variant="standard"
-                          value={location || ""}
-                          onChange={(e) => setLocation(e.target.value)}
+                          value={formik.values.location}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.location &&
+                            Boolean(formik.errors.location)
+                          }
+                          helperText={
+                            formik.touched.location && formik.errors.location
+                          }
                         />
                         <TextField
+                          id="image"
+                          name="image"
                           autoFocus
                           margin="normal"
                           type="text"
                           label="Image"
-                          variant="standard"
-                          value={image || ""}
-                          onChange={(e) => setImage(e.target.value)}
+                          value={formik.values.image}
+                          onChange={formik.handleChange}
+                          error={
+                            formik.touched.image && Boolean(formik.errors.image)
+                          }
+                          helperText={
+                            formik.touched.image && formik.errors.image
+                          }
                         />
                         <Button
                           variant="contained"
-                          onClick={() => {
-                            updateListing();
-                          }}
-                          sx={{ marginTop: "1.5rem", color: "white" }}
+                          type="submit"
+                          sx={{ marginTop: "1.5rem" }}
                         >
                           Update Listing
                         </Button>
@@ -342,12 +403,13 @@ function DetailPage() {
 }
 
 const wrapper: SxProps = {
-  position: { xs: "static", md: "relative", lg: "relative", xl: "relative" },
-  top: { xs: "0", md: "150px", lg: "150px", xl: "150px" },
+  position: "relative",
+  top: { xs: "60px", md: "170px", lg: "150px", xl: "150px" },
   width: "100%",
   height: "100%",
   display: "flex",
   justifyContent: "center",
+  marginBottom: "10rem",
 };
 
 const itemContainer: SxProps = {
@@ -358,14 +420,13 @@ const itemContainer: SxProps = {
   width: { xs: "80%", md: "50%", lg: "50%", xl: "50%" },
   height: "50%",
   boxShadow: "none",
-  zIndex: -1,
 };
 
 const imageContainer: SxProps = {
   display: "flex",
   alignItems: "center",
-  maxHeight: "600px",
-  maxWidth: "600px",
+  maxHeight: { xs: "400px", md: "500px", lg: "600px", xl: "600px" },
+  maxWidth: { xs: "400px", md: "500px", lg: "600px", xl: "600px" },
 };
 
 const infoContainer: CSSProperties = {

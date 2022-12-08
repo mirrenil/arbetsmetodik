@@ -87,7 +87,6 @@ const wrapper: SxProps = {
   minHeight: 1000,
 };
 const mainTitle: SxProps = {
-  marginLeft: 3,
   fontSize: { xs: "20px", md: "30px", lg: "40px", xl: "40px" },
 };
 const filterBox: SxProps = {
@@ -118,7 +117,7 @@ const categoryImg: SxProps = {
 const itemsContainer: SxProps = {
   display: "flex",
   alignItems: "center",
-  justifyContent: "space-between",
+  justifyContent: "center",
   width: "95%",
   flexWrap: "wrap",
   mt: 10,
