@@ -49,13 +49,7 @@ export function useAuth() {
 export function AuthProvider({ children }: any) {
   const [currentUser, setCurrentUser] = useState<User>();
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(["user"]);
-
-  const handleCookie = (user: any) => {
-    setCookie('user', user, {
-      path: '/'
-    })
-  }
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -64,9 +58,12 @@ export function AuthProvider({ children }: any) {
     return unsubscribe;
   }, [onAuthStateChanged, auth]);
 
-  const googleSignIn = () => {
+  const googleSignIn = async () => {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider);
+   let test = await signInWithPopup(auth, provider);
+    setCookie('user', auth.currentUser, {
+      path: '/'
+    })
     navigate(`/profile/${auth.currentUser?.uid}`);
   };
 
@@ -106,7 +103,9 @@ export function AuthProvider({ children }: any) {
       await signInWithEmailAndPassword(auth, email, password);
 
       if (auth.currentUser) {
-        handleCookie(auth.currentUser)
+        setCookie('user', auth.currentUser, {
+          path: '/'
+        })
         setCurrentUser(auth.currentUser);
         navigate(`/profile/${auth.currentUser?.uid}`);
       } else {
@@ -121,6 +120,7 @@ export function AuthProvider({ children }: any) {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
+        removeCookie('user',{path:'/'});
         setCurrentUser(undefined);
       })
       .catch((error) => {
