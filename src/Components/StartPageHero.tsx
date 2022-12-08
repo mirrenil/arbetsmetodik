@@ -81,11 +81,9 @@ const StartPageHero = () => {
         <Box sx={mainLogoDiv}>
           <Box sx={deskMainLogo}>
             <Avatar alt="Logo" src={logoImg} sx={mainLogo} />
-            <Typography sx={mainDeskText}>
-              Lorem impsum dolor sit amet bla{" "}
-            </Typography>
+            <Typography sx={mainDeskText}>Chubby Dog</Typography>
             <Typography sx={deskText}>
-              Borrow almost anything from people nearby for jobs at home, fun
+              Rent almost anything from people nearby for jobs at home, fun
               experiences or work.
             </Typography>
           </Box>
@@ -147,16 +145,19 @@ const mainLogo: SxProps = {
 };
 const mainDeskText: SxProps = {
   color: "black",
-  marginTop: "1em",
-  fontSize: "1.5em",
+  marginTop: ".3rem",
+  fontSize: "2.5rem",
   fontweight: "bold",
 };
 const deskText: SxProps = {
+  width: "50%",
   color: "black",
+  fontSize: "1.5rem",
 };
 const DesktopMainHeroImgDiv: SxProps = {
   width: "50%",
   margin: "auto",
   mt: "2em",
 };
+
 export default StartPageHero;

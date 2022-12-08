@@ -236,7 +236,7 @@ const Header = () => {
             </Typography>
           </Link>
           <Box sx={navItemsDesk}>
-            <Link to="/howItWorks" style={{ textDecoration: "none" }}>
+            <Link to="/howitworks" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>How it works</Typography>
             </Link>
 
