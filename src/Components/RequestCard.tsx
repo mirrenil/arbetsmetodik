@@ -189,6 +189,9 @@ const button = {
 
 const decline = {
   backgroundColor: "red",
+  "&:hover": {
+    backgroundColor: "#cc0000",
+  },
 };
 
 export default RequestCard;
