@@ -10,19 +10,18 @@ import {
   SxProps,
 } from "@mui/material";
 import React, { FormEvent, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useAuth } from "../Contexts/AuthContext";
 import { useItems } from "../Contexts/ItemContext";
 import ItemCard from "../Components/ItemCard";
-import { IListItem } from "../Interfaces";
+import { IListItem, IUser } from "../Interfaces";
 import { updateProfile, User } from "firebase/auth";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
-
 
 function ProfilePage() {
   const { fetchItemsFromDb, items } = useItems();
@@ -32,7 +31,9 @@ function ProfilePage() {
   const handleClose = () => setModalOpen(false);
   const [username, setUsername] = useState(currentUser?.displayName);
   const userImg: any = currentUser?.photoURL;
+  const [user, setUser] = useState<IUser>();
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleNameChange = async (e: FormEvent) => {
     e.preventDefault();
@@ -45,12 +46,22 @@ function ProfilePage() {
     // updates in db
     await setDoc(doc(db, "users", currentUser!.uid), {
       displayName: username,
-      email: currentUser?.email
+      email: currentUser?.email,
     });
     handleClose();
   };
 
   useEffect(() => {
+    async function setDocumentData() {
+      const userDocRef = doc(db, "users", `${id}`);
+      const docSnap = await getDoc(userDocRef);
+      if (docSnap.exists()) {
+        const user: any = docSnap.data();
+        user.id = docSnap.id;
+        await setUser(user);
+      }
+    }
+    setDocumentData();
     fetchItemsFromDb();
     AOS.init();
     AOS.refresh();
@@ -78,28 +89,24 @@ function ProfilePage() {
               alt="profile picture"
             />
           )}
-            <>
-              <Typography
-                variant="h2"
-                component="h2"
-                sx={{ marginTop: "1rem" }}
-              >
-                {currentUser?.displayName}
-              </Typography>
-              <button
-                onClick={handleOpen}
-                style={{
-                  border: "none",
-                  backgroundColor: "transparent",
-                  cursor: "pointer",
-                  marginTop: "1rem",
-                  fontSize: "1.5rem",
-                }}
-              >
-                Update your username
-                <SettingsIcon />
-              </button>
-            </>
+          <>
+            <Typography variant="h2" component="h2" sx={{ marginTop: "1rem" }}>
+              {user?.displayName}
+            </Typography>
+            <button
+              onClick={handleOpen}
+              style={{
+                border: "none",
+                backgroundColor: "transparent",
+                cursor: "pointer",
+                marginTop: "1rem",
+                fontSize: "1.5rem",
+              }}
+            >
+              Update your username
+              <SettingsIcon />
+            </button>
+          </>
           <Modal open={modalOpen} onClose={handleClose}>
             <Box sx={modalStyle}>
               <form onSubmit={handleNameChange}>
@@ -143,7 +150,7 @@ function ProfilePage() {
             }}
           >
             {items
-              .filter((item) => item.authorID === currentUser.uid)
+              .filter((item) => item.authorID === user?.id)
               .map((item: IListItem) => (
                 <Link
                   to={`/items/${item.id}`}
@@ -151,6 +158,7 @@ function ProfilePage() {
                   style={{ textDecoration: "none" }}
                 >
                   <ItemCard key={item.id} item={item} />
+                  <h1>{item.authorID}</h1>
                 </Link>
               ))}
           </Box>

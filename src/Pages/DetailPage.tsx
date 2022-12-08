@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import {
   collection,
@@ -79,10 +79,6 @@ const categories = [
   {
     value: "Cars",
     title: "Cars",
-  },
-  {
-    value: "Other",
-    title: "Other",
   },
 ];
 
@@ -380,20 +376,12 @@ function DetailPage() {
               >
                 {user?.displayName}
               </Typography>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                component="div"
+              <Link
+                to={`/profile/${item?.authorID}`}
+                style={{ textDecoration: "none" }}
               >
-                Member since: 1231 23 123
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                component="div"
-              >
-                View profile
-              </Typography>
+                View Profile
+              </Link>
             </CardContent>
           </Box>
           <CardMedia component="img" sx={lessorPic} image={Dave} alt="Dave" />

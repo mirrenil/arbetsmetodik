@@ -61,10 +61,6 @@ const categories = [
     value: "Cars",
     title: "Cars",
   },
-  {
-    value: "Other",
-    title: "Other",
-  },
 ];
 
 export default function NewListing() {

@@ -85,17 +85,6 @@ export function UserProvider({ children }: any) {
     }
   };
 
-  // const getAllUsers = async () => {
-  //   const usersWithId: any[] = [];
-  //   const querySnapshot = await getDocs(collection(db, "users"));
-  //   querySnapshot.forEach((doc) => {
-  //     const data = doc.data();
-  //     data["id"] = doc.id;
-  //     usersWithId.push(data);
-  //     setUsers(usersWithId);
-  //   });
-  // };
-
   return (
     <UserContext.Provider
       value={{
