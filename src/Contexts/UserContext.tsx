@@ -1,8 +1,15 @@
 /* eslint-disable */
-import { collection, where, getDocs, query } from "firebase/firestore";
+import {
+  collection,
+  where,
+  getDocs,
+  query,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { db } from "../firebase";
-import { IRequest } from "../Interfaces";
+import { IRequest, IUser } from "../Interfaces";
 import { useAuth } from "./AuthContext";
 
 interface UserContextValue {
@@ -77,6 +84,17 @@ export function UserProvider({ children }: any) {
       console.log(err);
     }
   };
+
+  // const getAllUsers = async () => {
+  //   const usersWithId: any[] = [];
+  //   const querySnapshot = await getDocs(collection(db, "users"));
+  //   querySnapshot.forEach((doc) => {
+  //     const data = doc.data();
+  //     data["id"] = doc.id;
+  //     usersWithId.push(data);
+  //     setUsers(usersWithId);
+  //   });
+  // };
 
   return (
     <UserContext.Provider

@@ -9,9 +9,10 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { IListItem } from "../Interfaces";
+import { IListItem, IUser } from "../Interfaces";
 import {
   Box,
   Card,
@@ -94,6 +95,7 @@ function DetailPage() {
   const handleClose = () => setModalOpen(false);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [item, setItem] = useState<IListItem>();
+  const [user, setUser] = useState<IUser>();
 
   const formik = useFormik({
     initialValues: {
@@ -165,6 +167,12 @@ function DetailPage() {
       const listingProvided = listingsProvided.find(
         (item: any) => item.id === id
       );
+      const userDocRef = doc(db, "users", listingProvided.authorID);
+      const docSnap = await getDoc(userDocRef);
+      if (docSnap.exists()) {
+        const user: any = docSnap.data();
+        setUser(user);
+      }
       return setItem(listingProvided);
     }
     setDocumentData();
@@ -370,7 +378,7 @@ function DetailPage() {
                 color="text.secondary"
                 component="div"
               >
-                David Jensen
+                {user?.displayName}
               </Typography>
               <Typography
                 variant="subtitle1"
