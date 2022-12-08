@@ -3,6 +3,8 @@ import React, { FormEvent, useState } from "react";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
 import GoogleButton from "react-google-button";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import * as yup from "yup";
 import { useFormik } from "formik";
 
@@ -14,7 +16,7 @@ const validationSchema = yup.object({
 });
 
 function SignUpPage() {
-  const { signup, googleSignIn } = useAuth();
+  const { signup, googleSignIn, errorMessage } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmationPassword, setConfirmationPassword] = useState<string>("");
@@ -28,7 +30,7 @@ function SignUpPage() {
     try {
       await signup(email, password, displayName);
     } catch (error) {
-      console.log("error");
+      console.log(error);
     }
   };
 
@@ -61,6 +63,7 @@ function SignUpPage() {
         mt: { xs: 4, md: 10, lg: 10, xl: 10 },
       }}
     >
+      <ToastContainer />
       <Typography variant="h4" align="center" mb={5}>
         New to Chubby Dog?
       </Typography>
@@ -137,6 +140,11 @@ function SignUpPage() {
               formik.touched.confirmPassword && formik.errors.confirmPassword
             }
           />
+          {errorMessage ? (
+            <Typography color="red" align="center">
+              Something went wrong, please try again
+            </Typography>
+          ) : null}
           <Button
             type="submit"
             color="primary"

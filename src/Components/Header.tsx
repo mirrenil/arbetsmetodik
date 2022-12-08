@@ -17,13 +17,14 @@ import backGroundImg from "../Assets/Images/DesktopHeaderBackground.png";
 import logoImg from "../Assets/Images/logo.png";
 import { useAuth } from "../Contexts/AuthContext";
 import MobileHeader from "../Assets/Images/mobileHeader.svg";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { currentUser, logout } = useAuth();
   const userImg: any = currentUser?.photoURL;
   const userName: any = currentUser?.displayName;
-
   useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -37,6 +38,7 @@ const Header = () => {
 
   return (
     <Box sx={navBox}>
+      <ToastContainer />
       <Box sx={headerBackground}>
         <Box
           component="img"
