@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
 import {
   collection,
   getDocs,
@@ -369,11 +368,16 @@ function DetailPage() {
         <Card sx={lessorCard}>
           <Box sx={lessorCardLeftInfo}>
             <CardContent sx={{ flex: "1 0 auto" }}>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                component="div"
-              >
+              <img
+                style={{
+                  width: "150px",
+                  height: "150px",
+                  borderRadius: "50%",
+                }}
+                src="https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
+                alt="profile picture"
+              />
+              <Typography variant="h6" color="text.secondary" component="div">
                 {user?.displayName}
               </Typography>
               <Link
@@ -384,7 +388,6 @@ function DetailPage() {
               </Link>
             </CardContent>
           </Box>
-          <CardMedia component="img" sx={lessorPic} image={Dave} alt="Dave" />
         </Card>
         <Button
           sx={button}
@@ -458,9 +461,9 @@ const itemImage: CSSProperties = {
 
 const lessorCard: SxProps = {
   display: "flex",
-  justifyContent: "space-between",
+  textAlign: "center",
   alignItems: "center",
-  width: "98%",
+  // width: "98%",
   height: "191",
   boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.29)",
 };

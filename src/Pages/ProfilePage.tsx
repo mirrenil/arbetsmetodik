@@ -199,19 +199,13 @@ function ProfilePage() {
   );
 }
 
-const flex: SxProps = {
-  display: "flex",
-};
-const alignCenter: SxProps = {
-  alignItems: "center",
-};
-
 const wrapper: SxProps = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   minHeight: { xs: "80vh", md: "70vh", lg: "70vh", xl: "70vh" },
   margin: "2rem",
+  zIndex: "100",
 };
 
 const notSignedIn: SxProps = {
