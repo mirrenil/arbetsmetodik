@@ -1,20 +1,23 @@
 name: prCheck CI
 on:
-  pull_request:
-    branches: ["main"]
+    pull_request:
+        branches: ["main"]
 
 jobs:
-  prCheck:
-    runs-on: ubuntu-latest
+    prCheck:
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v3
+        steps:
+            - uses: actions/checkout@v3
 
-      - name: Install
-        run: npm i
+            - name: Install
+              run: npm i
 
-      - name: Format
-        run: npm run format
+            - name: Format
+              run: npm run format
 
-      - name: Lint
-        run: npm run lint
+            - name: Lint
+              run: npm run lint
+
+            - name: Cypress.io
+              uses: cypress-io/github-action@v5.0.0
