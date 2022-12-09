@@ -5,7 +5,8 @@ import { Typography, Button, SxProps } from "@mui/material";
 import "../Assets/FormStyle.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
-import GoogleButton from "react-google-button";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import * as yup from "yup";
 import { useFormik } from "formik";
 
@@ -15,7 +16,7 @@ const validationSchema = yup.object({
 });
 
 function SignInPage() {
-  const { currentUser, login, googleSignIn } = useAuth();
+  const { currentUser, login, errorMessage } = useAuth();
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
 
@@ -27,21 +28,13 @@ function SignInPage() {
     }
   };
 
-  const handleGoogleSignIn = (e: FormEvent) => {
-    e.preventDefault();
-    try {
-      googleSignIn();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: validationSchema,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onSubmit: (values) => {
       handleSignIn();
     },
@@ -49,11 +42,15 @@ function SignInPage() {
 
   return (
     <Box sx={wrapper}>
+      <ToastContainer />
       <Typography variant="h4" align="center" mb={5}>
         Welcome to Chubby Dog
       </Typography>
       {currentUser ? (
-        <Typography variant="h5"> You are already signed in</Typography>
+        <Typography variant="h5" align="center">
+          {" "}
+          You are already signed in
+        </Typography>
       ) : (
         <Box>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -102,10 +99,11 @@ function SignInPage() {
               >
                 Sign in
               </Button>
-              <Typography variant="body1" align="center">
-                OR
-              </Typography>
-              <GoogleButton onClick={handleGoogleSignIn} />
+              {errorMessage ? (
+                <Typography align="center" color="red">
+                  Email and password do not match
+                </Typography>
+              ) : null}
               <Link to="/signup">
                 <Typography>
                   Don&apos;t have an account? Sign up here!
@@ -124,9 +122,10 @@ const wrapper: SxProps = {
   position: { xs: "static", md: "relative", lg: "relative", xl: "relative" },
   top: { xs: "0", md: "150px", lg: "100px", xl: "100px" },
   width: "100%",
-  minHeight: "500px",
+  minHeight: "700px",
   display: "flex",
   justifyContent: "center",
+  zIndex: "100",
 };
 
 export default SignInPage;

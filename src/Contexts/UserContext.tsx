@@ -2,9 +2,8 @@
 import { collection, where, getDocs, query, deleteDoc, doc } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { auth, db } from "../firebase";
+import { db } from "../firebase";
 import { IRequest } from "../Interfaces";
-import { useAuth } from "./AuthContext";
 
 interface UserContextValue {
   myReceivedRequests: IRequest[];

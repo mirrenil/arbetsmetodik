@@ -208,13 +208,14 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
       sx={{
         padding: "1rem",
         boxShadow: "0px 0px 15px -3px #000000",
-        width: "25rem",
-        height: "15rem",
+        maxWidth: { xs: "20rem", md: "25rem", lg: "25rem", xl: "25rem" },
+        height: { xs: "none", md: "15rem", lg: "15rem", xl: "15rem" },
         borderRadius: theme.shape.buttonBorderRadius,
         margin: "auto",
         display: "grid",
         gridTemplateColumns: "repeat(3, 1fr)",
         gridTemplateRows: "repeat(4, 1fr)",
+        marginBottom: "2rem",
       }}
     >
       <CardMedia sx={[imgStyle, grid.pic]} component="img" src={item?.image} />
@@ -380,6 +381,9 @@ const button = {
 
 const decline = {
   backgroundColor: "red",
+  "&:hover": {
+    backgroundColor: "#cc0000",
+  },
 };
 
 export default RequestCard;

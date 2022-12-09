@@ -7,18 +7,20 @@ import {
   DialogContentText,
   Modal,
   Button,
+  SxProps,
 } from "@mui/material";
 import React, { FormEvent, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useAuth } from "../Contexts/AuthContext";
 import { useItems } from "../Contexts/ItemContext";
 import ItemCard from "../Components/ItemCard";
-import { IListItem } from "../Interfaces";
+import { IListItem, IUser } from "../Interfaces";
 import { updateProfile, User } from "firebase/auth";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { setDoc, doc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { setDoc, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 
 function ProfilePage() {
@@ -29,6 +31,9 @@ function ProfilePage() {
   const handleClose = () => setModalOpen(false);
   const [username, setUsername] = useState(currentUser?.displayName);
   const userImg: any = currentUser?.photoURL;
+  const [user, setUser] = useState<IUser>();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleNameChange = async (e: FormEvent) => {
     e.preventDefault();
@@ -36,32 +41,32 @@ function ProfilePage() {
       displayName: username,
     };
     userObject = { ...userObject };
-    //updates in auth
     await updateProfile(currentUser as User, userObject);
-    // updates in db
     await setDoc(doc(db, "users", currentUser!.uid), {
       displayName: username,
-      email: currentUser?.email
+      email: currentUser?.email,
     });
     handleClose();
   };
 
   useEffect(() => {
+    async function setDocumentData() {
+      const userDocRef = doc(db, "users", `${id}`);
+      const docSnap = await getDoc(userDocRef);
+      if (docSnap.exists()) {
+        const user: any = docSnap.data();
+        user.id = docSnap.id;
+        await setUser(user);
+      }
+    }
+    setDocumentData();
     fetchItemsFromDb();
     AOS.init();
     AOS.refresh();
-  }, []);
+  }, [id]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "100%",
-        margin: "2rem",
-      }}
-    >
+    <Box sx={wrapper}>
       {currentUser ? (
         <>
           {userImg ? (
@@ -82,28 +87,29 @@ function ProfilePage() {
               alt="profile picture"
             />
           )}
-            <>
-              <Typography
-                variant="h2"
-                component="h2"
-                sx={{ marginTop: "1rem" }}
-              >
-                {currentUser?.displayName}
-              </Typography>
+          <>
+            <Typography variant="h2" component="h2">
+              {user?.displayName}
+            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
               <button
                 onClick={handleOpen}
                 style={{
+                  display: "flex",
+                  alignItems: "center",
                   border: "none",
                   backgroundColor: "transparent",
                   cursor: "pointer",
-                  marginTop: "1rem",
-                  fontSize: "1.5rem",
+                  padding: "0",
                 }}
               >
-                Update your username
-                <SettingsIcon />
+                <Typography sx={{ fontSize: ".7rem" }}>
+                  Change your display name
+                </Typography>
+                <SettingsIcon sx={{ fontSize: "small" }} />
               </button>
-            </>
+            </Box>
+          </>
           <Modal open={modalOpen} onClose={handleClose}>
             <Box sx={modalStyle}>
               <form onSubmit={handleNameChange}>
@@ -135,19 +141,18 @@ function ProfilePage() {
             component="h2"
             sx={{ marginTop: "2rem", marginBottom: "2rem" }}
           >
-            Your listings
+            Listings
           </Typography>
           <Box
             sx={{
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",
-              gap: "4rem",
-              width: "100%",
+              width: { xs: "100%", md: "100%", lg: "80%", xl: "80%" },
             }}
           >
             {items
-              .filter((item) => item.authorID === currentUser.uid)
+              .filter((item) => item.authorID === user?.id)
               .map((item: IListItem) => (
                 <Link
                   to={`/items/${item.id}`}
@@ -160,16 +165,69 @@ function ProfilePage() {
           </Box>
         </>
       ) : (
-        <>
+        <Box sx={notSignedIn}>
           <Typography variant="h5">
-            You need to be signed in to view this page
+            Looks like you are not signed in!
           </Typography>
-          <Link to="/signin">Sign in now!</Link>
-        </>
+          <Box sx={buttonBox}>
+            <Button
+              color="primary"
+              variant="contained"
+              sx={signButton}
+              onClick={() => navigate("/signin")}
+            >
+              Sign in
+            </Button>
+            <Typography variant="subtitle2">
+              Dont have an account yet?
+            </Typography>
+            <Button
+              color="primary"
+              variant="contained"
+              sx={signButton}
+              onClick={() => navigate("/signup")}
+            >
+              Sign up
+            </Button>
+          </Box>
+        </Box>
       )}
     </Box>
   );
 }
+
+const wrapper: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  minHeight: { xs: "80vh", md: "70vh", lg: "70vh", xl: "70vh" },
+  marginTop: { xs: "3rem", md: "4rem", lg: "0", xl: "0" },
+  zIndex: "100",
+};
+
+const notSignedIn: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  textAlign: "center",
+  height: "300px",
+};
+
+const buttonBox: SxProps = {
+  display: "flex",
+  justifyContent: "space-around",
+  flexDirection: "column",
+  alignItems: "center",
+  marginTop: "3rem",
+  height: "50%",
+};
+
+const signButton: SxProps = {
+  width: "200px",
+  color: "white",
+  background: "#00C4BA",
+};
 
 const modalStyle = {
   position: "absolute",

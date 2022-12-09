@@ -14,7 +14,7 @@ const Footer = () => {
         <img
           src={footerImg}
           alt=""
-          style={{ width: "100vw", height: "150px" }}
+          style={{ width: "100%", height: "150px" }}
         />
       </Box>
       <Box sx={mobileContainer}>
@@ -22,7 +22,7 @@ const Footer = () => {
           <Link to="/" style={{ textDecoration: "none" }}>
             <Typography sx={textStyleMobile}>About Chubby Dog</Typography>
           </Link>
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/howitworks" style={{ textDecoration: "none" }}>
             <Typography sx={textStyleMobile}>How it works</Typography>
           </Link>
           <Link to="/" style={{ textDecoration: "none" }}>

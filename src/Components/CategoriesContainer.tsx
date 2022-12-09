@@ -46,8 +46,8 @@ const CategoryCard = () => {
             <Box
               component="img"
               sx={{
-                width: { xs: "150px", md: "150px", lg: "200px", xl: "250px" },
-                height: { xs: "100px", md: "100px", lg: "150px", xl: "200px" },
+                width: { xs: "150px", md: "200px", lg: "220px", xl: "250px" },
+                height: { xs: "100px", md: "150px", lg: "170px", xl: "200px" },
                 borderRadius: "10px",
               }}
               alt=""
@@ -78,8 +78,8 @@ const CategoryCard = () => {
             <Box
               component="img"
               sx={{
-                width: { xs: "150px", md: "150", lg: "200px", xl: "250px" },
-                height: { xs: "100px", md: "100px", lg: "150px", xl: "200px" },
+                width: { xs: "150px", md: "200px", lg: "220px", xl: "250px" },
+                height: { xs: "100px", md: "150px", lg: "170px", xl: "200px" },
                 borderRadius: "10px",
               }}
               alt=""
@@ -102,8 +102,8 @@ const CategoryCard = () => {
           <Box
             component="img"
             sx={{
-              width: { xs: "150px", md: "150", lg: "200px", xl: "250px" },
-              height: { xs: "100px", md: "100px", lg: "150px", xl: "200px" },
+              width: { xs: "150px", md: "200px", lg: "220px", xl: "250px" },
+              height: { xs: "100px", md: "150px", lg: "170px", xl: "200px" },
               borderRadius: "10px",
             }}
             alt=""
@@ -152,7 +152,7 @@ const categoryTitleDiv: SxProps = {
   position: "absolute",
   top: "57%",
   left: "50%",
-  width: { xs: "150px", md: "150px", lg: "200px", xl: "250px" },
+  width: { xs: "150px", md: "200px", lg: "220px", xl: "250px" },
   height: "30px",
   backgroundColor: "rgba(217, 217, 217, .82)",
   transform: "translate(-50%, -50%)",
@@ -168,7 +168,7 @@ const categoryTitle: SxProps = {
 };
 const secTitle: SxProps = {
   fontSize: { xs: "12px", md: "20px", lg: "20px", xl: "20px" },
-  ml: "8%",
+  ml: "12%",
   fontWeight: "bold",
   color: "rgba(0, 0, 0, .7)",
 };

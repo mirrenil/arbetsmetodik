@@ -9,55 +9,57 @@ import { IListItem } from "../Interfaces";
 
 const RecentlyAdded = () => {
   const { fetchItemsFromDb, items } = useItems();
-  AOS.init({once: true});
+  AOS.init({ once: true });
   useEffect(() => {
     fetchItemsFromDb();
   }, []);
   items.length = 6;
 
   return (
-    <div>
-      <Box sx={MainItemsContainer}>
-        <Typography sx={secTitle}>Recently added items</Typography>
-        <Box
-          sx={itemsContainer}
-          data-aos="fade-left"
-          data-aos-offset="200"
-          data-aos-duration="1000"
-        >
-          {items.map((item: IListItem) => (
-            <Link
-              to={`/items/${item.id}`}
-              key={item.id}
-              style={{ textDecoration: "none" }}
-            >
-              <ItemCard item={item} />
-            </Link>
-          ))}
-        </Box>
+    <Box sx={MainItemsContainer}>
+      <Typography sx={secTitle}>Recently added items</Typography>
+      <Box
+        sx={itemsContainer}
+        data-aos="fade-left"
+        data-aos-offset="200"
+        data-aos-duration="1000"
+      >
+        {items.map((item: IListItem) => (
+          <Link
+            to={`/items/${item.id}`}
+            key={item.id}
+            style={{ textDecoration: "none" }}
+          >
+            <ItemCard item={item} />
+          </Link>
+        ))}
       </Box>
-    </div>
+    </Box>
   );
 };
 const MainItemsContainer: SxProps = {
-  width: "100%",
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "column",
+  maxWidth: "100%",
   mt: 8,
   minHeight: 250,
   overflowX: "hidden",
 };
 const itemsContainer: SxProps = {
   display: "flex",
-  width: { xs: "90%", md: "90%", lg: "90%", xl: "90%" },
+  justifyContent: "center",
+  maxWidth: "100%",
   minHeight: { xs: "170px", md: "250px", lg: "250px", xl: "250px" },
-  flexWrap: { xs: "wrap", md: "no-wrap", lg: "no-wrap", xl: "no-wrap" },
+  flexWrap: { xs: "wrap", md: "wrap", lg: "wrap", xl: "wrap" },
   margin: "auto",
   position: "relative",
   userSelect: "none",
-  justifyContent: "space-between",
 };
 const secTitle: SxProps = {
+  maxWidth: "100%",
   fontSize: { xs: "12px", md: "20px", lg: "20px", xl: "20px" },
-  ml: "7%",
+  ml: "12%",
   mb: 2,
   fontWeight: "bold",
   color: "rgba(0, 0, 0, .7)",

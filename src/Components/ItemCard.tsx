@@ -42,10 +42,11 @@ const ItemCard = ({ item }: Props) => {
 };
 
 const boxStyle: SxProps = {
-  width: { xs: "8rem", md: "10rem", lg: "10rem", xl: "10rem" },
+  width: { xs: "7rem", md: "10rem", lg: "10rem", xl: "10rem" },
   height: "12rem",
   padding: "1rem",
-  marginBottom: { xs: "1rem", md: "0", lg: "0", xl: "0" },
+  margin: "1rem",
+  marginBottom: { xs: "1rem", md: "1rem", lg: "1rem", xl: "1rem" },
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",

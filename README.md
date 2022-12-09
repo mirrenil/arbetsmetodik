@@ -34,8 +34,6 @@
 
 - [ ] Det ska gå att se hur många gånger ett föremål har varit uthyrt
 
- 
-
 ## Krav för godkänt:
 
 - [ ] Uppgiften är inlämnad i tid på ItsLearning (zippat repo med kompletta startinstruktioner i README-fil, länk till deployad sida och designskisser)
@@ -54,7 +52,7 @@
 
 - [x] Ett workflow i GitHub Actions har implementerats i projektet
 
-- [ ] Cypress har implementerats i projektet och minst två tester har skapats för att testa funktionaliteten efter feedback från opponeringen
+- [x] Cypress har implementerats i projektet och minst två tester har skapats för att testa funktionaliteten efter feedback från opponeringen
 
 ## Krav för väl godkänt:
 
@@ -84,7 +82,7 @@ format with prettier
 
 remove unused code
 
-Av: 
+Av:
 **Linnea Albertsson [**github**](https://github.com/liinneea-a)**
 
 **Hazem Kawas [**github**](https://github.com/hazem-89)**
