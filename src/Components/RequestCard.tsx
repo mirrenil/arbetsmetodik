@@ -1,7 +1,7 @@
 import { CSSPropertiesWithMultiValues } from "@emotion/serialize";
 import { Box, CardMedia, Typography, useTheme, Button } from "@mui/material";
 import React, { CSSProperties, useEffect, useState } from "react";
-import { IRequest, IUser, IListItem } from "../Interfaces";
+import { IRequest, IUser, IListItem, ReqStatus } from "../Interfaces";
 import {
   getDocs,
   collection,
@@ -40,98 +40,151 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   }, []);
 
   const getReceiver = async () => {
-    const docRef = doc(db, "users", request.toUser);
-    const snap = await getDoc(docRef);
-    const userDoc = snap.data();
-
-    if (userDoc) {
-      const user = {
-        email: userDoc.email,
-        displayName: userDoc.displayName,
-        id: userDoc.id,
-      };
-      if (user) {
-        setReceiver(user as IUser);
-      }
-    }
-  };
-
-  const getReqItem = async () => {
-    const data = query(collection(db, "listings"));
-    const req = await getDocs(data);
-    req.forEach((doc) => {
-      if (doc.id == request.itemId) {
-        setItem({
-          authorID: doc.data().authorID,
-          title: doc.data().title,
-          description: doc.data().description,
-          image: doc.data().image,
-          price: doc.data().price,
-          category: doc.data().category,
-          location: doc.data().location,
-          id: doc.data().id,
-        });
-      }
-    });
-  };
-
-  const handleDeleteRequest = () => {
-    deleteRequest(request.id);
-    handleClose();
-  };
-
-  const handleDecline = () => {
-  };
-
-  const handleAccept = async () => {
-    const updateAcceptedReq = {
-      ...request,
-      accepted: true,
-    };
     try {
-      await setDoc(doc(db, "requests", request.id), updateAcceptedReq);
-      console.log(item?.title, "accepted");
+      const docRef = doc(db, "users", request.toUser);
+      const snap = await getDoc(docRef);
+      const userDoc = snap.data();
+
+      if (userDoc) {
+        const user = {
+          email: userDoc.email,
+          displayName: userDoc.displayName,
+          id: userDoc.id,
+        };
+        if (user) {
+          setReceiver(user as IUser);
+        }
+      }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const renderBasedOnRequestStatus = () => {
-    if (isMySentRequest && !request.accepted) {
-      console.log(item?.title, "is my sent, not accepted");
-      return (
-        <>
-          <Typography variant="h5">Pending...</Typography>
-          <Button variant="contained" onClick={handleOpen}>
-            Delete request
-          </Button>
-        </>
-      );
-    } else if (isMySentRequest && request.accepted) {
-      console.log(item?.title, "is my sent, accepted");
-      return <Typography variant="h5">Your request is accepted!</Typography>;
-    } else if (!isMySentRequest && !request.accepted) {
-      console.log(item?.title, "is not mine,  not accepted");
-
-      return (
-        <div>
-          <Button sx={[button, decline]} onClick={handleDecline}>
-            Decline
-          </Button>
-          <Button variant="contained" sx={button} onClick={handleAccept}>
-            Accept
-          </Button>
-        </div>
-      );
-    } else if (!isMySentRequest && request.accepted) {
-      console.log(item?.title, "is not mine, accepted");
-
-      return (
-        <Typography variant="h5">You have accepted this request</Typography>
-      );
-    } else {
-      return
+  const getReqItem = async () => {
+    const data = query(collection(db, "listings"));
+    try {
+      const req = await getDocs(data);
+      req.forEach((doc) => {
+        if (doc.id == request.itemId) {
+          setItem({
+            authorID: doc.data().authorID,
+            title: doc.data().title,
+            description: doc.data().description,
+            image: doc.data().image,
+            price: doc.data().price,
+            category: doc.data().category,
+            location: doc.data().location,
+            id: doc.data().id,
+          });
+        }
+      });
+    } catch (err) {
+      console.log(err);
     }
+  };
+
+  const handleDeleteRequest = () => {
+    if (request.id) {
+      deleteRequest(request?.id);
+    }
+    handleClose();
+  };
+
+  const handleRequestStatus = async (status: ReqStatus) => {
+    const updateAcceptedReq = {
+      ...request,
+      accepted: status,
+    };
+    if (request.id) {
+      try {
+        await setDoc(doc(db, "requests", request?.id), updateAcceptedReq);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  const renderBasedOnRequestStatus = () => {
+    let jsx: any;
+
+    switch (isMySentRequest) {
+      // If user sent request
+      case true:
+        switch (request.accepted) {
+          case ReqStatus.pending:
+            jsx = (
+              <>
+                <Typography variant="h5">Pending...</Typography>
+                <Button variant="contained" onClick={handleOpen}>
+                  Delete request
+                </Button>
+              </>
+            );
+
+            break;
+          case ReqStatus.accepted:
+            jsx = (
+              <Typography variant="h5">Your request is accepted!</Typography>
+            );
+
+            break;
+          case ReqStatus.declined:
+            jsx = (
+              <>
+                <Typography variant="h5">
+                  Your request has been declined
+                </Typography>
+                <Button variant="contained" onClick={handleDeleteRequest}>
+                  Delete request
+                </Button>
+              </>
+            );
+
+            break;
+        }
+        break;
+      // if user received request
+      case false:
+        switch (request.accepted) {
+          case ReqStatus.pending:
+            jsx = (
+              <div>
+                <Button
+                  sx={[button, decline]}
+                  onClick={() => handleRequestStatus(ReqStatus.declined)}
+                >
+                  Decline
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={button}
+                  onClick={() => handleRequestStatus(ReqStatus.accepted)}
+                >
+                  Accept
+                </Button>
+              </div>
+            );
+
+            break;
+          case ReqStatus.accepted:
+            jsx = (
+              <Typography variant="h5">
+                You have accepted this request
+              </Typography>
+            );
+
+            break;
+          case ReqStatus.declined:
+            jsx = (
+              <Typography variant="h5">
+                You have declined this request
+              </Typography>
+            );
+
+            break;
+        }
+    }
+    return jsx;
   };
 
   return (
