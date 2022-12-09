@@ -1,4 +1,4 @@
-name: Cypress Tests
+name: End-to-ednd Cypress Tests
 
 on: [push]
 
@@ -11,8 +11,4 @@ jobs:
             # Install NPM dependencies, cache them correctly
             # and run all Cypress tests
             - name: Cypress.io
-            uses: cypress-io/github-action@v5.0.0
-
-              with:
-                  build: npm run build
-                  start: npm run cypress:open
+              uses: cypress-io/github-action@v5.0.0
