@@ -97,7 +97,7 @@ function DetailPage() {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [item, setItem] = useState<IListItem>();
   const [reqSent, setReqSent] = useState<boolean>(false);
-  const { mySentRequests } = useUser();
+  const { mySentRequests, getMySentRequests } = useUser();
   const [cookies] = useCookies(["user"]);
 
   const formik = useFormik({
@@ -142,6 +142,7 @@ function DetailPage() {
     try {
       await addDoc(collection(db, "requests"), newRequest);
       setReqSent(true);
+      getMySentRequests();
     } catch (err) {
       console.log(err);
     }
@@ -149,8 +150,12 @@ function DetailPage() {
 
   const deleteListing = async (id: string) => {
     const itemToRemove = doc(db, "listings", id);
-    await deleteDoc(itemToRemove);
-    navigate("/profile/:id");
+    try {
+      await deleteDoc(itemToRemove);
+      navigate(`/profile/${cookies.user.uid}`);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const updateListing = useCallback(async () => {
