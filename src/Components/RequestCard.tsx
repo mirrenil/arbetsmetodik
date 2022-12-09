@@ -1,18 +1,11 @@
 import { CSSPropertiesWithMultiValues } from "@emotion/serialize";
 import { Box, CardMedia, Typography, useTheme, Button } from "@mui/material";
 import React, { CSSProperties, useEffect, useState } from "react";
-import camera from "../Assets/Images/Film-Photography.png";
 import { IRequest, IUser, IListItem } from "../Interfaces";
-import {
-  getDocs,
-  collection,
-  where,
-  query,
-  doc,
-  getDoc,
-} from "firebase/firestore";
+import { getDocs, collection, query, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useUser } from "../Contexts/UserContext";
+import Popup from "./popup";
 
 interface Props {
   request: IRequest;
@@ -24,6 +17,15 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   const [item, setItem] = useState<IListItem>();
   const theme = useTheme();
   const { deleteRequest } = useUser();
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     getReceiver();
@@ -67,8 +69,9 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   };
 
   const handleDeleteRequest = () => {
-    deleteRequest(request.id)
-  }
+    deleteRequest(request.id);
+    handleClose();
+  };
 
   return (
     <Box
@@ -120,7 +123,9 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
       {isMySentRequest ? (
         <>
           <Typography>Pending...</Typography>
-          <Button variant="contained" onClick={handleDeleteRequest}>Delete request</Button>
+          <Button variant="contained" onClick={handleOpen}>
+            Delete request
+          </Button>
         </>
       ) : (
         <div style={buttonsContainer}>
@@ -130,6 +135,11 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
           </Button>
         </div>
       )}
+      <Popup
+        open={open}
+        handleClose={handleClose}
+        handleDeleteRequest={handleDeleteRequest}
+      />
     </Box>
   );
 };
