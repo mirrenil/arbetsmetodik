@@ -65,7 +65,7 @@ function ProfilePage() {
     fetchItemsFromDb();
     AOS.init();
     AOS.refresh();
-  }, []);
+  }, [id]);
 
   return (
     <Box sx={wrapper}>
@@ -90,22 +90,27 @@ function ProfilePage() {
             />
           )}
           <>
-            <Typography variant="h2" component="h2" sx={{ marginTop: "1rem" }}>
+            <Typography variant="h2" component="h2">
               {user?.displayName}
             </Typography>
-            <button
-              onClick={handleOpen}
-              style={{
-                border: "none",
-                backgroundColor: "transparent",
-                cursor: "pointer",
-                marginTop: "1rem",
-                fontSize: "1.5rem",
-              }}
-            >
-              Update your username
-              <SettingsIcon />
-            </button>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <button
+                onClick={handleOpen}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  border: "none",
+                  backgroundColor: "transparent",
+                  cursor: "pointer",
+                  padding: "0",
+                }}
+              >
+                <Typography sx={{ fontSize: ".7rem" }}>
+                  Change your display name
+                </Typography>
+                <SettingsIcon sx={{ fontSize: "small" }} />
+              </button>
+            </Box>
           </>
           <Modal open={modalOpen} onClose={handleClose}>
             <Box sx={modalStyle}>
@@ -138,7 +143,7 @@ function ProfilePage() {
             component="h2"
             sx={{ marginTop: "2rem", marginBottom: "2rem" }}
           >
-            Your listings
+            Listings
           </Typography>
           <Box
             sx={{
@@ -158,7 +163,6 @@ function ProfilePage() {
                   style={{ textDecoration: "none" }}
                 >
                   <ItemCard key={item.id} item={item} />
-                  <h1>{item.authorID}</h1>
                 </Link>
               ))}
           </Box>
@@ -195,11 +199,18 @@ function ProfilePage() {
   );
 }
 
+const flex: SxProps = {
+  display: "flex",
+};
+const alignCenter: SxProps = {
+  alignItems: "center",
+};
+
 const wrapper: SxProps = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  height: { xs: "80vh", md: "70vh", lg: "70vh", xl: "70vh" },
+  minHeight: { xs: "80vh", md: "70vh", lg: "70vh", xl: "70vh" },
   margin: "2rem",
 };
 
