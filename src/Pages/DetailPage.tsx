@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { useCookies } from "react-cookie";
 import {
   collection,
   getDocs,
@@ -12,7 +12,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { IListItem } from "../Interfaces";
+import { IListItem, IRequest, ReqStatus } from "../Interfaces";
 import {
   Box,
   Card,
@@ -33,7 +33,7 @@ import { CSSProperties } from "@mui/styled-engine";
 import Dave from "../Assets/Images/Dave.png";
 import { useAuth } from "../Contexts/AuthContext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { Clear, Edit } from "@mui/icons-material";
+import { Clear, Cookie, Edit } from "@mui/icons-material";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useUser } from "../Contexts/UserContext";
@@ -98,6 +98,7 @@ function DetailPage() {
   const [item, setItem] = useState<IListItem>();
   const [reqSent, setReqSent] = useState<boolean>(false);
   const { mySentRequests } = useUser();
+  const [cookies] = useCookies(["user"]);
 
   const formik = useFormik({
     initialValues: {
@@ -129,14 +130,14 @@ function DetailPage() {
   };
 
   const handleSendRequest = async (e?: Event) => {
-    const newRequest = {
-      accepted: false,
+    const newRequest: IRequest = {
+      accepted: ReqStatus.pending,
       createdAt: new Date(),
-      fromUserId: currentUser?.uid,
-      fromUserName: currentUser?.displayName,
-      itemId: item?.id,
-      priceTotal: item?.price,
-      toUser: item?.authorID,
+      fromUserId: cookies.user?.uid,
+      fromUserName: cookies.user?.displayName,
+      itemId: item!.id,
+      priceTotal: item!.price,
+      toUser: item!.authorID,
     };
     try {
       await addDoc(collection(db, "requests"), newRequest);
@@ -207,7 +208,7 @@ function DetailPage() {
           price: item.price,
           category: item.category,
           location: item.location,
-          id: item.id,
+          id: id,
         });
       }
     }
