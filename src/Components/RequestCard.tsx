@@ -13,6 +13,7 @@ import {
 import { db } from "../firebase";
 import { useUser } from "../Contexts/UserContext";
 import Popup from "./popup";
+import { request } from "express";
 
 interface Props {
   request: IRequest;
@@ -25,6 +26,10 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   const theme = useTheme();
   const { deleteRequest } = useUser();
   const [open, setOpen] = useState(false);
+  const [reqStatus, setReqStatus] = useState<ReqStatus>(request.accepted);
+  const pending = ReqStatus.pending;
+  const accepted = ReqStatus.accepted;
+  const declined = ReqStatus.declined;
 
   const handleOpen = () => {
     setOpen(true);
@@ -65,7 +70,7 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
     try {
       const req = await getDocs(data);
       req.forEach((doc) => {
-        if (doc.id == request.itemId) {
+        if (doc.id === request.itemId) {
           setItem({
             authorID: doc.data().authorID,
             title: doc.data().title,
@@ -104,88 +109,99 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
     }
   };
 
-  const renderBasedOnRequestStatus = () => {
-    let jsx: any;
-
-    switch (isMySentRequest) {
-      // If user sent request
-      case true:
-        switch (request.accepted) {
-          case ReqStatus.pending:
-            jsx = (
-              <>
-                <Typography variant="h5">Pending...</Typography>
-                <Button variant="contained" onClick={handleOpen}>
-                  Delete request
-                </Button>
-              </>
-            );
-
-            break;
-          case ReqStatus.accepted:
-            jsx = (
-              <Typography variant="h5">Your request is accepted!</Typography>
-            );
-
-            break;
-          case ReqStatus.declined:
-            jsx = (
-              <>
-                <Typography variant="h5">
-                  Your request has been declined
-                </Typography>
-                <Button variant="contained" onClick={handleDeleteRequest}>
-                  Delete request
-                </Button>
-              </>
-            );
-
-            break;
-        }
-        break;
-      // if user received request
-      case false:
-        switch (request.accepted) {
-          case ReqStatus.pending:
-            jsx = (
-              <div>
-                <Button
-                  sx={[button, decline]}
-                  onClick={() => handleRequestStatus(ReqStatus.declined)}
-                >
-                  Decline
-                </Button>
-                <Button
-                  variant="contained"
-                  sx={button}
-                  onClick={() => handleRequestStatus(ReqStatus.accepted)}
-                >
-                  Accept
-                </Button>
-              </div>
-            );
-
-            break;
-          case ReqStatus.accepted:
-            jsx = (
-              <Typography variant="h5">
-                You have accepted this request
-              </Typography>
-            );
-
-            break;
-          case ReqStatus.declined:
-            jsx = (
-              <Typography variant="h5">
-                You have declined this request
-              </Typography>
-            );
-
-            break;
-        }
-    }
-    return jsx;
+  const updateCardStatus = (reqStatus: ReqStatus) => {
+    console.log(reqStatus);
+    setReqStatus(reqStatus);
   };
+
+  // const renderBasedOnRequestStatus = () => {
+  //   let jsx: any;
+
+  //   switch (isMySentRequest) {
+  //     // If user sent request
+  //     case true:
+  //       switch (request.accepted) {
+  //         case ReqStatus.pending:
+  //           jsx = (
+  //             <>
+  //               <Typography variant="h5">Pending...</Typography>
+  //               <Button variant="contained" onClick={handleOpen}>
+  //                 Delete request
+  //               </Button>
+  //             </>
+  //           );
+
+  //           break;
+  //         case ReqStatus.accepted:
+  //           jsx = (
+  //             <Typography variant="h5">Your request is accepted!</Typography>
+  //           );
+
+  //           break;
+  //         case ReqStatus.declined:
+  //           jsx = (
+  //             <>
+  //               <Typography variant="h5">
+  //                 Your request has been declined
+  //               </Typography>
+  //               <Button variant="contained" onClick={handleDeleteRequest}>
+  //                 Delete request
+  //               </Button>
+  //             </>
+  //           );
+
+  //           break;
+  //       }
+  //       break;
+  //     // if user received request
+  //     case false:
+  //       switch (request.accepted) {
+  //         case ReqStatus.pending:
+  //           jsx = (
+  //             <div>
+  //               <Button
+  //                 sx={[button, decline]}
+  //                 onClick={() => {
+  //                   handleRequestStatus(ReqStatus.declined);
+  //                   updateCardStatus(ReqStatus.declined);
+  //                 }}
+  //               >
+  //                 Decline
+  //               </Button>
+  //               <Button
+  //                 variant="contained"
+  //                 sx={button}
+  //                 onClick={() => {
+  //                   handleRequestStatus(ReqStatus.accepted);
+  //                   updateCardStatus(ReqStatus.accepted);
+  //                 }}
+  //               >
+  //                 Accept
+  //               </Button>
+  //             </div>
+  //           );
+
+  //           break;
+  //         case ReqStatus.accepted:
+  //           jsx = (
+  //             <Typography variant="h5">
+  //               You have accepted this request
+  //             </Typography>
+  //           );
+
+  //           break;
+  //         case ReqStatus.declined:
+  //           jsx = (
+  //             <Typography variant="h5">
+  //               You have declined this request
+  //             </Typography>
+  //           );
+
+  //           break;
+  //       }
+  //   }
+  //   return jsx;
+  // };
 
   return (
     <Box
@@ -234,7 +250,64 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         <span style={titleStyle}>Message: </span>Hi! I would like to rent the
         projector for a couple of days. Cheers!
       </Typography>
-      <Box sx={buttonsContainer}>{renderBasedOnRequestStatus()}</Box>
+      <Box sx={buttonsContainer}>
+        
+        {/* mySent && pending */}
+        {isMySentRequest && reqStatus == pending ? (
+          <>
+            <Typography variant="h5">Pending...</Typography>
+            <Button variant="contained" onClick={handleOpen}>
+              Delete request
+            </Button>
+          </>
+        ) : null}
+
+        {/* mySent && accepted */}
+        {isMySentRequest && reqStatus === accepted ? (
+          <Typography variant="h5">Your request is accepted!</Typography>
+        ) : null}
+
+        {/* mySent && declined */}
+        {isMySentRequest && reqStatus === declined ? (
+          <Typography variant="h5">You have declined this request</Typography>
+        ) : null}
+
+        {/* notMySent && pending */}
+        {!isMySentRequest && reqStatus === pending ? (
+          <div>
+            <Button
+              sx={[button, decline]}
+              onClick={() => {
+                handleRequestStatus(ReqStatus.declined);
+                updateCardStatus(ReqStatus.declined);
+              }}
+            >
+              Decline
+            </Button>
+            <Button
+              variant="contained"
+              sx={button}
+              onClick={() => {
+                handleRequestStatus(ReqStatus.accepted);
+                updateCardStatus(ReqStatus.accepted);
+              }}
+            >
+              Accept
+            </Button>
+          </div>
+        ) : null}
+
+        {/* notMySent && accepted */}
+        {!isMySentRequest && reqStatus === accepted ? (
+          <Typography variant="h5">You have accepted this request</Typography>
+        ) : null}
+
+        {/* notMySent && declined */}
+        {!isMySentRequest && reqStatus === declined ? (
+          <Typography variant="h5">You have declined this request</Typography>
+        ) : null}
+      </Box>
+
       <Popup
         open={open}
         handleClose={handleClose}
