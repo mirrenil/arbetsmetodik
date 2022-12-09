@@ -8,9 +8,9 @@
 
 - [ ] Det ska gå att klicka på en användare för att se alla användarens annonser
 
-- [ ] En inloggad användare ska kunna gå in på en annons och skicka förfrågan om att hyra
+- [x] En inloggad användare ska kunna gå in på en annons och skicka förfrågan om att hyra
 
-- [ ] En inloggad användare ska kunna lägga upp egna annonser och svara på förfrågningar (godkänna eller neka)
+- [x] En inloggad användare ska kunna lägga upp egna annonser och svara på förfrågningar (godkänna eller neka)
 
 - [x] Annonser som läggs upp ska ha en bild (med länk eller genom filuppladdning), titel, beskrivning och pris (kan även vara gratis)
 
