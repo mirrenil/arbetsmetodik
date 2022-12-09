@@ -5,7 +5,6 @@ import { Typography, Button, SxProps } from "@mui/material";
 import "../Assets/FormStyle.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
-import GoogleButton from "react-google-button";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as yup from "yup";
@@ -17,7 +16,7 @@ const validationSchema = yup.object({
 });
 
 function SignInPage() {
-  const { currentUser, login, googleSignIn, errorMessage } = useAuth();
+  const { currentUser, login, errorMessage } = useAuth();
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
 
@@ -26,16 +25,6 @@ function SignInPage() {
       await login(loginEmail, loginPassword);
     } catch (error) {
       console.error("login failed" + error);
-    }
-  };
-
-  const handleGoogleSignIn = (e: FormEvent) => {
-    e.preventDefault();
-
-    try {
-      googleSignIn();
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -115,10 +104,6 @@ function SignInPage() {
                   Email and password do not match
                 </Typography>
               ) : null}
-              <Typography variant="body1" align="center">
-                OR
-              </Typography>
-              <GoogleButton type="light" onClick={handleGoogleSignIn} />
               <Link to="/signup">
                 <Typography>
                   Don&apos;t have an account? Sign up here!
