@@ -403,7 +403,6 @@ function DetailPage() {
             )}
           </>
         )}
-        {reqSent && <Typography variant="h4">Request sent!</Typography>}
       </Card>
     </Box>
   );
