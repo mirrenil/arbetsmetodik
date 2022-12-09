@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   collection,
   getDocs,
@@ -9,9 +8,10 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { IListItem } from "../Interfaces";
+import { IListItem, IUser } from "../Interfaces";
 import {
   Box,
   Card,
@@ -79,10 +79,6 @@ const categories = [
     value: "Cars",
     title: "Cars",
   },
-  {
-    value: "Other",
-    title: "Other",
-  },
 ];
 
 function DetailPage() {
@@ -94,6 +90,7 @@ function DetailPage() {
   const handleClose = () => setModalOpen(false);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [item, setItem] = useState<IListItem>();
+  const [user, setUser] = useState<IUser>();
   const [reqSent, setReqSent] = useState<boolean>(false);
 
   const formik = useFormik({
@@ -167,6 +164,12 @@ function DetailPage() {
       const listingProvided = listingsProvided.find(
         (item: any) => item.id === id
       );
+      const userDocRef = doc(db, "users", listingProvided.authorID);
+      const docSnap = await getDoc(userDocRef);
+      if (docSnap.exists()) {
+        const user: any = docSnap.data();
+        setUser(user);
+      }
       return setItem(listingProvided);
     }
     setDocumentData();
@@ -367,30 +370,26 @@ function DetailPage() {
         <Card sx={lessorCard}>
           <Box sx={lessorCardLeftInfo}>
             <CardContent sx={{ flex: "1 0 auto" }}>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                component="div"
-              >
-                David Jensen
+              <img
+                style={{
+                  width: "150px",
+                  height: "150px",
+                  borderRadius: "50%",
+                }}
+                src="https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
+                alt="profile picture"
+              />
+              <Typography variant="h6" color="text.secondary" component="div">
+                {user?.displayName}
               </Typography>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                component="div"
+              <Link
+                to={`/profile/${item?.authorID}`}
+                style={{ textDecoration: "none" }}
               >
-                Member since: 1231 23 123
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                component="div"
-              >
-                View profile
-              </Typography>
+                View Profile
+              </Link>
             </CardContent>
           </Box>
-          <CardMedia component="img" sx={lessorPic} image={Dave} alt="Dave" />
         </Card>
         {reqSent ? (
           <Typography variant="h4">Request sent!</Typography>
@@ -468,9 +467,8 @@ const itemImage: CSSProperties = {
 
 const lessorCard: SxProps = {
   display: "flex",
-  justifyContent: "space-between",
+  textAlign: "center",
   alignItems: "center",
-  width: "98%",
   height: "191",
   boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.29)",
 };
@@ -478,11 +476,6 @@ const lessorCard: SxProps = {
 const lessorCardLeftInfo: SxProps = {
   display: "flex",
   flexDirection: "column",
-};
-
-const lessorPic: SxProps = {
-  width: { xs: "25%", md: "12%", lg: "12%", xl: "12%" },
-  marginRight: { xs: "0", md: "1rem", lg: "1rem", xl: "1rem" },
 };
 
 const button: SxProps = {
