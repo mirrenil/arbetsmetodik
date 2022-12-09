@@ -348,41 +348,61 @@ function DetailPage() {
             </Modal>
           </>
         ) : (
-           <Card sx={lessorCard}>
-          <Box sx={lessorCardLeftInfo}>
-            <CardContent sx={{ flex: "1 0 auto" }}>
-              <img
-                style={{
-                  width: "150px",
-                  height: "150px",
-                  borderRadius: "50%",
-                }}
-                src="https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
-                alt="profile picture"
-              />
-              <Typography variant="h6" color="text.secondary" component="div">
-                {user?.displayName}
-              </Typography>
-              <Link
-                to={`/profile/${item?.authorID}`}
-                style={{ textDecoration: "none" }}
+          <Card sx={lessorCard}>
+            <Box sx={lessorCardLeftInfo}>
+              <CardContent sx={{ flex: "1 0 auto" }}>
+                <img
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    borderRadius: "50%",
+                  }}
+                  src="https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
+                  alt="profile picture"
+                />
+                <Typography variant="h6" color="text.secondary" component="div">
+                  {user?.displayName}
+                </Typography>
+                <Link
+                  to={`/profile/${item?.authorID}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  View Profile
+                </Link>
+              </CardContent>
+            </Box>
+          </Card>
+        )}
+
+        {reqSent ? (
+          <Typography variant="h4">Request sent!</Typography>
+        ) : (
+          <>
+            {currentUser ? (
+              <Button
+                sx={button}
+                variant="contained"
+                onClick={() => handleSendRequest()}
               >
-                View Profile
-              </Link>
-            </CardContent>
-          </Box>
-        </Card>
+                Send a request
+              </Button>
+            ) : (
+              <>
+                <Typography align="center" variant="h6">
+                  You are not signed in, please sign in to be able to send a
+                  booking request.
+                </Typography>
+                <Button
+                  sx={button}
+                  variant="contained"
+                  onClick={() => navigate("/signin")}
+                >
+                  Sign in
+                </Button>
+              </>
+            )}
+          </>
         )}
-        {currentUser?.uid !== item?.authorID && (
-          <Button
-            sx={button}
-            variant="contained"
-            onClick={() => handleSendRequest()}
-          >
-            Send a request
-          </Button>
-        )}
-        {reqSent && <Typography variant="h4">Request sent!</Typography>}
       </Card>
     </Box>
   );
@@ -452,6 +472,7 @@ const lessorCard: SxProps = {
   alignItems: "center",
   height: "191",
   boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.29)",
+  mb: 5,
 };
 
 const lessorCardLeftInfo: SxProps = {
