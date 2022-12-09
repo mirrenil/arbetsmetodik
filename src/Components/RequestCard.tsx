@@ -102,7 +102,10 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
     };
     if (request.id) {
       try {
-        await setDoc(doc(db, "requests", request?.id), updateAcceptedReq);
+        await setDoc(
+          doc(db, "requests", request?.id),
+          updateAcceptedReq
+        );
       } catch (err) {
         console.log(err);
       }
@@ -110,105 +113,20 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   };
 
   const updateCardStatus = (reqStatus: ReqStatus) => {
-    console.log(reqStatus);
     setReqStatus(reqStatus);
   };
-
-  // const renderBasedOnRequestStatus = () => {
-  //   let jsx: any;
-
-  //   switch (isMySentRequest) {
-  //     // If user sent request
-  //     case true:
-  //       switch (request.accepted) {
-  //         case ReqStatus.pending:
-  //           jsx = (
-  //             <>
-  //               <Typography variant="h5">Pending...</Typography>
-  //               <Button variant="contained" onClick={handleOpen}>
-  //                 Delete request
-  //               </Button>
-  //             </>
-  //           );
-
-  //           break;
-  //         case ReqStatus.accepted:
-  //           jsx = (
-  //             <Typography variant="h5">Your request is accepted!</Typography>
-  //           );
-
-  //           break;
-  //         case ReqStatus.declined:
-  //           jsx = (
-  //             <>
-  //               <Typography variant="h5">
-  //                 Your request has been declined
-  //               </Typography>
-  //               <Button variant="contained" onClick={handleDeleteRequest}>
-  //                 Delete request
-  //               </Button>
-  //             </>
-  //           );
-
-  //           break;
-  //       }
-  //       break;
-  //     // if user received request
-  //     case false:
-  //       switch (request.accepted) {
-  //         case ReqStatus.pending:
-  //           jsx = (
-  //             <div>
-  //               <Button
-  //                 sx={[button, decline]}
-  //                 onClick={() => {
-  //                   handleRequestStatus(ReqStatus.declined);
-  //                   updateCardStatus(ReqStatus.declined);
-  //                 }}
-  //               >
-  //                 Decline
-  //               </Button>
-  //               <Button
-  //                 variant="contained"
-  //                 sx={button}
-  //                 onClick={() => {
-  //                   handleRequestStatus(ReqStatus.accepted);
-  //                   updateCardStatus(ReqStatus.accepted);
-  //                 }}
-  //               >
-  //                 Accept
-  //               </Button>
-  //             </div>
-  //           );
-
-  //           break;
-  //         case ReqStatus.accepted:
-  //           jsx = (
-  //             <Typography variant="h5">
-  //               You have accepted this request
-  //             </Typography>
-  //           );
-
-  //           break;
-  //         case ReqStatus.declined:
-  //           jsx = (
-  //             <Typography variant="h5">
-  //               You have declined this request
-  //             </Typography>
-  //           );
-
-  //           break;
-  //       }
-  //   }
-  //   return jsx;
-  // };
 
   return (
     <Box
       sx={{
         padding: "1rem",
         boxShadow: "0px 0px 15px -3px #000000",
-        maxWidth: { xs: "20rem", md: "25rem", lg: "25rem", xl: "25rem" },
+        maxWidth: {
+          xs: "20rem",
+          md: "25rem",
+          lg: "25rem",
+          xl: "25rem",
+        },
         height: { xs: "none", md: "15rem", lg: "15rem", xl: "15rem" },
         borderRadius: theme.shape.buttonBorderRadius,
         margin: "auto",
@@ -218,7 +136,11 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         marginBottom: "2rem",
       }}
     >
-      <CardMedia sx={[imgStyle, grid.pic]} component="img" src={item?.image} />
+      <CardMedia
+        sx={[imgStyle, grid.pic]}
+        component="img"
+        src={item?.image}
+      />
       <Typography sx={[textContainer, grid.reqFrom]}>
         {isMySentRequest ? (
           <>
@@ -245,14 +167,14 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         <span style={titleStyle}>Time to: </span> Sunday, 27 nov
       </Typography>
       <Typography sx={[textContainer]}>
-        <span style={titleStyle}>Price total: </span> {request.priceTotal} kr
+        <span style={titleStyle}>Price total: </span>{" "}
+        {request.priceTotal} kr
       </Typography>
       <Typography sx={[textContainer, grid.message]}>
-        <span style={titleStyle}>Message: </span>Hi! I would like to rent the
-        projector for a couple of days. Cheers!
+        <span style={titleStyle}>Message: </span>Hi! I would like to
+        rent the projector for a couple of days. Cheers!
       </Typography>
       <Box sx={buttonsContainer}>
-        
         {/* mySent && pending */}
         {isMySentRequest && reqStatus == pending ? (
           <>
@@ -265,12 +187,16 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
 
         {/* mySent && accepted */}
         {isMySentRequest && reqStatus === accepted ? (
-          <Typography variant="h5">Your request is accepted!</Typography>
+          <Typography variant="h5">
+            Your request is accepted!
+          </Typography>
         ) : null}
 
         {/* mySent && declined */}
         {isMySentRequest && reqStatus === declined ? (
-          <Typography variant="h5">You have declined this request</Typography>
+          <Typography variant="h5">
+            You have declined this request
+          </Typography>
         ) : null}
 
         {/* notMySent && pending */}
@@ -300,12 +226,24 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
 
         {/* notMySent && accepted */}
         {!isMySentRequest && reqStatus === accepted ? (
-          <Typography variant="h5">You have accepted this request</Typography>
+          <Typography variant="h5">
+            You have accepted this request
+          </Typography>
         ) : null}
 
         {/* notMySent && declined */}
         {!isMySentRequest && reqStatus === declined ? (
-          <Typography variant="h5">You have declined this request</Typography>
+          <>
+            <Typography variant="h5">
+              You have declined this request
+            </Typography>
+            <Button
+              variant="contained"
+              onClick={handleDeleteRequest}
+            >
+              Delete request
+            </Button>
+          </>
         ) : null}
       </Box>
 
