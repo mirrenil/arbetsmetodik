@@ -409,7 +409,7 @@ function DetailPage() {
               <>
                 <Typography align="center" variant="h6">
                   You are not signed in, please sign in to be able to send a
-                  booking request
+                  booking request.
                 </Typography>
                 <Button
                   sx={button}
