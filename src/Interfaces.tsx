@@ -13,7 +13,7 @@ export interface IRequest {
   accepted: boolean;
   createdAt: Date;
   fromUserId: string;
-  fromUserName: string,
+  fromUserName: string;
   toUser: string;
   itemId: string;
   priceTotal: number;
@@ -21,8 +21,8 @@ export interface IRequest {
 }
 
 export interface IUser {
-  email: string;
   displayName: string;
+  email: string;
   id: string;
 }
 

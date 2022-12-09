@@ -1,8 +1,15 @@
 /* eslint-disable */
-import { collection, where, getDocs, query } from "firebase/firestore";
+import {
+  collection,
+  where,
+  getDocs,
+  query,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { db } from "../firebase";
-import { IRequest } from "../Interfaces";
+import { IRequest, IUser } from "../Interfaces";
 import { useAuth } from "./AuthContext";
 
 interface UserContextValue {
