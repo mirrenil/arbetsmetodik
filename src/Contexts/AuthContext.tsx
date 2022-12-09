@@ -5,7 +5,6 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-  GoogleAuthProvider,
   signInWithPopup,
   getAuth,
   User,
@@ -26,7 +25,6 @@ interface AuthContext {
   login: (email: string, password: string) => Promise<any>;
   logout: () => void;
   currentUser?: UserInfo;
-  googleSignIn: () => void;
   errorMessage: boolean;
 }
 
@@ -35,7 +33,6 @@ export const AuthContext = createContext<AuthContext>({
   login: async () => {},
   logout: () => {},
   currentUser: undefined,
-  googleSignIn: () => Promise,
   errorMessage: false,
 });
 
@@ -59,17 +56,6 @@ export function AuthProvider({ children }: any) {
     });
     return unsubscribe;
   }, [onAuthStateChanged, auth, currentUser]);
-
-  const googleSignIn = () => {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider);
-    navigate(`/profile/${auth.currentUser?.uid}`);
-    toast.success("You are logged in successfully!", {
-      autoClose: 1000,
-      theme: "colored",
-      delay: 3000,
-    });
-  };
 
   const addUserToDb = async (
     email: string,
@@ -164,7 +150,6 @@ export function AuthProvider({ children }: any) {
         login,
         logout,
         currentUser,
-        googleSignIn,
         errorMessage,
       }}
     >

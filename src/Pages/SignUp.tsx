@@ -2,7 +2,6 @@ import { Typography, Box, TextField, Button } from "@mui/material";
 import React, { FormEvent, useState } from "react";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
-import GoogleButton from "react-google-button";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as yup from "yup";
@@ -16,7 +15,7 @@ const validationSchema = yup.object({
 });
 
 function SignUpPage() {
-  const { signup, googleSignIn, errorMessage } = useAuth();
+  const { signup, errorMessage } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmationPassword, setConfirmationPassword] = useState<string>("");
@@ -31,15 +30,6 @@ function SignUpPage() {
       await signup(email, password, displayName);
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const handleGoogleSignIn = (e: FormEvent) => {
-    e.preventDefault();
-    try {
-      googleSignIn();
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -154,14 +144,6 @@ function SignUpPage() {
           >
             Sign up
           </Button>
-          <Typography variant="body1" align="center">
-            OR
-          </Typography>
-          <GoogleButton
-            label="Sign up with Google"
-            type="light"
-            onClick={handleGoogleSignIn}
-          />
         </form>
       </Box>
     </Box>
