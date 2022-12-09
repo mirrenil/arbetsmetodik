@@ -152,7 +152,7 @@ const categoryTitleDiv: SxProps = {
   position: "absolute",
   top: "57%",
   left: "50%",
-  width: { xs: "150px", md: "150px", lg: "200px", xl: "250px" },
+  width: { xs: "150px", md: "200px", lg: "220px", xl: "250px" },
   height: "30px",
   backgroundColor: "rgba(217, 217, 217, .82)",
   transform: "translate(-50%, -50%)",

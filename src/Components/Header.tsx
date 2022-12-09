@@ -69,7 +69,10 @@ const Header = () => {
             </Link>
             {currentUser ? (
               <Box>
-                <Link to="/profile/:id" style={{ textDecoration: "none" }}>
+                <Link
+                  to={`/profile/${currentUser.uid}`}
+                  style={{ textDecoration: "none" }}
+                >
                   {userImg ? (
                     <Box
                       component="img"
@@ -250,7 +253,10 @@ const Header = () => {
             {currentUser ? (
               <>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Link to="/profile/:id" style={{ textDecoration: "none" }}>
+                  <Link
+                    to={`/profile/${currentUser.uid}`}
+                    style={{ textDecoration: "none" }}
+                  >
                     {userImg ? (
                       <Box
                         component="img"
