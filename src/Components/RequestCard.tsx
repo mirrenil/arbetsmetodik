@@ -2,7 +2,14 @@ import { CSSPropertiesWithMultiValues } from "@emotion/serialize";
 import { Box, CardMedia, Typography, useTheme, Button } from "@mui/material";
 import React, { CSSProperties, useEffect, useState } from "react";
 import { IRequest, IUser, IListItem } from "../Interfaces";
-import { getDocs, collection, query, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  query,
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { useUser } from "../Contexts/UserContext";
 import Popup from "./popup";
@@ -18,7 +25,6 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   const theme = useTheme();
   const { deleteRequest } = useUser();
   const [open, setOpen] = useState(false);
-  const [isAccepted, setIsAccepted] = useState<boolean>(false)
 
   const handleOpen = () => {
     setOpen(true);
@@ -75,7 +81,6 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   };
 
   const handleDecline = () => {
-    console.log(request);
   };
 
   const handleAccept = async () => {
@@ -83,11 +88,49 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
       ...request,
       accepted: true,
     };
-    
     try {
       await setDoc(doc(db, "requests", request.id), updateAcceptedReq);
+      console.log(item?.title, "accepted");
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const renderBasedOnRequestStatus = () => {
+    if (isMySentRequest && !request.accepted) {
+      console.log(item?.title, "is my sent, not accepted");
+      return (
+        <>
+          <Typography variant="h5">Pending...</Typography>
+          <Button variant="contained" onClick={handleOpen}>
+            Delete request
+          </Button>
+        </>
+      );
+    } else if (isMySentRequest && request.accepted) {
+      console.log(item?.title, "is my sent, accepted");
+      return <Typography variant="h5">Your request is accepted!</Typography>;
+    } else if (!isMySentRequest && !request.accepted) {
+      console.log(item?.title, "is not mine,  not accepted");
+
+      return (
+        <div>
+          <Button sx={[button, decline]} onClick={handleDecline}>
+            Decline
+          </Button>
+          <Button variant="contained" sx={button} onClick={handleAccept}>
+            Accept
+          </Button>
+        </div>
+      );
+    } else if (!isMySentRequest && request.accepted) {
+      console.log(item?.title, "is not mine, accepted");
+
+      return (
+        <Typography variant="h5">You have accepted this request</Typography>
+      );
+    } else {
+      return
     }
   };
 
@@ -138,23 +181,7 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         <span style={titleStyle}>Message: </span>Hi! I would like to rent the
         projector for a couple of days. Cheers!
       </Typography>
-      {isMySentRequest ? (
-        <>
-          <Typography>Pending...</Typography>
-          <Button variant="contained" onClick={handleOpen}>
-            Delete request
-          </Button>
-        </>
-      ) : (
-        <div style={buttonsContainer}>
-          <Button sx={[button, decline]} onClick={handleDecline}>
-            Decline
-          </Button>
-          <Button variant="contained" sx={button} onClick={handleAccept}>
-            Accept
-          </Button>
-        </div>
-      )}
+      <Box sx={buttonsContainer}>{renderBasedOnRequestStatus()}</Box>
       <Popup
         open={open}
         handleClose={handleClose}
