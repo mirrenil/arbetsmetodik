@@ -150,8 +150,7 @@ function ProfilePage() {
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",
-              gap: "4rem",
-              width: "100%",
+              width: { xs: "100%", md: "100%", lg: "80%", xl: "80%" },
             }}
           >
             {items
@@ -204,7 +203,7 @@ const wrapper: SxProps = {
   flexDirection: "column",
   alignItems: "center",
   minHeight: { xs: "80vh", md: "70vh", lg: "70vh", xl: "70vh" },
-  margin: "2rem",
+  marginTop: { xs: "3rem", md: "4rem", lg: "0", xl: "0" },
   zIndex: "100",
 };
 
