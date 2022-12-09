@@ -36,6 +36,8 @@ export function UserProvider({ children }: any) {
   const { currentUser } = useAuth();
 
   useEffect(() => {
+    setMyReceivedRequests([]);
+    setMySentRequests([])
     getMyReceivedRequests();
     getMySentRequests();
   }, [currentUser]);
@@ -50,7 +52,8 @@ export function UserProvider({ children }: any) {
   };
 
   const getMySentRequests = async () => {
-    const requests = await getReqs("requests", "fromUser");
+    const requests = await getReqs('requests', 'fromUserId');
+
     if (requests?.length) {
       requests.forEach((req) => {
         setMySentRequests((reqs) => [...reqs, req]);

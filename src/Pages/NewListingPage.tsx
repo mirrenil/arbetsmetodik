@@ -17,6 +17,8 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useAuth } from "../Contexts/AuthContext";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const validationSchema = yup.object({
   category: yup.string().required("Category is required"),
@@ -66,6 +68,7 @@ const categories = [
 export default function NewListing() {
   const { currentUser } = useAuth();
   const [authorID, setAuthorID] = useState(currentUser?.uid);
+  const [errorMessage, setErrorMessage] = useState<boolean>(false);
   const listingsRef = collection(db, "listings");
   const navigate = useNavigate();
 
@@ -80,8 +83,20 @@ export default function NewListing() {
         image: formik.values.imageUrl,
         authorID,
         createdAt: Timestamp.now(),
+      }).catch((error) => {
+        alert(error.message);
+        setErrorMessage(true);
+        toast.warn("Your account did not register", {
+          autoClose: 1000,
+          theme: "colored",
+          delay: 3000,
+        });
       });
       navigate("/");
+      toast.success("Your item has been added", {
+        autoClose: 1000,
+        theme: "colored",
+      });
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -97,13 +112,14 @@ export default function NewListing() {
       imageUrl: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: () => {
       handleNewListing();
     },
   });
 
   return (
     <Box sx={wrapper}>
+      <ToastContainer />
       {currentUser ? (
         <>
           {currentUser.displayName ? (
@@ -210,6 +226,11 @@ export default function NewListing() {
                       formik.touched.imageUrl && formik.errors.imageUrl
                     }
                   />
+                  {errorMessage ? (
+                    <Typography>
+                      Something went wrong, please try again
+                    </Typography>
+                  ) : null}
                   <Button
                     color="primary"
                     variant="contained"
