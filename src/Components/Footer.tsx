@@ -14,7 +14,7 @@ const Footer = () => {
         <img
           src={footerImg}
           alt=""
-          style={{ width: "100vw", height: "150px" }}
+          style={{ width: "100%", height: "150px" }}
         />
       </Box>
       <Box sx={mobileContainer}>
