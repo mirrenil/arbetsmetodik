@@ -2,7 +2,7 @@ import { CSSPropertiesWithMultiValues } from "@emotion/serialize";
 import { Box, CardMedia, Typography, useTheme, Button } from "@mui/material";
 import React, { CSSProperties, useEffect, useState } from "react";
 import { IRequest, IUser, IListItem } from "../Interfaces";
-import { getDocs, collection, query, doc, getDoc } from "firebase/firestore";
+import { getDocs, collection, query, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useUser } from "../Contexts/UserContext";
 import Popup from "./popup";
@@ -18,6 +18,7 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   const theme = useTheme();
   const { deleteRequest } = useUser();
   const [open, setOpen] = useState(false);
+  const [isAccepted, setIsAccepted] = useState<boolean>(false)
 
   const handleOpen = () => {
     setOpen(true);
@@ -71,6 +72,23 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   const handleDeleteRequest = () => {
     deleteRequest(request.id);
     handleClose();
+  };
+
+  const handleDecline = () => {
+    console.log(request);
+  };
+
+  const handleAccept = async () => {
+    const updateAcceptedReq = {
+      ...request,
+      accepted: true,
+    };
+    
+    try {
+      await setDoc(doc(db, "requests", request.id), updateAcceptedReq);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -129,8 +147,10 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         </>
       ) : (
         <div style={buttonsContainer}>
-          <Button sx={[button, decline]}>Decline</Button>
-          <Button variant="contained" sx={button}>
+          <Button sx={[button, decline]} onClick={handleDecline}>
+            Decline
+          </Button>
+          <Button variant="contained" sx={button} onClick={handleAccept}>
             Accept
           </Button>
         </div>
