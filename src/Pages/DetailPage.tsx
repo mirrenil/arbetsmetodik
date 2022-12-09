@@ -348,30 +348,31 @@ function DetailPage() {
             </Modal>
           </>
         ) : (
-           <Card sx={lessorCard}>
-          <Box sx={lessorCardLeftInfo}>
-            <CardContent sx={{ flex: "1 0 auto" }}>
-              <img
-                style={{
-                  width: "150px",
-                  height: "150px",
-                  borderRadius: "50%",
-                }}
-                src="https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
-                alt="profile picture"
-              />
-              <Typography variant="h6" color="text.secondary" component="div">
-                {user?.displayName}
-              </Typography>
-              <Link
-                to={`/profile/${item?.authorID}`}
-                style={{ textDecoration: "none" }}
-              >
-                View Profile
-              </Link>
-            </CardContent>
-          </Box>
-        </Card>
+          <Card sx={lessorCard}>
+            <Box sx={lessorCardLeftInfo}>
+              <CardContent sx={{ flex: "1 0 auto" }}>
+                <img
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    borderRadius: "50%",
+                  }}
+                  src="https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg"
+                  alt="profile picture"
+                />
+                <Typography variant="h6" color="text.secondary" component="div">
+                  {user?.displayName}
+                </Typography>
+                <Link
+                  to={`/profile/${item?.authorID}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  View Profile
+                </Link>
+              </CardContent>
+            </Box>
+          </Card>
+        )}
 
         {reqSent ? (
           <Typography variant="h4">Request sent!</Typography>
@@ -401,7 +402,6 @@ function DetailPage() {
               </>
             )}
           </>
-
         )}
         {reqSent && <Typography variant="h4">Request sent!</Typography>}
       </Card>
