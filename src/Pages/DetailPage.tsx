@@ -392,16 +392,35 @@ function DetailPage() {
           </Box>
           <CardMedia component="img" sx={lessorPic} image={Dave} alt="Dave" />
         </Card>
+
         {reqSent ? (
           <Typography variant="h4">Request sent!</Typography>
         ) : (
-          <Button
-            sx={button}
-            variant="contained"
-            onClick={() => handleSendRequest()}
-          >
-            Send a request
-          </Button>
+          <>
+            {currentUser ? (
+              <Button
+                sx={button}
+                variant="contained"
+                onClick={() => handleSendRequest()}
+              >
+                Send a request
+              </Button>
+            ) : (
+              <>
+                <Typography align="center" variant="h6">
+                  You are not signed in, please sign in to be able to send a
+                  booking request
+                </Typography>
+                <Button
+                  sx={button}
+                  variant="contained"
+                  onClick={() => navigate("/signin")}
+                >
+                  Sign in
+                </Button>
+              </>
+            )}
+          </>
         )}
       </Card>
     </Box>
@@ -473,6 +492,7 @@ const lessorCard: SxProps = {
   width: "98%",
   height: "191",
   boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.29)",
+  mb: 5,
 };
 
 const lessorCardLeftInfo: SxProps = {
