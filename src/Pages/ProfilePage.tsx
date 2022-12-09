@@ -41,9 +41,7 @@ function ProfilePage() {
       displayName: username,
     };
     userObject = { ...userObject };
-    //updates in auth
     await updateProfile(currentUser as User, userObject);
-    // updates in db
     await setDoc(doc(db, "users", currentUser!.uid), {
       displayName: username,
       email: currentUser?.email,

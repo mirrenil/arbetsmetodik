@@ -93,7 +93,6 @@ function DetailPage() {
   const [user, setUser] = useState<IUser>();
   const [reqSent, setReqSent] = useState<boolean>(false);
 
-
   const formik = useFormik({
     initialValues: {
       category: "",
@@ -470,7 +469,6 @@ const lessorCard: SxProps = {
   display: "flex",
   textAlign: "center",
   alignItems: "center",
-  // width: "98%",
   height: "191",
   boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.29)",
 };
@@ -478,11 +476,6 @@ const lessorCard: SxProps = {
 const lessorCardLeftInfo: SxProps = {
   display: "flex",
   flexDirection: "column",
-};
-
-const lessorPic: SxProps = {
-  width: { xs: "25%", md: "12%", lg: "12%", xl: "12%" },
-  marginRight: { xs: "0", md: "1rem", lg: "1rem", xl: "1rem" },
 };
 
 const button: SxProps = {
