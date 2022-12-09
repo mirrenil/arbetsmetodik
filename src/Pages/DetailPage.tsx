@@ -29,10 +29,8 @@ import {
   Select,
 } from "@mui/material";
 import { CSSProperties } from "@mui/styled-engine";
-import Dave from "../Assets/Images/Dave.png";
 import { useAuth } from "../Contexts/AuthContext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { Clear, Edit } from "@mui/icons-material";
 import * as yup from "yup";
 import { useFormik } from "formik";
 
@@ -188,152 +186,6 @@ function DetailPage() {
         </Box>
         <CardContent sx={infoContainer}>
           <Box sx={cardHeaders}>
-            {currentUser?.uid === item?.authorID && (
-              <>
-                <Box sx={crudItems}>
-                  <button
-                    style={{
-                      border: "none",
-                      cursor: "pointer",
-                      backgroundColor: "transparent",
-                    }}
-                    onClick={() => deleteListing(id as string)}
-                  >
-                    <Clear />
-                  </button>
-                  <button
-                    style={{
-                      border: "none",
-                      cursor: "pointer",
-                      backgroundColor: "transparent",
-                      padding: "1rem",
-                    }}
-                    onClick={handleOpen}
-                  >
-                    <Edit />
-                  </button>
-                </Box>
-                <Modal open={modalOpen} onClose={handleClose}>
-                  <Box sx={modalStyle}>
-                    <form onSubmit={formik.handleSubmit}>
-                      <DialogContent sx={crudModal}>
-                        <DialogContentText sx={{ fontSize: "2rem" }}>
-                          Update your listing
-                        </DialogContentText>
-                        <InputLabel id="category">Category</InputLabel>
-                        <Select
-                          id="category"
-                          name="category"
-                          value={formik.values.category}
-                          label="Category"
-                          onChange={formik.handleChange}
-                          error={
-                            formik.touched.category &&
-                            Boolean(formik.errors.category)
-                          }
-                        >
-                          {categories.map((chooseCategory, index) => (
-                            <MenuItem key={index} value={chooseCategory.title}>
-                              {chooseCategory.title}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                        <TextField
-                          id="title"
-                          name="title"
-                          autoFocus
-                          margin="normal"
-                          type="text"
-                          label="Title"
-                          value={formik.values.title}
-                          onChange={formik.handleChange}
-                          error={
-                            formik.touched.title && Boolean(formik.errors.title)
-                          }
-                          helperText={
-                            formik.touched.title && formik.errors.title
-                          }
-                        />
-                        <TextField
-                          id="description"
-                          name="description"
-                          autoFocus
-                          margin="normal"
-                          type="text"
-                          label="Description"
-                          value={formik.values.description}
-                          onChange={formik.handleChange}
-                          error={
-                            formik.touched.description &&
-                            Boolean(formik.errors.description)
-                          }
-                          helperText={
-                            formik.touched.description &&
-                            formik.errors.description
-                          }
-                        />
-                        <TextField
-                          id="price"
-                          name="price"
-                          autoFocus
-                          margin="normal"
-                          type="number"
-                          label="Price"
-                          value={formik.values.price}
-                          onChange={formik.handleChange}
-                          error={
-                            formik.touched.price && Boolean(formik.errors.price)
-                          }
-                          helperText={
-                            formik.touched.price && formik.errors.price
-                          }
-                        />
-                        <TextField
-                          id="location"
-                          name="location"
-                          autoFocus
-                          margin="normal"
-                          type="text"
-                          label="Location"
-                          value={formik.values.location}
-                          onChange={formik.handleChange}
-                          error={
-                            formik.touched.location &&
-                            Boolean(formik.errors.location)
-                          }
-                          helperText={
-                            formik.touched.location && formik.errors.location
-                          }
-                        />
-                        <TextField
-                          id="image"
-                          name="image"
-                          autoFocus
-                          margin="normal"
-                          type="text"
-                          label="Image"
-                          value={formik.values.image}
-                          onChange={formik.handleChange}
-                          error={
-                            formik.touched.image && Boolean(formik.errors.image)
-                          }
-                          helperText={
-                            formik.touched.image && formik.errors.image
-                          }
-                        />
-                        <Button
-                          variant="contained"
-                          type="submit"
-                          sx={{ marginTop: "1.5rem" }}
-                        >
-                          Update Listing
-                        </Button>
-                      </DialogContent>
-                    </form>
-                  </Box>
-                </Modal>
-              </>
-            )}
             <Typography
               sx={titlePrice}
               gutterBottom
@@ -367,7 +219,136 @@ function DetailPage() {
             </Box>
           </Box>
         </CardContent>
-        <Card sx={lessorCard}>
+        {currentUser?.uid === item?.authorID ? (
+          <>
+            <Box sx={crudItems}>
+              <Button
+                sx={button}
+                variant="contained"
+                onClick={() => deleteListing(id as string)}
+              >
+                Remove
+              </Button>
+
+              <Button sx={button} variant="contained" onClick={handleOpen}>
+                Edit
+              </Button>
+            </Box>
+            <Modal open={modalOpen} onClose={handleClose}>
+              <Box sx={modalStyle}>
+                <form onSubmit={formik.handleSubmit}>
+                  <DialogContent sx={crudModal}>
+                    <DialogContentText sx={{ fontSize: "2rem" }}>
+                      Update your listing
+                    </DialogContentText>
+                    <InputLabel id="category">Category</InputLabel>
+                    <Select
+                      id="category"
+                      name="category"
+                      value={formik.values.category}
+                      label="Category"
+                      onChange={formik.handleChange}
+                      error={
+                        formik.touched.category &&
+                        Boolean(formik.errors.category)
+                      }
+                    >
+                      {categories.map((chooseCategory, index) => (
+                        <MenuItem key={index} value={chooseCategory.title}>
+                          {chooseCategory.title}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <TextField
+                      id="title"
+                      name="title"
+                      autoFocus
+                      margin="normal"
+                      type="text"
+                      label="Title"
+                      value={formik.values.title}
+                      onChange={formik.handleChange}
+                      error={
+                        formik.touched.title && Boolean(formik.errors.title)
+                      }
+                      helperText={formik.touched.title && formik.errors.title}
+                    />
+                    <TextField
+                      id="description"
+                      name="description"
+                      autoFocus
+                      margin="normal"
+                      type="text"
+                      label="Description"
+                      value={formik.values.description}
+                      onChange={formik.handleChange}
+                      error={
+                        formik.touched.description &&
+                        Boolean(formik.errors.description)
+                      }
+                      helperText={
+                        formik.touched.description && formik.errors.description
+                      }
+                    />
+                    <TextField
+                      id="price"
+                      name="price"
+                      autoFocus
+                      margin="normal"
+                      type="number"
+                      label="Price"
+                      value={formik.values.price}
+                      onChange={formik.handleChange}
+                      error={
+                        formik.touched.price && Boolean(formik.errors.price)
+                      }
+                      helperText={formik.touched.price && formik.errors.price}
+                    />
+                    <TextField
+                      id="location"
+                      name="location"
+                      autoFocus
+                      margin="normal"
+                      type="text"
+                      label="Location"
+                      value={formik.values.location}
+                      onChange={formik.handleChange}
+                      error={
+                        formik.touched.location &&
+                        Boolean(formik.errors.location)
+                      }
+                      helperText={
+                        formik.touched.location && formik.errors.location
+                      }
+                    />
+                    <TextField
+                      id="image"
+                      name="image"
+                      autoFocus
+                      margin="normal"
+                      type="text"
+                      label="Image"
+                      value={formik.values.image}
+                      onChange={formik.handleChange}
+                      error={
+                        formik.touched.image && Boolean(formik.errors.image)
+                      }
+                      helperText={formik.touched.image && formik.errors.image}
+                    />
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      sx={{ marginTop: "1.5rem", color: "white" }}
+                    >
+                      Update Listing
+                    </Button>
+                  </DialogContent>
+                </form>
+              </Box>
+            </Modal>
+          </>
+        ) : (
+           <Card sx={lessorCard}>
           <Box sx={lessorCardLeftInfo}>
             <CardContent sx={{ flex: "1 0 auto" }}>
               <img
@@ -391,9 +372,8 @@ function DetailPage() {
             </CardContent>
           </Box>
         </Card>
-        {reqSent ? (
-          <Typography variant="h4">Request sent!</Typography>
-        ) : (
+        )}
+        {currentUser?.uid !== item?.authorID && (
           <Button
             sx={button}
             variant="contained"
@@ -402,6 +382,7 @@ function DetailPage() {
             Send a request
           </Button>
         )}
+        {reqSent && <Typography variant="h4">Request sent!</Typography>}
       </Card>
     </Box>
   );
@@ -489,6 +470,8 @@ const button: SxProps = {
 const crudItems = {
   display: "flex",
   flexDirection: "row",
+  justifyContent: "space-evenly",
+  width: "70%",
 };
 
 const modalStyle = {
