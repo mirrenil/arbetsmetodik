@@ -15,6 +15,7 @@ import { useUser } from "../Contexts/UserContext";
 import Popup from "./popup";
 import { Link } from "react-router-dom";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { open } from "fs";
 
 interface Props {
   request: IRequest;
@@ -26,19 +27,40 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   const [item, setItem] = useState<IListItem>();
   const theme = useTheme();
   const { deleteRequest } = useUser();
-  const [open, setOpen] = useState(false);
+  const [deleteConfirmationpOpen, setDeleteConfirmationpOpen] = useState(false);
+  const [denyConfirmationOpen, setDenyConfirmationOpen] = useState(false);
+  const [acceptConfirmationOpen, setAcceptConfirmationOpen] = useState(false);
   const [reqStatus, setReqStatus] = useState<ReqStatus>(request.accepted);
   const pending = ReqStatus.pending;
   const accepted = ReqStatus.accepted;
   const denied = ReqStatus.denied;
 
-  const handleOpen = () => {
-    setOpen(true);
+  //Delete req popup
+  const handleDeleteConfirmationOpen = () => {
+    setDeleteConfirmationpOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+ const handleDeleteConfirmationClose = () => {
+    setDeleteConfirmationpOpen(false);
   };
+
+  // deny req popup
+  const handleDenyConfirmationOpen = () => {
+    setDenyConfirmationOpen(true)
+  }
+
+  const handleDenyConfirmationClose = () => {
+    setDenyConfirmationOpen(false)
+  }
+
+  //accept request popup
+  const handleAcceptConfirmationOpen = () => {
+    setAcceptConfirmationOpen(true)
+  }
+
+  const handleAcceptConfirmationClose = () => {
+    setAcceptConfirmationOpen(false)
+  }
 
   useEffect(() => {
     getReceiver();
@@ -93,7 +115,7 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
     if (request.id) {
       deleteRequest(request?.id);
     }
-    handleClose();
+    handleDeleteConfirmationClose();
   };
 
   const handleRequestStatus = async (status: ReqStatus) => {
@@ -114,6 +136,34 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
     }
   };
 
+  const acceptRequest = () => {
+    handleRequestStatus(ReqStatus.accepted)
+    handleAcceptConfirmationClose()
+  }
+
+  const denyRequest = () => {
+    handleRequestStatus(ReqStatus.denied)
+    handleDenyConfirmationClose()
+  }
+
+  const popUpText = {
+    delete: {
+      title: "Are you sure you want to delete this request?",
+      description: "This action is irreversable.",
+      confirmButton: 'Delete request'
+    },
+    deny: {
+      title: 'Are you sure you want to deny this request?',
+      description: '"This action is irreversable."',
+      confirmButton: 'Deny request'
+    },
+    accept: {
+      title: 'Are you sure you want to accept this request?',
+      description: '"This action is irreversable."',
+      confirmButton: 'Accept request'
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -126,7 +176,7 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         display: "grid",
         gridTemplateColumns: "repeat(3, 1fr)",
         gridTemplateRows: "repeat(4, 1fr)",
-        margin:'0 1rem'
+        margin: '0 1rem'
       }}
     >
       <CardMedia
@@ -170,8 +220,8 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         {isMySentRequest && reqStatus == pending ? (
           <>
             <Typography sx={[reqStatusStyle, pendingStyle]} variant="h5">Pending...</Typography>
-            <Button sx={denyBtn} variant="outlined" onClick={handleOpen}>
-            <DeleteForeverIcon />
+            <Button sx={denyBtn} variant="outlined" onClick={handleDeleteConfirmationOpen}>
+              <DeleteForeverIcon />
             </Button>
           </>
         ) : null}
@@ -197,7 +247,8 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
               variant="outlined"
               sx={[button, denyBtn]}
               onClick={() => {
-                handleRequestStatus(ReqStatus.denied);
+                handleDenyConfirmationOpen();
+                // handleRequestStatus(ReqStatus.denied);
               }}
             >
               Deny
@@ -206,7 +257,8 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
               variant="contained"
               sx={[button, acceptBtn]}
               onClick={() => {
-                handleRequestStatus(ReqStatus.accepted);
+                handleAcceptConfirmationOpen()
+                // handleRequestStatus(ReqStatus.accepted);
               }}
             >
               Accept
@@ -236,11 +288,32 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
           </>
         ) : null}
       </Box>
-
+          {/* Deny request */}
       <Popup
-        open={open}
-        handleClose={handleClose}
-        handleDeleteRequest={handleDeleteRequest}
+        open={denyConfirmationOpen}
+        handleClose={handleDenyConfirmationClose}
+        action={denyRequest}
+        title={popUpText.deny.title}
+        description={popUpText.deny.description}
+        confirmButton={popUpText.deny.confirmButton}
+      />
+      {/* Delete request confirmation */}
+      <Popup
+        open={deleteConfirmationpOpen}
+        handleClose={handleDeleteConfirmationClose}
+        action={handleDeleteRequest}
+        title={popUpText.delete.title}
+        description={popUpText.delete.description}
+        confirmButton={popUpText.delete.confirmButton}
+      />
+      {/* Accept request */}
+      <Popup
+        open={acceptConfirmationOpen}
+        handleClose={handleAcceptConfirmationClose}
+        action={acceptRequest}
+        title={popUpText.accept.title}
+        description={popUpText.accept.description}
+        confirmButton={popUpText.accept.confirmButton}
       />
     </Box>
   );
