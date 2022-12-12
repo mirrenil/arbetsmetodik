@@ -1,5 +1,18 @@
 # Grupprojekt-Arbetsmetodik
 
+Av:
+**Linnea Albertsson [**github**](https://github.com/liinneea-a)**
+
+**Hazem Kawas [**github**](https://github.com/hazem-89)**
+
+**Adam Hepsever [**github**](https://github.com/AdaHep)**
+
+**Erik Isaksson [**github**](https://github.com/Erikisak)**
+
+**Miranda Nilhag [**github**](https://github.com/mirrenil)**
+
+[demo](https://chubbydog.vercel.app/)
+
 ## Kravspecifikation:
 
 -   [x] Det ska gå att skapa ett konto, logga in och logga ut
@@ -34,7 +47,7 @@
 
 -   [x] Projektet är deployat på t.ex. Netlify eller Vercel
 
--   [ ] Projektet fungerar tillfredsställande och uppfyller kravspecifikationen
+-   [x] Projektet fungerar tillfredsställande och uppfyller kravspecifikationen
 
 -   [x] Genomförd halvtidsavstämning med demo och godkänd opponering
 
@@ -58,15 +71,3 @@
 
 -   [x] Projektet har ett CI-flöde (eller CI/CD) som omfattar Prettier, lintning med ESLint och testning med Cypress för samtliga PR:s som görs mot main-branchen
 
-Av:
-**Linnea Albertsson [**github**](https://github.com/liinneea-a)**
-
-**Hazem Kawas [**github**](https://github.com/hazem-89)**
-
-**Adam Hepsever [**github**](https://github.com/AdaHep)**
-
-**Erik Isaksson [**github**](https://github.com/Erikisak)**
-
-**Miranda Nilhag [**github**](https://github.com/mirrenil)**
-
-[demo](https://chubbydog.vercel.app/)
