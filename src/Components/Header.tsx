@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Box, SxProps } from "@mui/material";
+import { Badge, Box, SxProps } from "@mui/material";
 import { Avatar, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,10 +19,12 @@ import { useAuth } from "../Contexts/AuthContext";
 import MobileHeader from "../Assets/Images/mobileHeader.svg";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useUser } from "../Contexts/UserContext";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { currentUser, logout } = useAuth();
+  const { myReceivedRequests, mySentRequests } = useUser();
   const userImg: any = currentUser?.photoURL;
   const userName: any = currentUser?.displayName;
   useEffect(() => {
@@ -112,6 +114,16 @@ const Header = () => {
                 />
               </Link>
             )}
+            <Box>
+            {myReceivedRequests.map(() => {
+                    return (
+                    <Badge 
+                    variant="dot" 
+                    color="error" 
+                    sx={{ marginTop: "-45px" }}>
+                    </Badge>
+                    );
+                    })}
             <MenuIcon
               onClick={() =>
                 menuOpen ? setMenuOpen(false) : setMenuOpen(true)
@@ -123,6 +135,7 @@ const Header = () => {
                 fill: "#ffffff",
               }}
             />
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -155,6 +168,15 @@ const Header = () => {
                   <Box sx={navItem}>
                     <AddCircleOutlineIcon sx={navMenuIcon} />
                     <Typography sx={navItemText}>My requests</Typography>
+                    {myReceivedRequests.map(() => {
+                    return (
+                    <Badge 
+                    variant="dot" 
+                    color="error" 
+                    sx={{ marginLeft: "7px", marginBottom: "10px" }}>
+                    </Badge>
+                    );
+                    })}
                   </Box>
                 </Link>
               ) : null}
@@ -242,11 +264,18 @@ const Header = () => {
             <Link to="/howitworks" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>How it works</Typography>
             </Link>
-
             <Link to="/requests" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>My requests</Typography>
             </Link>
-
+            {myReceivedRequests.map(() => {
+          return (
+            <Badge 
+            variant="dot" 
+            color="error" 
+            sx={{ position: "absolute", right: "250px", top: "35px" }}>
+            </Badge>
+            );
+            })}
             <Link to="/newlisting" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>List an Item</Typography>
             </Link>
