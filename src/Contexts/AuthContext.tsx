@@ -1,18 +1,19 @@
 /* eslint-disable */
 import React, { createContext, useContext, useEffect, useState } from "react";
 import {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut,
-    getAuth,
-    User,
-    UserInfo,
-    updateProfile,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  getAuth,
+  User,
+  UserInfo,
+  updateProfile,
 } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
 interface AuthContext {
     signup: (
@@ -39,21 +40,33 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }: any) {
-    const [currentUser, setCurrentUser] = useState<User>();
-    const [errorMessage, setErrorMessage] = useState<boolean>(false);
-    const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState<User>();
+  const [errorMessage, setErrorMessage] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
 
-    errorMessage
-        ? setTimeout(() => {
-              setErrorMessage(false);
-          }, 10000)
-        : null;
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setCurrentUser(currentUser as User);
-        });
-        return unsubscribe;
-    }, [onAuthStateChanged, auth, currentUser]);
+  errorMessage
+    ? setTimeout(() => {
+        setErrorMessage(false);
+      }, 10000)
+    : null;
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user as User);
+    });
+    return unsubscribe;
+  }, [onAuthStateChanged, auth]);
+
+  const addUserToDb = async (
+    email: string,
+    id: string,
+    displayName: string
+  ) => {
+    await setDoc(doc(db, "users", id), {
+      displayName: displayName,
+      email: email,
+    });
+  };
 
     const addUserToDb = async (
         email: string,
@@ -118,39 +131,43 @@ export function AuthProvider({ children }: any) {
             );
 
             if (auth.currentUser && !errorMessage) {
-                setCurrentUser(auth.currentUser);
-                navigate(`/profile/${auth.currentUser?.uid}`);
-                toast.success("You are logged in successfully!", {
-                    autoClose: 1000,
-                    theme: "colored",
-                });
-            } else {
-                setCurrentUser(undefined);
-                toast.warn("Something went wrong!", {
-                    autoClose: 1000,
-                    theme: "colored",
-                });
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
+        setCurrentUser(auth.currentUser);
+        setCookie('user', auth.currentUser, {
+          path: '/'
+        })
+        navigate(`/profile/${auth.currentUser?.uid}`);
+        toast.success("You are logged in successfully!", {
+          autoClose: 1000,
+          theme: "colored",
+        });
+      } else {
+        setCurrentUser(undefined);
+        toast.warn("Something went wrong!", {
+          autoClose: 1000,
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    const logout = async () => {
-        const auth = getAuth();
-        signOut(auth)
-            .then(() => {
-                setCurrentUser(undefined);
-                toast.success("You are logged out", {
-                    autoClose: 500,
-                    pauseOnHover: true,
-                    theme: "colored",
-                });
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
+  const logout = async () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        removeCookie('user',{path:'/'});
+        setCurrentUser(undefined);
+        toast.success("You are logged out", {
+          autoClose: 500,
+          pauseOnHover: true,
+          theme: "colored",
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
     return (
         <AuthContext.Provider
