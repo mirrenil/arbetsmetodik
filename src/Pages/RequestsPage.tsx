@@ -11,17 +11,32 @@ function RequestsPage() {
     <>
       <Box sx={wrapper}>
         <Typography sx={recievedStyle}>Recieved requests:</Typography>
-        {myReceivedRequests.map((req) => {
-          return (
-            <RequestCard key={req.id} request={req} isMySentRequest={false} />
-          );
-        })}
+        {myReceivedRequests.length ? (
+          <Box sx={cardsContainer}>
+            {myReceivedRequests.map((req) => {
+              return (
+                <RequestCard
+                  key={req.id}
+                  request={req}
+                  isMySentRequest={false}
+                />
+              );
+            })}
+          </Box>
+        ) : (" ")}
+
         <Typography sx={sentStyle}>Sent requests:</Typography>
-        {mySentRequests.map((req) => {
-          return (
-            <RequestCard key={req.id} request={req} isMySentRequest={true} />
-          );
-        })}
+        <Box sx={cardsContainer}>
+          {mySentRequests.map((req) => {
+            return (
+              <RequestCard
+                key={req.id}
+                request={req}
+                isMySentRequest={true}
+              />
+            );
+          })}
+        </Box>
       </Box>
     </>
   );
@@ -41,6 +56,14 @@ const sentStyle: SxProps = {
   textAlign: "center",
   fontSize: "2rem",
   marginBottom: "3rem",
+};
+
+const cardsContainer: SxProps = {
+  display: "flex",
+  alignItems: "center",
+  width: "100%",
+  height: "20rem",
+  overflowX: "scroll",
 };
 
 export default RequestsPage;

@@ -14,6 +14,7 @@ import { db } from "../firebase";
 import { useUser } from "../Contexts/UserContext";
 import Popup from "./popup";
 import { Link } from "react-router-dom";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 interface Props {
   request: IRequest;
@@ -121,19 +122,18 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
       sx={{
         padding: "1rem",
         boxShadow: "0px 0px 15px -3px #000000",
-        maxWidth: {
+        minWidth: {
           xs: "20rem",
           md: "25rem",
           lg: "25rem",
           xl: "25rem",
         },
-        height: { xs: "none", md: "15rem", lg: "15rem", xl: "15rem" },
+        height: { xs: "15rem", md: "20rem", lg: "15rem", xl: "15rem" },
         borderRadius: theme.shape.buttonBorderRadius,
-        margin: "auto",
         display: "grid",
         gridTemplateColumns: "repeat(3, 1fr)",
         gridTemplateRows: "repeat(4, 1fr)",
-        marginBottom: "2rem",
+        margin:'0 1rem'
       }}
     >
       <CardMedia
@@ -177,8 +177,8 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         {isMySentRequest && reqStatus == pending ? (
           <>
             <Typography variant="h5">Pending...</Typography>
-            <Button variant="contained" onClick={handleOpen}>
-              Delete request
+            <Button sx={deleteButton} variant="outlined" onClick={handleOpen}>
+            <DeleteForeverIcon />
             </Button>
           </>
         ) : null}
@@ -235,11 +235,11 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
             <Typography variant="h5">
               You have declined this request
             </Typography>
-            <Button
-              variant="contained"
+            <Button sx={deleteButton}
+              variant="outlined"
               onClick={handleDeleteRequest}
             >
-              Delete request
+              <DeleteForeverIcon />
             </Button>
           </>
         ) : null}
@@ -305,6 +305,10 @@ const button = {
   height: "2rem",
   border: "none",
   color: "white",
+};
+
+const deleteButton = {
+  borderRadius: '100px',
 };
 
 const decline = {
