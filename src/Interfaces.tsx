@@ -1,6 +1,6 @@
 export enum ReqStatus {
   pending = 0,
-  declined = 1,
+  denied = 1,
   accepted = 2
 }
 
