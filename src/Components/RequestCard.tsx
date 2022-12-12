@@ -35,33 +35,6 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   const accepted = ReqStatus.accepted;
   const denied = ReqStatus.denied;
 
-  //Delete req popup
-  const handleDeleteConfirmationOpen = () => {
-    setDeleteConfirmationpOpen(true);
-  };
-
- const handleDeleteConfirmationClose = () => {
-    setDeleteConfirmationpOpen(false);
-  };
-
-  // deny req popup
-  const handleDenyConfirmationOpen = () => {
-    setDenyConfirmationOpen(true)
-  }
-
-  const handleDenyConfirmationClose = () => {
-    setDenyConfirmationOpen(false)
-  }
-
-  //accept request popup
-  const handleAcceptConfirmationOpen = () => {
-    setAcceptConfirmationOpen(true)
-  }
-
-  const handleAcceptConfirmationClose = () => {
-    setAcceptConfirmationOpen(false)
-  }
-
   useEffect(() => {
     getReceiver();
     getReqItem();
@@ -136,15 +109,43 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
     }
   };
 
-  const acceptRequest = () => {
-    handleRequestStatus(ReqStatus.accepted)
-    handleAcceptConfirmationClose()
-  }
+    //Delete req popup
+    const handleDeleteConfirmationOpen = () => {
+      setDeleteConfirmationpOpen(true);
+    };
+  
+   const handleDeleteConfirmationClose = () => {
+      setDeleteConfirmationpOpen(false);
+    };
+  
+    // deny req popup
+    const handleDenyConfirmationOpen = () => {
+      setDenyConfirmationOpen(true)
+    }
+  
+    const handleDenyConfirmationClose = () => {
+      setDenyConfirmationOpen(false)
+    }
+  
+    //accept request popup
+    const handleAcceptConfirmationOpen = () => {
+      setAcceptConfirmationOpen(true)
+    }
+  
+    const handleAcceptConfirmationClose = () => {
+      setAcceptConfirmationOpen(false)
+    }
 
-  const denyRequest = () => {
-    handleRequestStatus(ReqStatus.denied)
-    handleDenyConfirmationClose()
-  }
+    // handler when method is called in popup
+    const acceptRequest = () => {
+      handleRequestStatus(ReqStatus.accepted)
+      handleAcceptConfirmationClose()
+    }
+  
+    const denyRequest = () => {
+      handleRequestStatus(ReqStatus.denied)
+      handleDenyConfirmationClose()
+    }
 
   const popUpText = {
     delete: {
