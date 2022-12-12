@@ -1,22 +1,18 @@
 /* eslint-disable */
-import {
-  collection,
-  where,
-  getDocs,
-  query,
-  doc,
-  getDoc,
-} from "firebase/firestore";
+import { collection, where, getDocs, query, deleteDoc, doc } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { db } from "../firebase";
-import { IRequest, IUser } from "../Interfaces";
-import { useAuth } from "./AuthContext";
+import { IRequest } from "../Interfaces";
 
 interface UserContextValue {
   myReceivedRequests: IRequest[];
   mySentRequests: IRequest[];
   setMyReceivedRequests?: () => void;
   setMySentRequests?: () => void;
+  deleteRequest: (a: string) => void;
+  getMySentRequests: () => void
+
 }
 
 export const UserContext = createContext<UserContextValue>({
@@ -24,6 +20,8 @@ export const UserContext = createContext<UserContextValue>({
   mySentRequests: [],
   setMyReceivedRequests: () => [],
   setMySentRequests: () => [],
+  deleteRequest: () => {},
+  getMySentRequests: () => {}
 });
 
 export function useUser() {
@@ -33,40 +31,46 @@ export function useUser() {
 export function UserProvider({ children }: any) {
   const [myReceivedRequests, setMyReceivedRequests] = useState<IRequest[]>([]);
   const [mySentRequests, setMySentRequests] = useState<IRequest[]>([]);
-  const { currentUser } = useAuth();
+  const [cookies] = useCookies(["user"]);
 
   useEffect(() => {
-    setMyReceivedRequests([]);
-    setMySentRequests([])
     getMyReceivedRequests();
     getMySentRequests();
-  }, [currentUser]);
+  }, []);
 
   const getMyReceivedRequests = async () => {
+    let newList: IRequest[] = [];
     const requests = await getReqs("requests", "toUser");
-    if (requests?.length) {
-      requests.forEach((req) => {
-        setMyReceivedRequests((reqs) => [...reqs, req]);
-      });
+    if (requests) {
+      for (let req of requests) {
+        newList.push(req);
+      }
+      return setMyReceivedRequests(newList);
     }
   };
 
   const getMySentRequests = async () => {
-    const requests = await getReqs('requests', 'fromUserId');
-
-    if (requests?.length) {
-      requests.forEach((req) => {
-        setMySentRequests((reqs) => [...reqs, req]);
-      });
+    let newList: IRequest[] = [];
+    try {
+      const requests = await getReqs("requests", "fromUserId");
+      if (requests) {
+        for (let req of requests) {
+          newList.push(req);
+        }
+        return setMySentRequests(newList);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const getReqs = async (dbCollection: string, property: string) => {
     const newReq: IRequest[] = [];
+
     try {
       const data = query(
         collection(db, `${dbCollection}`),
-        where(`${property}`, "==", `${currentUser?.uid}`)
+        where(`${property}`, "==", `${cookies.user.uid}`)
       );
       const req = await getDocs(data);
       req.forEach((doc) => {
@@ -88,11 +92,23 @@ export function UserProvider({ children }: any) {
     }
   };
 
+  const deleteRequest = async (reqId: string) => {
+    try {
+      await deleteDoc(doc(db, "requests", reqId));
+      getMyReceivedRequests();
+      getMySentRequests();
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
   return (
     <UserContext.Provider
       value={{
         myReceivedRequests,
         mySentRequests,
+        deleteRequest,
+        getMySentRequests
       }}
     >
       {children}

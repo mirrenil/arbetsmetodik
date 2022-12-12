@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { useCallback, useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
     collection,
@@ -11,7 +12,7 @@ import {
     getDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { IListItem, IUser } from "../Interfaces";
+import { IListItem, IRequest, ReqStatus, IUser } from "../Interfaces";
 import {
     Box,
     Card,
@@ -33,6 +34,7 @@ import { useAuth } from "../Contexts/AuthContext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { useUser } from "../Contexts/UserContext";
 
 const validationSchema = yup.object({
     category: yup.string().required("Category is required"),
@@ -80,16 +82,18 @@ const categories = [
 ];
 
 function DetailPage() {
-    const listingCollection = collection(db, "listings");
-    const { id } = useParams();
-    const { currentUser } = useAuth();
-    const navigate = useNavigate();
-    const handleOpen = () => setModalOpen(true);
-    const handleClose = () => setModalOpen(false);
-    const [modalOpen, setModalOpen] = useState<boolean>(false);
-    const [item, setItem] = useState<IListItem>();
-    const [user, setUser] = useState<IUser>();
-    const [reqSent, setReqSent] = useState<boolean>(false);
+  const listingCollection = collection(db, "listings");
+  const { id } = useParams();
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [item, setItem] = useState<IListItem>();
+  const [user, setUser] = useState<IUser>();
+  const [reqSent, setReqSent] = useState<boolean>(false);
+  const { mySentRequests, getMySentRequests } = useUser();
+  const [cookies] = useCookies(["user"]);
 
     const formik = useFormik({
         initialValues: {
@@ -106,25 +110,48 @@ function DetailPage() {
         },
     });
 
-    const handleSendRequest = async (e?: Event) => {
-        const newRequest = {
-            accepted: false,
-            createdAt: new Date(),
-            fromUserId: currentUser?.uid,
-            fromUserName: currentUser?.displayName,
-            itemId: item?.id,
-            priceTotal: item?.price,
-            toUser: item?.authorID,
-        };
-        const docRef = await addDoc(collection(db, "requests"), newRequest);
-        setReqSent(true);
-    };
+  useEffect(() => {
+    ifUserHasRequestOnItem();
+    getItem();
+  }, [mySentRequests, currentUser]);
 
-    const deleteListing = async (id: string) => {
-        const itemToRemove = doc(db, "listings", id);
-        await deleteDoc(itemToRemove);
-        navigate("/profile/:id");
+  const ifUserHasRequestOnItem = () => {
+    for (let req of mySentRequests) {
+      if (id === req.itemId) {
+        return setReqSent(true);
+      }
+    }
+    return setReqSent(false);
+  };
+
+  const handleSendRequest = async (e?: Event) => {
+    const newRequest: IRequest = {
+      accepted: ReqStatus.pending,
+      createdAt: new Date(),
+      fromUserId: cookies.user?.uid,
+      fromUserName: cookies.user?.displayName,
+      itemId: item!.id,
+      priceTotal: item!.price,
+      toUser: item!.authorID,
     };
+    try {
+      await addDoc(collection(db, "requests"), newRequest);
+      setReqSent(true);
+      getMySentRequests();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const deleteListing = async (id: string) => {
+    const itemToRemove = doc(db, "listings", id);
+    try {
+      await deleteDoc(itemToRemove);
+      navigate(`/profile/${cookies.user.uid}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
     const updateListing = useCallback(async () => {
         if (id) {
@@ -172,6 +199,27 @@ function DetailPage() {
         }
         setDocumentData();
     }, [updateListing, modalOpen]);
+
+
+  const getItem = async () => {
+    if (id) {
+      const docRef: any = doc(db, "listings", id);
+      const docSnap: any = await getDoc(docRef);
+      const item = docSnap.data();
+      if (item) {
+        setItem({
+          authorID: item.authorID,
+          title: item.title,
+          description: item.description,
+          image: item.image,
+          price: item.price,
+          category: item.category,
+          location: item.location,
+          id: id,
+        });
+      }
+    }
+  };
 
     return (
         <Box sx={wrapper}>

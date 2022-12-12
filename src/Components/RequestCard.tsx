@@ -1,17 +1,19 @@
 import { CSSPropertiesWithMultiValues } from "@emotion/serialize";
 import { Box, CardMedia, Typography, useTheme, Button } from "@mui/material";
 import React, { CSSProperties, useEffect, useState } from "react";
-import camera from "../Assets/Images/Film-Photography.png";
-import { IRequest, IUser, IListItem } from "../Interfaces";
+import { IRequest, IUser, IListItem, ReqStatus } from "../Interfaces";
 import {
   getDocs,
   collection,
-  where,
   query,
   doc,
   getDoc,
+  setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import { useUser } from "../Contexts/UserContext";
+import Popup from "./popup";
+import { request } from "express";
 
 interface Props {
   request: IRequest;
@@ -22,6 +24,20 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   const [receiver, setReceiver] = useState<IUser>();
   const [item, setItem] = useState<IListItem>();
   const theme = useTheme();
+  const { deleteRequest } = useUser();
+  const [open, setOpen] = useState(false);
+  const [reqStatus, setReqStatus] = useState<ReqStatus>(request.accepted);
+  const pending = ReqStatus.pending;
+  const accepted = ReqStatus.accepted;
+  const declined = ReqStatus.declined;
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     getReceiver();
@@ -29,39 +45,75 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   }, []);
 
   const getReceiver = async () => {
-    const docRef = doc(db, "users", request.toUser);
-    const snap = await getDoc(docRef);
-    const userDoc = snap.data();
+    try {
+      const docRef = doc(db, "users", request.toUser);
+      const snap = await getDoc(docRef);
+      const userDoc = snap.data();
 
-    if (userDoc) {
-      const user = {
-        email: userDoc.email,
-        displayName: userDoc.displayName,
-        id: userDoc.id,
-      };
-      if (user) {
-        setReceiver(user as IUser);
+      if (userDoc) {
+        const user = {
+          email: userDoc.email,
+          displayName: userDoc.displayName,
+          id: userDoc.id,
+        };
+        if (user) {
+          setReceiver(user as IUser);
+        }
       }
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const getReqItem = async () => {
     const data = query(collection(db, "listings"));
-    const req = await getDocs(data);
-    req.forEach((doc) => {
-      if (doc.id == request.itemId) {
-        setItem({
-          authorID: doc.data().authorID,
-          title: doc.data().title,
-          description: doc.data().description,
-          image: doc.data().image,
-          price: doc.data().price,
-          category: doc.data().category,
-          location: doc.data().location,
-          id: doc.data().id,
-        });
+    try {
+      const req = await getDocs(data);
+      req.forEach((doc) => {
+        if (doc.id === request.itemId) {
+          setItem({
+            authorID: doc.data().authorID,
+            title: doc.data().title,
+            description: doc.data().description,
+            image: doc.data().image,
+            price: doc.data().price,
+            category: doc.data().category,
+            location: doc.data().location,
+            id: doc.data().id,
+          });
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDeleteRequest = () => {
+    if (request.id) {
+      deleteRequest(request?.id);
+    }
+    handleClose();
+  };
+
+  const handleRequestStatus = async (status: ReqStatus) => {
+    const updateAcceptedReq = {
+      ...request,
+      accepted: status,
+    };
+    if (request.id) {
+      try {
+        await setDoc(
+          doc(db, "requests", request?.id),
+          updateAcceptedReq
+        );
+      } catch (err) {
+        console.log(err);
       }
-    });
+    }
+  };
+
+  const updateCardStatus = (reqStatus: ReqStatus) => {
+    setReqStatus(reqStatus);
   };
 
   return (
@@ -69,7 +121,12 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
       sx={{
         padding: "1rem",
         boxShadow: "0px 0px 15px -3px #000000",
-        maxWidth: { xs: "20rem", md: "25rem", lg: "25rem", xl: "25rem" },
+        maxWidth: {
+          xs: "20rem",
+          md: "25rem",
+          lg: "25rem",
+          xl: "25rem",
+        },
         height: { xs: "none", md: "15rem", lg: "15rem", xl: "15rem" },
         borderRadius: theme.shape.buttonBorderRadius,
         margin: "auto",
@@ -79,7 +136,11 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         marginBottom: "2rem",
       }}
     >
-      <CardMedia sx={[imgStyle, grid.pic]} component="img" src={item?.image} />
+      <CardMedia
+        sx={[imgStyle, grid.pic]}
+        component="img"
+        src={item?.image}
+      />
       <Typography sx={[textContainer, grid.reqFrom]}>
         {isMySentRequest ? (
           <>
@@ -106,22 +167,91 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         <span style={titleStyle}>Time to: </span> Sunday, 27 nov
       </Typography>
       <Typography sx={[textContainer]}>
-        <span style={titleStyle}>Price total: </span> {request.priceTotal} kr
+        <span style={titleStyle}>Price total: </span>{" "}
+        {request.priceTotal} kr
       </Typography>
       <Typography sx={[textContainer, grid.message]}>
-        <span style={titleStyle}>Message: </span>Hi! I would like to rent the
-        projector for a couple of days. Cheers!
+        <span style={titleStyle}>Message: </span>Hi! I would like to
+        rent the projector for a couple of days. Cheers!
       </Typography>
-      {isMySentRequest ? (
-        <Typography>Pending...</Typography>
-      ) : (
-        <div style={buttonsContainer}>
-          <Button sx={[button, decline]}>Decline</Button>
-          <Button variant="contained" sx={button}>
-            Accept
-          </Button>
-        </div>
-      )}
+      <Box sx={buttonsContainer}>
+        {/* mySent && pending */}
+        {isMySentRequest && reqStatus == pending ? (
+          <>
+            <Typography variant="h5">Pending...</Typography>
+            <Button variant="contained" onClick={handleOpen}>
+              Delete request
+            </Button>
+          </>
+        ) : null}
+
+        {/* mySent && accepted */}
+        {isMySentRequest && reqStatus === accepted ? (
+          <Typography variant="h5">
+            Your request is accepted!
+          </Typography>
+        ) : null}
+
+        {/* mySent && declined */}
+        {isMySentRequest && reqStatus === declined ? (
+          <Typography variant="h5">
+            You have declined this request
+          </Typography>
+        ) : null}
+
+        {/* notMySent && pending */}
+        {!isMySentRequest && reqStatus === pending ? (
+          <div>
+            <Button
+              sx={[button, decline]}
+              onClick={() => {
+                handleRequestStatus(ReqStatus.declined);
+                updateCardStatus(ReqStatus.declined);
+              }}
+            >
+              Decline
+            </Button>
+            <Button
+              variant="contained"
+              sx={button}
+              onClick={() => {
+                handleRequestStatus(ReqStatus.accepted);
+                updateCardStatus(ReqStatus.accepted);
+              }}
+            >
+              Accept
+            </Button>
+          </div>
+        ) : null}
+
+        {/* notMySent && accepted */}
+        {!isMySentRequest && reqStatus === accepted ? (
+          <Typography variant="h5">
+            You have accepted this request
+          </Typography>
+        ) : null}
+
+        {/* notMySent && declined */}
+        {!isMySentRequest && reqStatus === declined ? (
+          <>
+            <Typography variant="h5">
+              You have declined this request
+            </Typography>
+            <Button
+              variant="contained"
+              onClick={handleDeleteRequest}
+            >
+              Delete request
+            </Button>
+          </>
+        ) : null}
+      </Box>
+
+      <Popup
+        open={open}
+        handleClose={handleClose}
+        handleDeleteRequest={handleDeleteRequest}
+      />
     </Box>
   );
 };
