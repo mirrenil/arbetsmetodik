@@ -30,7 +30,7 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   const [reqStatus, setReqStatus] = useState<ReqStatus>(request.accepted);
   const pending = ReqStatus.pending;
   const accepted = ReqStatus.accepted;
-  const declined = ReqStatus.declined;
+  const denied = ReqStatus.denied;
 
   const handleOpen = () => {
     setOpen(true);
@@ -107,14 +107,11 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
           doc(db, "requests", request?.id),
           updateAcceptedReq
         );
+        setReqStatus(status);
       } catch (err) {
         console.log(err);
       }
     }
-  };
-
-  const updateCardStatus = (reqStatus: ReqStatus) => {
-    setReqStatus(reqStatus);
   };
 
   return (
@@ -122,12 +119,8 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
       sx={{
         padding: "1rem",
         boxShadow: "0px 0px 15px -3px #000000",
-        minWidth: {
-          xs: "20rem",
-          md: "25rem",
-          lg: "25rem",
-          xl: "25rem",
-        },
+        minWidth: '20rem',
+        maxWidth: '20rem',
         height: { xs: "15rem", md: "20rem", lg: "15rem", xl: "15rem" },
         borderRadius: theme.shape.buttonBorderRadius,
         display: "grid",
@@ -172,12 +165,12 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         <span style={titleStyle}>Message: </span>Hi! I would like to
         rent the projector for a couple of days. Cheers!
       </Typography>
-      <Box sx={buttonsContainer}>
+      <Box sx={reqStatusContainer}>
         {/* mySent && pending */}
         {isMySentRequest && reqStatus == pending ? (
           <>
-            <Typography variant="h5">Pending...</Typography>
-            <Button sx={deleteButton} variant="outlined" onClick={handleOpen}>
+            <Typography sx={[reqStatusStyle, pendingStyle]} variant="h5">Pending...</Typography>
+            <Button sx={denyBtn} variant="outlined" onClick={handleOpen}>
             <DeleteForeverIcon />
             </Button>
           </>
@@ -185,55 +178,54 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
 
         {/* mySent && accepted */}
         {isMySentRequest && reqStatus === accepted ? (
-          <Typography variant="h5">
+          <Typography sx={[acceptedStyle, reqStatusStyle]} variant="h5">
             Your request is accepted!
           </Typography>
         ) : null}
 
-        {/* mySent && declined */}
-        {isMySentRequest && reqStatus === declined ? (
-          <Typography variant="h5">
-            You have declined this request
+        {/* mySent && denied */}
+        {isMySentRequest && reqStatus === denied ? (
+          <Typography sx={[reqStatusStyle, deniedStyle]} variant="h5">
+            You have denied this request
           </Typography>
         ) : null}
 
         {/* notMySent && pending */}
         {!isMySentRequest && reqStatus === pending ? (
-          <div>
+          <Box sx={buttonsContainer}>
             <Button
-              sx={[button, decline]}
+              variant="outlined"
+              sx={[button, denyBtn]}
               onClick={() => {
-                handleRequestStatus(ReqStatus.declined);
-                updateCardStatus(ReqStatus.declined);
+                handleRequestStatus(ReqStatus.denied);
               }}
             >
-              Decline
+              Deny
             </Button>
             <Button
               variant="contained"
-              sx={button}
+              sx={[button, acceptBtn]}
               onClick={() => {
                 handleRequestStatus(ReqStatus.accepted);
-                updateCardStatus(ReqStatus.accepted);
               }}
             >
               Accept
             </Button>
-          </div>
+          </Box>
         ) : null}
 
         {/* notMySent && accepted */}
         {!isMySentRequest && reqStatus === accepted ? (
-          <Typography variant="h5">
+          <Typography sx={[reqStatusStyle, acceptedStyle]} variant="h5">
             You have accepted this request
           </Typography>
         ) : null}
 
-        {/* notMySent && declined */}
-        {!isMySentRequest && reqStatus === declined ? (
+        {/* notMySent && denied */}
+        {!isMySentRequest && reqStatus === denied ? (
           <>
-            <Typography variant="h5">
-              You have declined this request
+            <Typography sx={[reqStatusStyle, deniedStyle]} variant="h5">
+              You have denied this request
             </Typography>
             <Button sx={deleteButton}
               variant="outlined"
@@ -292,7 +284,7 @@ const textContainer: CSSPropertiesWithMultiValues = {
   flexDirection: "column",
 };
 
-const buttonsContainer = {
+const reqStatusContainer = {
   width: "100%",
   display: "flex",
   justifyContent: "space-between",
@@ -303,19 +295,44 @@ const buttonsContainer = {
 const button = {
   width: "5rem",
   height: "2rem",
-  border: "none",
-  color: "white",
+  textTransform: 'none'
 };
 
 const deleteButton = {
   borderRadius: '100px',
 };
 
-const decline = {
-  backgroundColor: "red",
-  "&:hover": {
-    backgroundColor: "#cc0000",
-  },
+const buttonsContainer = {
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'space-between'
 };
+
+const denyBtn = {
+  color: 'red',
+  border: '1px solid red'
+};
+
+const acceptBtn = {
+  color: 'white',
+  backgroundColor: 'green'
+}
+
+const acceptedStyle = {
+  color: 'green',
+}
+
+const pendingStyle = {
+  color: 'orange'
+}
+
+const deniedStyle = {
+  color: 'red'
+}
+
+const reqStatusStyle = {
+  fontSize: '1rem'
+}
+
 
 export default RequestCard;
