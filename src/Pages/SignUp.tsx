@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import * as yup from "yup";
 import { useFormik } from "formik";
 

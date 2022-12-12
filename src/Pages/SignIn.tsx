@@ -6,7 +6,6 @@ import "../Assets/FormStyle.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import * as yup from "yup";
 import { useFormik } from "formik";
 
