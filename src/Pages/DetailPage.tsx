@@ -3,13 +3,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
-  collection,
-  getDocs,
-  getDoc,
-  addDoc,
-  deleteDoc,
-  doc,
-  updateDoc,
+    collection,
+    getDocs,
+    addDoc,
+    deleteDoc,
+    doc,
+    updateDoc,
+    getDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { IListItem, IRequest, ReqStatus, IUser } from "../Interfaces";
@@ -93,7 +93,7 @@ function DetailPage() {
   const [reqSent, setReqSent] = useState<boolean>(false);
   const { mySentRequests, getMySentRequests } = useUser();
   const [cookies] = useCookies(["user"]);
-  
+
     const formik = useFormik({
         initialValues: {
             category: "",
@@ -152,30 +152,6 @@ function DetailPage() {
     }
   };
 
-  const updateListing = useCallback(async () => {
-    if (id) {
-      const itemToUpdate = doc(db, "listings", id);
-      await updateDoc(itemToUpdate, {
-        title: formik.values.title,
-        description: formik.values.description,
-        price: formik.values.price,
-        location: formik.values.location,
-        image: formik.values.image,
-        category: formik.values.category,
-      });
-      handleClose();
-    } else {
-      return (
-        <Box>
-          <Typography variant="h4">Error</Typography>
-          <Button variant="contained" onClick={() => navigate(-1)}>
-            Take me back
-          </Button>
-        </Box>
-      );
-    }
-  }, [id, formik.values]);
-
     const updateListing = useCallback(async () => {
         if (id) {
             const itemToUpdate = doc(db, "listings", id);
@@ -222,6 +198,7 @@ function DetailPage() {
         }
         setDocumentData();
     }, [updateListing, modalOpen]);
+
 
   const getItem = async () => {
     if (id) {
@@ -486,7 +463,7 @@ function DetailPage() {
                     <Typography variant="h4">Request sent!</Typography>
                 ) : (
                     <>
-                        {currentUser ? (
+                        {currentUser?.uid !== item?.authorID && (
                             <Button
                                 sx={button}
                                 variant="contained"
@@ -494,7 +471,8 @@ function DetailPage() {
                             >
                                 Send a request
                             </Button>
-                        ) : (
+                        )}
+                        {!currentUser && (
                             <>
                                 <Typography align="center" variant="h6">
                                     You are not signed in, please sign in to be
@@ -549,11 +527,13 @@ const infoContainer: SxProps = {
     justifyContent: "space-between",
     width: "95%",
 };
+
 const cardHeaders: SxProps = {
     display: "flex",
     justifyContent: "space-between",
     width: "100%",
 };
+
 const titlePrice: SxProps = {
     color: "rgba(51, 51, 51, 0.7)",
 };
