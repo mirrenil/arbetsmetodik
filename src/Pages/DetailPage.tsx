@@ -1,17 +1,18 @@
 /* eslint-disable */
 import React, { useCallback, useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   collection,
   getDocs,
+  getDoc,
   addDoc,
   deleteDoc,
   doc,
   updateDoc,
-  getDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { IListItem, IUser } from "../Interfaces";
+import { IListItem, IRequest, ReqStatus, IUser } from "../Interfaces";
 import {
   Box,
   Card,
@@ -33,6 +34,7 @@ import { useAuth } from "../Contexts/AuthContext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { useUser } from "../Contexts/UserContext";
 
 const validationSchema = yup.object({
   category: yup.string().required("Category is required"),
@@ -90,6 +92,8 @@ function DetailPage() {
   const [item, setItem] = useState<IListItem>();
   const [user, setUser] = useState<IUser>();
   const [reqSent, setReqSent] = useState<boolean>(false);
+  const { mySentRequests, getMySentRequests } = useUser();
+  const [cookies] = useCookies(["user"]);
 
   const formik = useFormik({
     initialValues: {
@@ -106,24 +110,47 @@ function DetailPage() {
     },
   });
 
+  useEffect(() => {
+    ifUserHasRequestOnItem();
+    getItem();
+  }, [mySentRequests, currentUser]);
+
+  const ifUserHasRequestOnItem = () => {
+    for (let req of mySentRequests) {
+      if (id === req.itemId) {
+        return setReqSent(true);
+      }
+    }
+    return setReqSent(false);
+  };
+
   const handleSendRequest = async (e?: Event) => {
-    const newRequest = {
-      accepted: false,
+    const newRequest: IRequest = {
+      accepted: ReqStatus.pending,
       createdAt: new Date(),
-      fromUserId: currentUser?.uid,
-      fromUserName: currentUser?.displayName,
-      itemId: item?.id,
-      priceTotal: item?.price,
-      toUser: item?.authorID,
+      fromUserId: cookies.user?.uid,
+      fromUserName: cookies.user?.displayName,
+      itemId: item!.id,
+      priceTotal: item!.price,
+      toUser: item!.authorID,
     };
-    const docRef = await addDoc(collection(db, "requests"), newRequest);
-    setReqSent(true);
+    try {
+      await addDoc(collection(db, "requests"), newRequest);
+      setReqSent(true);
+      getMySentRequests();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const deleteListing = async (id: string) => {
     const itemToRemove = doc(db, "listings", id);
-    await deleteDoc(itemToRemove);
-    navigate("/profile/:id");
+    try {
+      await deleteDoc(itemToRemove);
+      navigate(`/profile/${cookies.user.uid}`);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const updateListing = useCallback(async () => {
@@ -172,6 +199,26 @@ function DetailPage() {
     }
     setDocumentData();
   }, [updateListing, modalOpen]);
+
+  const getItem = async () => {
+    if (id) {
+      const docRef: any = doc(db, "listings", id);
+      const docSnap: any = await getDoc(docRef);
+      const item = docSnap.data();
+      if (item) {
+        setItem({
+          authorID: item.authorID,
+          title: item.title,
+          description: item.description,
+          image: item.image,
+          price: item.price,
+          category: item.category,
+          location: item.location,
+          id: id,
+        });
+      }
+    }
+  };
 
   return (
     <Box sx={wrapper}>
