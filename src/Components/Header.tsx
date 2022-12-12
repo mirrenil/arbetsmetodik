@@ -115,9 +115,10 @@ const Header = () => {
               </Link>
             )}
             <Box>
-            {myReceivedRequests.map(() => {
+            {myReceivedRequests.map((req) => {
                     return (
-                    <Badge 
+                    <Badge
+                    key={req.id}
                     variant="dot" 
                     color="error" 
                     sx={{ marginTop: "-45px" }}>
@@ -168,9 +169,10 @@ const Header = () => {
                   <Box sx={navItem}>
                     <AddCircleOutlineIcon sx={navMenuIcon} />
                     <Typography sx={navItemText}>My requests</Typography>
-                    {myReceivedRequests.map(() => {
+                    {myReceivedRequests.map((req) => {
                     return (
-                    <Badge 
+                    <Badge
+                    key={req.id}
                     variant="dot" 
                     color="error" 
                     sx={{ marginLeft: "7px", marginBottom: "10px" }}>
@@ -267,9 +269,10 @@ const Header = () => {
             <Link to="/requests" style={{ textDecoration: "none" }}>
               <Typography sx={itemsDesk}>My requests</Typography>
             </Link>
-            {myReceivedRequests.map(() => {
+            {myReceivedRequests.map((req) => {
           return (
-            <Badge 
+            <Badge
+            key={req.id}
             variant="dot" 
             color="error" 
             sx={{ position: "absolute", right: "250px", top: "35px" }}>
