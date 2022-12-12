@@ -1,5 +1,18 @@
 # Grupprojekt-Arbetsmetodik
 
+Av:
+**Linnea Albertsson [**github**](https://github.com/liinneea-a)**
+
+**Hazem Kawas [**github**](https://github.com/hazem-89)**
+
+**Adam Hepsever [**github**](https://github.com/AdaHep)**
+
+**Erik Isaksson [**github**](https://github.com/Erikisak)**
+
+**Miranda Nilhag [**github**](https://github.com/mirrenil)**
+
+[demo](https://chubbydog.vercel.app/)
+
 ## Kravspecifikation:
 
 -   [x] Det ska gå att skapa ett konto, logga in och logga ut
@@ -22,17 +35,11 @@
 
 ## Övriga önskemål (nice-to-haves):
 
--   [ ] En inloggad användare ska kunna lägga upp en profilbild (med länk eller genom filuppladdning) och en kort text om sig själv, som sedan visas när användarens alla annonser visas
-
 -   [x] Användaren ska kunna ta bort och ändra sina egna annonser
 
 -   [x] Annonserna ska även tala om var varje föremål finns (stadsdel)
 
 -   [x] Det ska gå att filtrera annonser för att enbart se det som lånas ut gratis
-
--   [ ] Det ska gå att favoritmarkera annonser, och favoritmarkerade annonser ska visas direkt på startsidan om man är inloggad
-
--   [ ] Det ska gå att se hur många gånger ett föremål har varit uthyrt
 
 ## Krav för godkänt:
 
@@ -64,33 +71,3 @@
 
 -   [x] Projektet har ett CI-flöde (eller CI/CD) som omfattar Prettier, lintning med ESLint och testning med Cypress för samtliga PR:s som görs mot main-branchen
 
-## PR structure:
-
-Detail with what was changed,
-
-why it was changed,
-
-and how it was changed.
-
-connect issue to PR (closes #issue number)
-
-remove unused dependencies from package.json
-
-remove console.log
-
-format with prettier
-
-remove unused code
-
-Av:
-**Linnea Albertsson [**github**](https://github.com/liinneea-a)**
-
-**Hazem Kawas [**github**](https://github.com/hazem-89)**
-
-**Adam Hepsever [**github**](https://github.com/AdaHep)**
-
-**Erik Isaksson [**github**](https://github.com/Erikisak)**
-
-**Miranda Nilhag [**github**](https://github.com/mirrenil)**
-
-[demo](https://chubbydog.vercel.app/)
