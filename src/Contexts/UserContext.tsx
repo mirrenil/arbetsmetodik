@@ -59,7 +59,6 @@ export function UserProvider({ children }: any) {
     let newList: IRequest[] = [];
     try {
       const requests = await getReqs("requests", "fromUserId");
-      console.log(requests)
       if (requests) {
         for (let req of requests) {
           newList.push(req);
