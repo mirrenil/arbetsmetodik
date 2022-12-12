@@ -19,7 +19,7 @@ const CategoryCard = () => {
         fetchCategoriesFromDb();
     }, []);
 
-    const test = (id: string) => {
+    const setID = (id: string) => {
         setSelectedCategoryId(id);
     };
     return (
@@ -34,7 +34,7 @@ const CategoryCard = () => {
                         key={category.id}
                         onClick={() => {
                             navigate(`/category/${category.title}`);
-                            test(category.id);
+                            setID(category.id);
                         }}
                         data-aos="fade-left"
                         data-aos-offset="200"
@@ -81,7 +81,7 @@ const CategoryCard = () => {
                         key={category.id}
                         onClick={() => {
                             navigate(`/category/${category.title}`);
-                            test(category.id);
+                            setID(category.id);
                         }}
                         data-aos="fade-left"
                         data-aos-offset="200"
