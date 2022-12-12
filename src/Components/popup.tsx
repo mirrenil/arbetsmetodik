@@ -29,13 +29,19 @@ export default function Popup({ open, handleDeleteRequest, handleClose }: Props)
             This action is irreversable.
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} autoFocus>
+        <DialogActions sx={btnsContainer}>
+          <Button variant="outlined" sx={{color: 'black', border: "none"}} onClick={handleClose} autoFocus>
             Cancel
           </Button>
-          <Button onClick={handleDeleteRequest}>Delete request</Button>
+          <Button variant="contained" sx={{color: 'white'}} onClick={handleDeleteRequest}>Delete request</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
+}
+
+const btnsContainer = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  margin: '1rem'
 }
