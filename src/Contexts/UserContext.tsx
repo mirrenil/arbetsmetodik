@@ -34,9 +34,15 @@ export function UserProvider({ children }: any) {
   const [cookies] = useCookies(["user"]);
 
   useEffect(() => {
+    emptyArrays()
     getMyReceivedRequests();
     getMySentRequests();
-  }, []);
+  }, [cookies.user]);
+
+  const emptyArrays = () => {
+    setMyReceivedRequests([])
+    setMySentRequests([])
+  }
 
   const getMyReceivedRequests = async () => {
     let newList: IRequest[] = [];
@@ -53,6 +59,7 @@ export function UserProvider({ children }: any) {
     let newList: IRequest[] = [];
     try {
       const requests = await getReqs("requests", "fromUserId");
+      console.log(requests)
       if (requests) {
         for (let req of requests) {
           newList.push(req);
