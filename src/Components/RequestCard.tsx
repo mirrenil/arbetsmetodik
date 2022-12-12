@@ -13,7 +13,7 @@ import {
 import { db } from "../firebase";
 import { useUser } from "../Contexts/UserContext";
 import Popup from "./popup";
-import { request } from "express";
+import { Link } from "react-router-dom";
 
 interface Props {
   request: IRequest;
@@ -141,18 +141,22 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         component="img"
         src={item?.image}
       />
-      <Typography sx={[textContainer, grid.reqFrom]}>
+      <Typography sx={[textContainer, grid.reqFromOrTo]}>
         {isMySentRequest ? (
           <>
             {" "}
             <span style={titleStyle}>Request To: </span>
-            <span>{receiver?.displayName}</span>
+            <Link to={`/profile/${receiver?.id}`} key={request.id}>
+              <span>{receiver?.displayName}</span>
+            </Link>
           </>
         ) : (
           <>
             {" "}
             <span style={titleStyle}>Request from: </span>
-            <span>{request?.fromUserName}</span>
+            <Link to={`/profile/${request.fromUserId}`} key={request.id}>
+              <span>{request?.fromUserName}</span>
+            </Link>
           </>
         )}
       </Typography>
@@ -160,14 +164,8 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         <span style={titleStyle}>Request for: </span>{" "}
         {item ? item.title : "no item"}
       </Typography>
-      <Typography sx={[textContainer, grid.timeFrom]}>
-        <span style={titleStyle}>Time from: </span> Friday, 25 nov
-      </Typography>
-      <Typography sx={[textContainer, grid.timeTo]}>
-        <span style={titleStyle}>Time to: </span> Sunday, 27 nov
-      </Typography>
-      <Typography sx={[textContainer]}>
-        <span style={titleStyle}>Price total: </span>{" "}
+      <Typography sx={[textContainer, grid.price]}>
+        <span style={titleStyle}>Price per day: </span>{" "}
         {request.priceTotal} kr
       </Typography>
       <Typography sx={[textContainer, grid.message]}>
@@ -261,28 +259,20 @@ const grid = {
     gridColumn: "1 / 2",
     gridRow: "1 / 3",
   },
-  reqFrom: {
+  reqFor: {
     gridColums: "2 / 3",
   },
-  timeFrom: {
+  reqFromOrTo: {
     gridColumn: "3 / 4",
     gridRow: "1 / 2",
   },
-  reqFor: {
-    gridColumn: "2 / 3",
-    gridRow: "2 / 3",
-  },
-  timeTo: {
-    gridColumn: "3 / 4",
+  price: {
+    gridColumn: "2 / 4",
     gridRow: "2 / 3",
   },
   message: {
     gridColumn: "1 / 3",
     gridRow: "3 / 4",
-  },
-  price: {
-    gridColumn: "3 / 4",
-    gridRow: "3 / 5",
   },
 };
 
