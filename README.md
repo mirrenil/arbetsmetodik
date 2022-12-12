@@ -34,7 +34,7 @@
 
 -   [x] Projektet är deployat på t.ex. Netlify eller Vercel
 
--   [ ] Projektet fungerar tillfredsställande och uppfyller kravspecifikationen
+-   [x] Projektet fungerar tillfredsställande och uppfyller kravspecifikationen
 
 -   [x] Genomförd halvtidsavstämning med demo och godkänd opponering
 
