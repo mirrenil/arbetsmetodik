@@ -16,6 +16,12 @@ https://chubbydog.vercel.app/
 
 ---
 
+Limitations:
+
+"About chubby dog" & "Terms and conditions" and social links in footer does not work.
+
+---
+
 Av:
 **Linnea Albertsson [**github**](https://github.com/liinneea-a)**
 
