@@ -36,7 +36,7 @@ const Header = () => {
         (request) => request.accepted === 0
     );
 
-    const handleSubmit = () => {
+    const logoutUser = () => {
         logout();
         navigate("/");
     };
@@ -245,7 +245,7 @@ const Header = () => {
                                         sx={navItem}
                                         onClick={() => {
                                             setMenuOpen(false);
-                                            handleSubmit();
+                                            logoutUser();
                                         }}
                                     >
                                         <LoginIcon sx={navMenuIcon} />
@@ -396,7 +396,7 @@ const Header = () => {
                                     </Link>
                                     <Box
                                         sx={{ marginLeft: "1rem" }}
-                                        onClick={handleSubmit}
+                                        onClick={logoutUser}
                                     >
                                         <Typography sx={itemsDesk}>
                                             Logout
