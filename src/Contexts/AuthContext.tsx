@@ -15,7 +15,6 @@ import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 interface AuthContext {
     signup: (
         email: string,
@@ -51,6 +50,7 @@ export function AuthProvider({ children }: any) {
               setErrorMessage(false);
           }, 10000)
         : null;
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user as User);

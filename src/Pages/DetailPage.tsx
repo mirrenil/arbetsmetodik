@@ -20,7 +20,6 @@ import {
     CardMedia,
     Typography,
     Button,
-    SxProps,
     DialogContent,
     DialogContentText,
     Modal,
@@ -28,8 +27,8 @@ import {
     InputLabel,
     MenuItem,
     Select,
+    SxProps,
 } from "@mui/material";
-import { CSSProperties } from "@mui/styled-engine";
 import { useAuth } from "../Contexts/AuthContext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import * as yup from "yup";
@@ -522,18 +521,20 @@ const imageContainer: SxProps = {
     maxWidth: { xs: "400px", md: "500px", lg: "600px", xl: "600px" },
 };
 
-const infoContainer: CSSProperties = {
+const infoContainer: SxProps = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
     width: "95%",
 };
-const cardHeaders: CSSProperties = {
+
+const cardHeaders: SxProps = {
     display: "flex",
     justifyContent: "space-between",
     width: "100%",
 };
-const titlePrice: CSSProperties = {
+
+const titlePrice: SxProps = {
     color: "rgba(51, 51, 51, 0.7)",
 };
 
@@ -549,7 +550,7 @@ const listingLocation: SxProps = {
     fontStyle: "italic",
 };
 
-const itemImage: CSSProperties = {
+const itemImage: SxProps = {
     objectFit: "fill",
 };
 
@@ -575,14 +576,14 @@ const button: SxProps = {
     color: "white",
 };
 
-const crudItems = {
+const crudItems: SxProps = {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "70%",
 };
 
-const modalStyle = {
+const modalStyle: SxProps = {
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -595,7 +596,7 @@ const modalStyle = {
     p: 4,
 };
 
-const crudModal = {
+const crudModal: SxProps = {
     display: "flex",
     flexDirection: "column",
 };

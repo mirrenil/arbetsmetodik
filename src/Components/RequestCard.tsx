@@ -16,8 +16,8 @@ import Popup from "./popup";
 import { request } from "express";
 
 interface Props {
-  request: IRequest;
-  isMySentRequest: boolean;
+    request: IRequest;
+    isMySentRequest: boolean;
 }
 
 const RequestCard = ({ request, isMySentRequest }: Props) => {
@@ -39,10 +39,10 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
     setOpen(false);
   };
 
-  useEffect(() => {
-    getReceiver();
-    getReqItem();
-  }, []);
+    useEffect(() => {
+        getReceiver();
+        getReqItem();
+    }, []);
 
   const getReceiver = async () => {
     try {
@@ -257,71 +257,71 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
 };
 
 const grid = {
-  pic: {
-    gridColumn: "1 / 2",
-    gridRow: "1 / 3",
-  },
-  reqFrom: {
-    gridColums: "2 / 3",
-  },
-  timeFrom: {
-    gridColumn: "3 / 4",
-    gridRow: "1 / 2",
-  },
-  reqFor: {
-    gridColumn: "2 / 3",
-    gridRow: "2 / 3",
-  },
-  timeTo: {
-    gridColumn: "3 / 4",
-    gridRow: "2 / 3",
-  },
-  message: {
-    gridColumn: "1 / 3",
-    gridRow: "3 / 4",
-  },
-  price: {
-    gridColumn: "3 / 4",
-    gridRow: "3 / 5",
-  },
+    pic: {
+        gridColumn: "1 / 2",
+        gridRow: "1 / 3",
+    },
+    reqFrom: {
+        gridColums: "2 / 3",
+    },
+    timeFrom: {
+        gridColumn: "3 / 4",
+        gridRow: "1 / 2",
+    },
+    reqFor: {
+        gridColumn: "2 / 3",
+        gridRow: "2 / 3",
+    },
+    timeTo: {
+        gridColumn: "3 / 4",
+        gridRow: "2 / 3",
+    },
+    message: {
+        gridColumn: "1 / 3",
+        gridRow: "3 / 4",
+    },
+    price: {
+        gridColumn: "3 / 4",
+        gridRow: "3 / 5",
+    },
 };
 
 const imgStyle = {
-  height: "5rem",
-  width: "7rem",
-  objectFit: "contain",
-  marginRight: "1rem",
+    height: "5rem",
+    width: "7rem",
+    objectFit: "contain",
+    marginRight: "1rem",
 };
 
 const titleStyle: CSSProperties = {
-  color: "grey",
+    color: "grey",
 };
 
 const textContainer: CSSPropertiesWithMultiValues = {
-  display: "flex",
-  flexDirection: "column",
+    display: "flex",
+    flexDirection: "column",
 };
 
 const buttonsContainer = {
-  width: "100%",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  gridColumn: "1 / 4",
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gridColumn: "1 / 4",
 };
 
 const button = {
-  width: "5rem",
-  height: "2rem",
-  border: "none",
-  color: "white",
+    width: "5rem",
+    height: "2rem",
+    border: "none",
+    color: "white",
 };
 
 const decline = {
-  backgroundColor: "red",
-  "&:hover": {
-    backgroundColor: "#cc0000",
-  },
+    backgroundColor: "red",
+    "&:hover": {
+        backgroundColor: "#cc0000",
+    },
 };
 
 export default RequestCard;
