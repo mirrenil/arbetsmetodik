@@ -1,5 +1,38 @@
 # Grupprojekt-Arbetsmetodik
 
+## How to run
+
+### Locally:
+
+1. Clone the project to your computer
+2. Open terminal in your IDE
+3. Run command: npm i
+4. Run command: npm start
+5. The site will open in your browser on http://localhost:3000/
+
+### Deployed website
+
+https://chubbydog.vercel.app/
+
+---
+
+Av:
+**Linnea Albertsson [**github**](https://github.com/liinneea-a)**
+
+**Hazem Kawas [**github**](https://github.com/hazem-89)**
+
+**Adam Hepsever [**github**](https://github.com/AdaHep)**
+
+**Erik Isaksson [**github**](https://github.com/Erikisak)**
+
+**Miranda Nilhag [**github**](https://github.com/mirrenil)**
+
+[Demo](https://chubbydog.vercel.app/)
+
+[Design sketches](https://www.figma.com/file/Z2MXDsZBj8RUHxH7S7ZfXo/Arbetsmetodik?node-id=0%3A1&t=zhZcrKMunr98Z4jP-1)
+
+---
+
 ## Kravspecifikation:
 
 -   [x] Det ska gå att skapa ett konto, logga in och logga ut
@@ -34,7 +67,7 @@
 
 -   [x] Projektet är deployat på t.ex. Netlify eller Vercel
 
--   [ ] Projektet fungerar tillfredsställande och uppfyller kravspecifikationen
+-   [x] Projektet fungerar tillfredsställande och uppfyller kravspecifikationen
 
 -   [x] Genomförd halvtidsavstämning med demo och godkänd opponering
 
@@ -57,16 +90,3 @@
 -   [x] Ytterligare två Cypress-tester (totalt minst fyra tester) har skapats för att testa funktionalitet som ändrats/tillkommit efter feedback från opponeringen. Testerna ska baseras på buggar eller brister i funktionaliteten som kommit fram vid opponeringen.
 
 -   [x] Projektet har ett CI-flöde (eller CI/CD) som omfattar Prettier, lintning med ESLint och testning med Cypress för samtliga PR:s som görs mot main-branchen
-
-Av:
-**Linnea Albertsson [**github**](https://github.com/liinneea-a)**
-
-**Hazem Kawas [**github**](https://github.com/hazem-89)**
-
-**Adam Hepsever [**github**](https://github.com/AdaHep)**
-
-**Erik Isaksson [**github**](https://github.com/Erikisak)**
-
-**Miranda Nilhag [**github**](https://github.com/mirrenil)**
-
-[demo](https://chubbydog.vercel.app/)
