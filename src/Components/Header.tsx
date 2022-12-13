@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Box, SxProps } from "@mui/material";
+import { Badge, Box, SxProps } from "@mui/material";
 import { Avatar, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -18,10 +18,12 @@ import logoImg from "../Assets/Images/logo.png";
 import { useAuth } from "../Contexts/AuthContext";
 import MobileHeader from "../Assets/Images/mobileHeader.svg";
 import { ToastContainer } from "react-toastify";
+import { useUser } from "../Contexts/UserContext";
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const { currentUser, logout } = useAuth();
+    const { myReceivedRequests } = useUser();
     const userImg: any = currentUser?.photoURL;
     const userName: any = currentUser?.displayName;
     useEffect(() => {
@@ -51,7 +53,7 @@ const Header = () => {
             <Box sx={navBoxInnerMobile}>
                 <Box sx={logo}>
                     <Link to="/">
-                        <Avatar alt="Logo" src={logoImg} />
+                        <Avatar alt="Logo" src={logoImg} sx={logoImgStyle} />
                     </Link>
                 </Box>
                 <Box>
@@ -117,19 +119,28 @@ const Header = () => {
                                 />
                             </Link>
                         )}
-                        <MenuIcon
-                            onClick={() =>
-                                menuOpen
-                                    ? setMenuOpen(false)
-                                    : setMenuOpen(true)
-                            }
-                            sx={{
-                                cursor: "pointer",
-                                width: "30px",
-                                height: "30px",
-                                fill: "#ffffff",
-                            }}
-                        />
+                        <Box>
+                            {myReceivedRequests.length >= 1 && currentUser ? (
+                                <Badge
+                                    variant="dot"
+                                    color="error"
+                                    sx={{ position: "absolute" }}
+                                ></Badge>
+                            ) : null}
+                            <MenuIcon
+                                onClick={() =>
+                                    menuOpen
+                                        ? setMenuOpen(false)
+                                        : setMenuOpen(true)
+                                }
+                                sx={{
+                                    cursor: "pointer",
+                                    width: "30px",
+                                    height: "30px",
+                                    fill: "#ffffff",
+                                }}
+                            />
+                        </Box>
                     </Box>
                 </Box>
             </Box>
@@ -175,9 +186,20 @@ const Header = () => {
                                             My requests
                                         </Typography>
                                     </Box>
+                                    {myReceivedRequests.length >= 1 &&
+                                    currentUser ? (
+                                        <Badge
+                                            variant="dot"
+                                            color="error"
+                                            sx={{
+                                                position: "absolute",
+                                                right: "90px",
+                                                top: "43px",
+                                            }}
+                                        ></Badge>
+                                    ) : null}
                                 </Link>
                             ) : null}
-
                             <Link to="/" style={{ textDecoration: "none" }}>
                                 <Box
                                     sx={navItem}
@@ -225,7 +247,7 @@ const Header = () => {
                                     >
                                         <LoginIcon sx={navMenuIcon} />
                                         <Typography sx={navItemText}>
-                                            Log Out
+                                            Logout
                                         </Typography>
                                     </Box>
                                 </>
@@ -241,7 +263,7 @@ const Header = () => {
                                         >
                                             <LoginIcon sx={navMenuIcon} />
                                             <Typography sx={navItemText}>
-                                                Log In
+                                                Login
                                             </Typography>
                                         </Box>
                                     </Link>
@@ -271,7 +293,7 @@ const Header = () => {
                 <Box>
                     <img
                         src={backGroundImg}
-                        alt="background image"
+                        alt=""
                         style={{
                             position: "absolute",
                             top: "0",
@@ -302,11 +324,29 @@ const Header = () => {
                         >
                             <Typography sx={itemsDesk}>How it works</Typography>
                         </Link>
-
-                        <Link to="/requests" style={{ textDecoration: "none" }}>
-                            <Typography sx={itemsDesk}>My requests</Typography>
-                        </Link>
-
+                        {currentUser ? (
+                            <>
+                                <Link
+                                    to="/requests"
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    <Typography sx={itemsDesk}>
+                                        My requests
+                                    </Typography>
+                                </Link>
+                                {myReceivedRequests.length >= 1 ? (
+                                    <Badge
+                                        variant="dot"
+                                        color="error"
+                                        sx={{
+                                            position: "absolute",
+                                            right: "250px",
+                                            top: "35px",
+                                        }}
+                                    ></Badge>
+                                ) : null}
+                            </>
+                        ) : null}
                         <Link
                             to="/newlisting"
                             style={{ textDecoration: "none" }}
@@ -356,7 +396,7 @@ const Header = () => {
                                         onClick={handleSubmit}
                                     >
                                         <Typography sx={itemsDesk}>
-                                            Log Out
+                                            Logout
                                         </Typography>
                                     </Box>
                                 </Box>
@@ -368,7 +408,7 @@ const Header = () => {
                             >
                                 <Box>
                                     <Typography sx={itemsDesk}>
-                                        Log In
+                                        Login
                                     </Typography>
                                 </Box>
                             </Link>
@@ -420,6 +460,7 @@ const logo: SxProps = {
     justifyContent: "center",
     zIndex: "3",
 };
+const logoImgStyle: SxProps = {};
 
 const mobileMenuList: SxProps = {
     width: "250px",
