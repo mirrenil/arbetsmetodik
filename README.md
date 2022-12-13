@@ -14,6 +14,8 @@
 
 https://chubbydog.vercel.app/
 
+---
+
 Av:
 **Linnea Albertsson [**github**](https://github.com/liinneea-a)**
 
@@ -25,7 +27,11 @@ Av:
 
 **Miranda Nilhag [**github**](https://github.com/mirrenil)**
 
-[demo](https://chubbydog.vercel.app/)
+[Demo](https://chubbydog.vercel.app/)
+
+[Design sketches](https://www.figma.com/file/Z2MXDsZBj8RUHxH7S7ZfXo/Arbetsmetodik?node-id=0%3A1&t=zhZcrKMunr98Z4jP-1)
+
+---
 
 ## Kravspecifikation:
 
