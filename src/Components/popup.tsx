@@ -13,7 +13,6 @@ interface Props {
   title: string,
   description: string,
   confirmButton: string
-
 }
 
 export default function Popup({ open, action, handleClose, title, description, confirmButton }: Props) {
