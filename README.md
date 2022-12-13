@@ -1,5 +1,19 @@
 # Grupprojekt-Arbetsmetodik
 
+## How to run
+
+### Locally:
+
+1. Clone the project to your computer
+2. Open terminal in your IDE
+3. Run command: npm i
+4. Run command: npm start
+5. The site will open in your browser on http://localhost:3000/
+
+### Deployed website
+
+https://chubbydog.vercel.app/
+
 Av:
 **Linnea Albertsson [**github**](https://github.com/liinneea-a)**
 
@@ -70,4 +84,3 @@ Av:
 -   [x] Ytterligare två Cypress-tester (totalt minst fyra tester) har skapats för att testa funktionalitet som ändrats/tillkommit efter feedback från opponeringen. Testerna ska baseras på buggar eller brister i funktionaliteten som kommit fram vid opponeringen.
 
 -   [x] Projektet har ett CI-flöde (eller CI/CD) som omfattar Prettier, lintning med ESLint och testning med Cypress för samtliga PR:s som görs mot main-branchen
-
