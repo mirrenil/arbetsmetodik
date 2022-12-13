@@ -32,6 +32,10 @@ const Header = () => {
     }, []);
     const navigate = useNavigate();
 
+    const newRequests = myReceivedRequests.filter(
+        (request) => request.accepted === 0
+    );
+
     const handleSubmit = () => {
         logout();
         navigate("/");
@@ -120,7 +124,7 @@ const Header = () => {
                             </Link>
                         )}
                         <Box>
-                            {myReceivedRequests.length >= 1 && currentUser ? (
+                            {newRequests.length >= 1 && currentUser ? (
                                 <Badge
                                     variant="dot"
                                     color="error"
@@ -186,8 +190,7 @@ const Header = () => {
                                             My requests
                                         </Typography>
                                     </Box>
-                                    {myReceivedRequests.length >= 1 &&
-                                    currentUser ? (
+                                    {newRequests.length >= 1 && currentUser ? (
                                         <Badge
                                             variant="dot"
                                             color="error"
@@ -334,7 +337,7 @@ const Header = () => {
                                         My requests
                                     </Typography>
                                 </Link>
-                                {myReceivedRequests.length >= 1 ? (
+                                {newRequests.length >= 1 ? (
                                     <Badge
                                         variant="dot"
                                         color="error"

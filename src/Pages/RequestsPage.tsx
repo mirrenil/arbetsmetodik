@@ -13,7 +13,17 @@ function RequestsPage() {
             <Box sx={wrapper}>
                 <Typography sx={titleStyle}>Recieved requests:</Typography>
                 {myReceivedRequests.length > 1 ? (
-                    <Typography align="center">
+                    <Typography
+                        align="center"
+                        sx={{
+                            display: {
+                                xs: "block",
+                                md: "none",
+                                lg: "none",
+                                xl: "none",
+                            },
+                        }}
+                    >
                         Swipe left for more requests
                     </Typography>
                 ) : null}
@@ -81,7 +91,7 @@ const cardsContainer: SxProps = {
     alignItems: "center",
     width: "100%",
     height: "20rem",
-    overflowX: "scroll",
+    overflowX: "auto",
     position: "relative",
 };
 
