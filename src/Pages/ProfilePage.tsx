@@ -35,6 +35,8 @@ function ProfilePage() {
     const navigate = useNavigate();
     const { id } = useParams();
 
+    const currentUserItems = items.filter((item) => item.authorID === user?.id);
+
     const handleNameChange = async (e: FormEvent) => {
         e.preventDefault();
         let userObject = {
@@ -95,25 +97,28 @@ function ProfilePage() {
                         <Typography variant="h2" component="h2">
                             {user?.displayName}
                         </Typography>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                            <button
-                                onClick={handleOpen}
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    border: "none",
-                                    backgroundColor: "transparent",
-                                    cursor: "pointer",
-                                    padding: "0",
-                                }}
-                            >
-                                <Typography sx={{ fontSize: ".7rem" }}>
-                                    Change your display name
-                                </Typography>
-                                <SettingsIcon sx={{ fontSize: "small" }} />
-                            </button>
-                        </Box>
+                        {currentUser?.uid === currentUserItems[0]?.authorID ? (
+                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                                <button
+                                    onClick={handleOpen}
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        border: "none",
+                                        backgroundColor: "transparent",
+                                        cursor: "pointer",
+                                        padding: "0",
+                                    }}
+                                >
+                                    <Typography sx={{ fontSize: ".7rem" }}>
+                                        Change your display name
+                                    </Typography>
+                                    <SettingsIcon sx={{ fontSize: "small" }} />
+                                </button>
+                            </Box>
+                        ) : null}
                     </>
+
                     <Modal open={modalOpen} onClose={handleClose}>
                         <Box sx={modalStyle}>
                             <form onSubmit={handleNameChange}>
@@ -164,17 +169,15 @@ function ProfilePage() {
                             },
                         }}
                     >
-                        {items
-                            .filter((item) => item.authorID === user?.id)
-                            .map((item: IListItem) => (
-                                <Link
-                                    to={`/items/${item.id}`}
-                                    key={item.id}
-                                    style={{ textDecoration: "none" }}
-                                >
-                                    <ItemCard key={item.id} item={item} />
-                                </Link>
-                            ))}
+                        {currentUserItems.map((item: IListItem) => (
+                            <Link
+                                to={`/items/${item.id}`}
+                                key={item.id}
+                                style={{ textDecoration: "none" }}
+                            >
+                                <ItemCard key={item.id} item={item} />
+                            </Link>
+                        ))}
                     </Box>
                 </>
             ) : (
