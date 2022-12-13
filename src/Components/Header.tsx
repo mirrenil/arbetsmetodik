@@ -24,7 +24,7 @@ import { useUser } from "../Contexts/UserContext";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { currentUser, logout } = useAuth();
-  const { myReceivedRequests, mySentRequests } = useUser();
+  const { myReceivedRequests } = useUser();
   const userImg: any = currentUser?.photoURL;
   const userName: any = currentUser?.displayName;
   useEffect(() => {
