@@ -217,7 +217,7 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
             </Typography>
             <Typography sx={[textContainer, grid.message]}>
                 <span style={titleStyle}>Message: </span>Hi! I would like to
-                rent the projector for a couple of days. Cheers!
+                rent the {item?.title} for a couple of days. Cheers!
             </Typography>
             <Box sx={reqStatusContainer}>
                 {/* mySent && pending */}
