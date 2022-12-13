@@ -17,8 +17,8 @@ import { Link } from "react-router-dom";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 interface Props {
-  request: IRequest;
-  isMySentRequest: boolean;
+    request: IRequest;
+    isMySentRequest: boolean;
 }
 
 const RequestCard = ({ request, isMySentRequest }: Props) => {
@@ -34,10 +34,10 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   const accepted = ReqStatus.accepted;
   const denied = ReqStatus.denied;
 
-  useEffect(() => {
-    getReceiver();
-    getReqItem();
-  }, []);
+    useEffect(() => {
+        getReceiver();
+        getReqItem();
+    }, []);
 
   const getReceiver = async () => {
     try {
@@ -342,19 +342,19 @@ const grid = {
 };
 
 const imgStyle = {
-  height: "5rem",
-  width: "7rem",
-  objectFit: "contain",
-  marginRight: "1rem",
+    height: "5rem",
+    width: "7rem",
+    objectFit: "contain",
+    marginRight: "1rem",
 };
 
 const titleStyle: CSSProperties = {
-  color: "grey",
+    color: "grey",
 };
 
 const textContainer: CSSPropertiesWithMultiValues = {
-  display: "flex",
-  flexDirection: "column",
+    display: "flex",
+    flexDirection: "column",
 };
 
 const reqStatusContainer = {

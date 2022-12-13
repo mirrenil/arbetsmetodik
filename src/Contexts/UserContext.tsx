@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { db } from "../firebase";
 import { IRequest } from "../Interfaces";
+import { useAuth } from "./AuthContext";
 
 interface UserContextValue {
   myReceivedRequests: IRequest[];
@@ -25,7 +26,7 @@ export const UserContext = createContext<UserContextValue>({
 });
 
 export function useUser() {
-  return useContext(UserContext);
+    return useContext(UserContext);
 }
 
 export function UserProvider({ children }: any) {
