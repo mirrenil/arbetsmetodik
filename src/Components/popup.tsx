@@ -8,34 +8,43 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 interface Props {
   open: boolean;
-  handleDeleteRequest: () => void,
-  handleClose: () => void
+  action: () => void,
+  handleClose: () => void,
+  title: string,
+  description: string,
+  confirmButton: string
 }
- 
-export default function Popup({ open, handleDeleteRequest, handleClose }: Props) {
+
+export default function Popup({ open, action, handleClose, title, description, confirmButton }: Props) {
   return (
     <div>
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="Delete confirmation"
-        aria-describedby="Are you sure you want to delete this request?"
+        aria-describedby={title}
       >
         <DialogTitle id="alert-dialog-title">
-          {"Are you sure you want to delete this request?"}
+          {title}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            This action is irreversable.
+            {description}
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} autoFocus>
+        <DialogActions sx={btnsContainer}>
+          <Button variant="outlined" sx={{ color: 'black', border: "none" }} onClick={handleClose} autoFocus>
             Cancel
           </Button>
-          <Button onClick={handleDeleteRequest}>Delete request</Button>
+          <Button variant="contained" sx={{ color: 'white' }} onClick={action}>{confirmButton}</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
+}
+
+const btnsContainer = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  margin: '1rem'
 }

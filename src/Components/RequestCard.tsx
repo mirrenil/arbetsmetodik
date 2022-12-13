@@ -13,7 +13,8 @@ import {
 import { db } from "../firebase";
 import { useUser } from "../Contexts/UserContext";
 import Popup from "./popup";
-import { request } from "express";
+import { Link } from "react-router-dom";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 interface Props {
     request: IRequest;
@@ -25,19 +26,13 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
   const [item, setItem] = useState<IListItem>();
   const theme = useTheme();
   const { deleteRequest } = useUser();
-  const [open, setOpen] = useState(false);
+  const [deleteConfirmationpOpen, setDeleteConfirmationpOpen] = useState(false);
+  const [denyConfirmationOpen, setDenyConfirmationOpen] = useState(false);
+  const [acceptConfirmationOpen, setAcceptConfirmationOpen] = useState(false);
   const [reqStatus, setReqStatus] = useState<ReqStatus>(request.accepted);
   const pending = ReqStatus.pending;
   const accepted = ReqStatus.accepted;
-  const declined = ReqStatus.declined;
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const denied = ReqStatus.denied;
 
     useEffect(() => {
         getReceiver();
@@ -92,7 +87,7 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
     if (request.id) {
       deleteRequest(request?.id);
     }
-    handleClose();
+    handleDeleteConfirmationClose();
   };
 
   const handleRequestStatus = async (status: ReqStatus) => {
@@ -106,34 +101,82 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
           doc(db, "requests", request?.id),
           updateAcceptedReq
         );
+        setReqStatus(status);
       } catch (err) {
         console.log(err);
       }
     }
   };
 
-  const updateCardStatus = (reqStatus: ReqStatus) => {
-    setReqStatus(reqStatus);
-  };
+    //Delete req popup
+    const handleDeleteConfirmationOpen = () => {
+      setDeleteConfirmationpOpen(true);
+    };
+  
+   const handleDeleteConfirmationClose = () => {
+      setDeleteConfirmationpOpen(false);
+    };
+  
+    // deny req popup
+    const handleDenyConfirmationOpen = () => {
+      setDenyConfirmationOpen(true)
+    }
+  
+    const handleDenyConfirmationClose = () => {
+      setDenyConfirmationOpen(false)
+    }
+  
+    //accept request popup
+    const handleAcceptConfirmationOpen = () => {
+      setAcceptConfirmationOpen(true)
+    }
+  
+    const handleAcceptConfirmationClose = () => {
+      setAcceptConfirmationOpen(false)
+    }
+
+    // handler when method is called in popup
+    const acceptRequest = () => {
+      handleRequestStatus(ReqStatus.accepted)
+      handleAcceptConfirmationClose()
+    }
+  
+    const denyRequest = () => {
+      handleRequestStatus(ReqStatus.denied)
+      handleDenyConfirmationClose()
+    }
+
+  const popUpText = {
+    delete: {
+      title: "Are you sure you want to delete this request?",
+      description: "This action is irreversable.",
+      confirmButton: 'Delete request'
+    },
+    deny: {
+      title: 'Are you sure you want to deny this request?',
+      description: '"This action is irreversable."',
+      confirmButton: 'Deny request'
+    },
+    accept: {
+      title: 'Are you sure you want to accept this request?',
+      description: '"This action is irreversable."',
+      confirmButton: 'Accept request'
+    }
+  }
 
   return (
     <Box
       sx={{
         padding: "1rem",
         boxShadow: "0px 0px 15px -3px #000000",
-        maxWidth: {
-          xs: "20rem",
-          md: "25rem",
-          lg: "25rem",
-          xl: "25rem",
-        },
-        height: { xs: "none", md: "15rem", lg: "15rem", xl: "15rem" },
+        minWidth: '20rem',
+        maxWidth: '20rem',
+        height: { xs: "15rem", md: "20rem", lg: "15rem", xl: "15rem" },
         borderRadius: theme.shape.buttonBorderRadius,
-        margin: "auto",
         display: "grid",
         gridTemplateColumns: "repeat(3, 1fr)",
         gridTemplateRows: "repeat(4, 1fr)",
-        marginBottom: "2rem",
+        margin: '0 1rem'
       }}
     >
       <CardMedia
@@ -141,18 +184,22 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         component="img"
         src={item?.image}
       />
-      <Typography sx={[textContainer, grid.reqFrom]}>
+      <Typography sx={[textContainer, grid.reqFromOrTo]}>
         {isMySentRequest ? (
           <>
             {" "}
             <span style={titleStyle}>Request To: </span>
-            <span>{receiver?.displayName}</span>
+            <Link to={`/profile/${receiver?.id}`} key={request.id}>
+              <span>{receiver?.displayName}</span>
+            </Link>
           </>
         ) : (
           <>
             {" "}
             <span style={titleStyle}>Request from: </span>
-            <span>{request?.fromUserName}</span>
+            <Link to={`/profile/${request.fromUserId}`} key={request.id}>
+              <span>{request?.fromUserName}</span>
+            </Link>
           </>
         )}
       </Typography>
@@ -160,130 +207,138 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         <span style={titleStyle}>Request for: </span>{" "}
         {item ? item.title : "no item"}
       </Typography>
-      <Typography sx={[textContainer, grid.timeFrom]}>
-        <span style={titleStyle}>Time from: </span> Friday, 25 nov
-      </Typography>
-      <Typography sx={[textContainer, grid.timeTo]}>
-        <span style={titleStyle}>Time to: </span> Sunday, 27 nov
-      </Typography>
-      <Typography sx={[textContainer]}>
-        <span style={titleStyle}>Price total: </span>{" "}
+      <Typography sx={[textContainer, grid.price]}>
+        <span style={titleStyle}>Price per day: </span>{" "}
         {request.priceTotal} kr
       </Typography>
       <Typography sx={[textContainer, grid.message]}>
         <span style={titleStyle}>Message: </span>Hi! I would like to
         rent the projector for a couple of days. Cheers!
       </Typography>
-      <Box sx={buttonsContainer}>
+      <Box sx={reqStatusContainer}>
         {/* mySent && pending */}
         {isMySentRequest && reqStatus == pending ? (
           <>
-            <Typography variant="h5">Pending...</Typography>
-            <Button variant="contained" onClick={handleOpen}>
-              Delete request
+            <Typography sx={[reqStatusStyle, pendingStyle]} variant="h5">Pending...</Typography>
+            <Button sx={denyBtn} variant="outlined" onClick={handleDeleteConfirmationOpen}>
+              <DeleteForeverIcon />
             </Button>
           </>
         ) : null}
 
         {/* mySent && accepted */}
         {isMySentRequest && reqStatus === accepted ? (
-          <Typography variant="h5">
+          <Typography sx={[acceptedStyle, reqStatusStyle]} variant="h5">
             Your request is accepted!
           </Typography>
         ) : null}
 
-        {/* mySent && declined */}
-        {isMySentRequest && reqStatus === declined ? (
-          <Typography variant="h5">
-            You have declined this request
+        {/* mySent && denied */}
+        {isMySentRequest && reqStatus === denied ? (
+          <Typography sx={[reqStatusStyle, deniedStyle]} variant="h5">
+            You have denied this request
           </Typography>
         ) : null}
 
         {/* notMySent && pending */}
         {!isMySentRequest && reqStatus === pending ? (
-          <div>
+          <Box sx={buttonsContainer}>
             <Button
-              sx={[button, decline]}
+              variant="outlined"
+              sx={[button, denyBtn]}
               onClick={() => {
-                handleRequestStatus(ReqStatus.declined);
-                updateCardStatus(ReqStatus.declined);
+                handleDenyConfirmationOpen();
+                // handleRequestStatus(ReqStatus.denied);
               }}
             >
-              Decline
+              Deny
             </Button>
             <Button
               variant="contained"
-              sx={button}
+              sx={[button, acceptBtn]}
               onClick={() => {
-                handleRequestStatus(ReqStatus.accepted);
-                updateCardStatus(ReqStatus.accepted);
+                handleAcceptConfirmationOpen()
+                // handleRequestStatus(ReqStatus.accepted);
               }}
             >
               Accept
             </Button>
-          </div>
+          </Box>
         ) : null}
 
         {/* notMySent && accepted */}
         {!isMySentRequest && reqStatus === accepted ? (
-          <Typography variant="h5">
+          <Typography sx={[reqStatusStyle, acceptedStyle]} variant="h5">
             You have accepted this request
           </Typography>
         ) : null}
 
-        {/* notMySent && declined */}
-        {!isMySentRequest && reqStatus === declined ? (
+        {/* notMySent && denied */}
+        {!isMySentRequest && reqStatus === denied ? (
           <>
-            <Typography variant="h5">
-              You have declined this request
+            <Typography sx={[reqStatusStyle, deniedStyle]} variant="h5">
+              You have denied this request
             </Typography>
-            <Button
-              variant="contained"
+            <Button sx={deleteButton}
+              variant="outlined"
               onClick={handleDeleteRequest}
             >
-              Delete request
+              <DeleteForeverIcon />
             </Button>
           </>
         ) : null}
       </Box>
-
+          {/* Deny request */}
       <Popup
-        open={open}
-        handleClose={handleClose}
-        handleDeleteRequest={handleDeleteRequest}
+        open={denyConfirmationOpen}
+        handleClose={handleDenyConfirmationClose}
+        action={denyRequest}
+        title={popUpText.deny.title}
+        description={popUpText.deny.description}
+        confirmButton={popUpText.deny.confirmButton}
+      />
+      {/* Delete request confirmation */}
+      <Popup
+        open={deleteConfirmationpOpen}
+        handleClose={handleDeleteConfirmationClose}
+        action={handleDeleteRequest}
+        title={popUpText.delete.title}
+        description={popUpText.delete.description}
+        confirmButton={popUpText.delete.confirmButton}
+      />
+      {/* Accept request */}
+      <Popup
+        open={acceptConfirmationOpen}
+        handleClose={handleAcceptConfirmationClose}
+        action={acceptRequest}
+        title={popUpText.accept.title}
+        description={popUpText.accept.description}
+        confirmButton={popUpText.accept.confirmButton}
       />
     </Box>
   );
 };
 
 const grid = {
-    pic: {
-        gridColumn: "1 / 2",
-        gridRow: "1 / 3",
-    },
-    reqFrom: {
-        gridColums: "2 / 3",
-    },
-    timeFrom: {
-        gridColumn: "3 / 4",
-        gridRow: "1 / 2",
-    },
-    reqFor: {
-        gridColumn: "2 / 3",
-        gridRow: "2 / 3",
-    },
-    timeTo: {
-        gridColumn: "3 / 4",
-        gridRow: "2 / 3",
-    },
-    message: {
-        gridColumn: "1 / 3",
-        gridRow: "3 / 4",
-    },
-    price: {
-        gridColumn: "3 / 4",
-        gridRow: "3 / 5",
-    },
+  pic: {
+    gridColumn: "1 / 2",
+    gridRow: "1 / 3",
+  },
+  reqFor: {
+    gridColums: "2 / 3",
+  },
+  reqFromOrTo: {
+    gridColumn: "3 / 4",
+    gridRow: "1 / 2",
+  },
+  price: {
+    gridColumn: "2 / 4",
+    gridRow: "2 / 3",
+  },
+  message: {
+    gridColumn: "1 / 3",
+    gridRow: "3 / 4",
+  },
 };
 
 const imgStyle = {
@@ -302,26 +357,55 @@ const textContainer: CSSPropertiesWithMultiValues = {
     flexDirection: "column",
 };
 
-const buttonsContainer = {
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gridColumn: "1 / 4",
+const reqStatusContainer = {
+  width: "100%",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  gridColumn: "1 / 4",
 };
 
 const button = {
-    width: "5rem",
-    height: "2rem",
-    border: "none",
-    color: "white",
+  width: "5rem",
+  height: "2rem",
+  textTransform: 'none'
 };
 
-const decline = {
-    backgroundColor: "red",
-    "&:hover": {
-        backgroundColor: "#cc0000",
-    },
+const deleteButton = {
+  borderRadius: '100px',
 };
+
+const buttonsContainer = {
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'space-between'
+};
+
+const denyBtn = {
+  color: 'red',
+  border: '1px solid red'
+};
+
+const acceptBtn = {
+  color: 'white',
+  backgroundColor: 'green'
+}
+
+const acceptedStyle = {
+  color: 'green',
+}
+
+const pendingStyle = {
+  color: 'orange'
+}
+
+const deniedStyle = {
+  color: 'red'
+}
+
+const reqStatusStyle = {
+  fontSize: '1rem'
+}
+
 
 export default RequestCard;
