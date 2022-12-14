@@ -5,6 +5,7 @@ import { useAuth } from "../Contexts/AuthContext";
 import { ToastContainer } from "react-toastify";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import "react-toastify/dist/ReactToastify.css";
 
 const validationSchema = yup.object({
     email: yup.string().required("Please enter your email address"),

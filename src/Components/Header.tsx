@@ -32,7 +32,11 @@ const Header = () => {
     }, []);
     const navigate = useNavigate();
 
-    const handleSubmit = () => {
+    const newRequests = myReceivedRequests.filter(
+        (request) => request.accepted === 0
+    );
+
+    const logoutUser = () => {
         logout();
         navigate("/");
     };
@@ -120,7 +124,7 @@ const Header = () => {
                             </Link>
                         )}
                         <Box>
-                            {myReceivedRequests.length >= 1 && currentUser ? (
+                            {newRequests.length >= 1 && currentUser ? (
                                 <Badge
                                     variant="dot"
                                     color="error"
@@ -186,8 +190,7 @@ const Header = () => {
                                             My requests
                                         </Typography>
                                     </Box>
-                                    {myReceivedRequests.length >= 1 &&
-                                    currentUser ? (
+                                    {newRequests.length >= 1 && currentUser ? (
                                         <Badge
                                             variant="dot"
                                             color="error"
@@ -242,7 +245,7 @@ const Header = () => {
                                         sx={navItem}
                                         onClick={() => {
                                             setMenuOpen(false);
-                                            handleSubmit();
+                                            logoutUser();
                                         }}
                                     >
                                         <LoginIcon sx={navMenuIcon} />
@@ -334,7 +337,7 @@ const Header = () => {
                                         My requests
                                     </Typography>
                                 </Link>
-                                {myReceivedRequests.length >= 1 ? (
+                                {newRequests.length >= 1 ? (
                                     <Badge
                                         variant="dot"
                                         color="error"
@@ -393,7 +396,7 @@ const Header = () => {
                                     </Link>
                                     <Box
                                         sx={{ marginLeft: "1rem" }}
-                                        onClick={handleSubmit}
+                                        onClick={logoutUser}
                                     >
                                         <Typography sx={itemsDesk}>
                                             Logout
