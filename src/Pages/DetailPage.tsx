@@ -81,18 +81,18 @@ const categories = [
 ];
 
 function DetailPage() {
-  const listingCollection = collection(db, "listings");
-  const { id } = useParams();
-  const { currentUser } = useAuth();
-  const navigate = useNavigate();
-  const handleOpen = () => setModalOpen(true);
-  const handleClose = () => setModalOpen(false);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [item, setItem] = useState<IListItem>();
-  const [user, setUser] = useState<IUser>();
-  const [reqSent, setReqSent] = useState<boolean>(false);
-  const { mySentRequests, getMySentRequests } = useUser();
-  const [cookies] = useCookies(["user"]);
+    const listingCollection = collection(db, "listings");
+    const { id } = useParams();
+    const { currentUser } = useAuth();
+    const navigate = useNavigate();
+    const handleOpen = () => setModalOpen(true);
+    const handleClose = () => setModalOpen(false);
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [item, setItem] = useState<IListItem>();
+    const [user, setUser] = useState<IUser>();
+    const [reqSent, setReqSent] = useState<boolean>(false);
+    const { mySentRequests, getMySentRequests, myReceivedRequests } = useUser();
+    const [cookies] = useCookies(["user"]);
 
     const formik = useFormik({
         initialValues: {
@@ -109,48 +109,48 @@ function DetailPage() {
         },
     });
 
-  useEffect(() => {
-    ifUserHasRequestOnItem();
-    getItem();
-  }, [mySentRequests, currentUser]);
+    useEffect(() => {
+        ifUserHasRequestOnItem();
+        getItem();
+    }, [mySentRequests, currentUser]);
 
-  const ifUserHasRequestOnItem = () => {
-    for (let req of mySentRequests) {
-      if (id === req.itemId) {
-        return setReqSent(true);
-      }
-    }
-    return setReqSent(false);
-  };
-
-  const handleSendRequest = async (e?: Event) => {
-    const newRequest: IRequest = {
-      accepted: ReqStatus.pending,
-      createdAt: new Date(),
-      fromUserId: cookies.user?.uid,
-      fromUserName: cookies.user?.displayName,
-      itemId: item!.id,
-      priceTotal: item!.price,
-      toUser: item!.authorID,
+    const ifUserHasRequestOnItem = () => {
+        for (let req of mySentRequests) {
+            if (id === req.itemId) {
+                return setReqSent(true);
+            }
+        }
+        return setReqSent(false);
     };
-    try {
-      await addDoc(collection(db, "requests"), newRequest);
-      setReqSent(true);
-      getMySentRequests();
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
-  const deleteListing = async (id: string) => {
-    const itemToRemove = doc(db, "listings", id);
-    try {
-      await deleteDoc(itemToRemove);
-      navigate(`/profile/${cookies.user.uid}`);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    const handleSendRequest = async (e?: Event) => {
+        const newRequest: IRequest = {
+            accepted: ReqStatus.pending,
+            createdAt: new Date(),
+            fromUserId: cookies.user?.uid,
+            fromUserName: cookies.user?.displayName,
+            itemId: item!.id,
+            priceTotal: item!.price,
+            toUser: item!.authorID,
+        };
+        try {
+            await addDoc(collection(db, "requests"), newRequest);
+            setReqSent(true);
+            getMySentRequests();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const deleteListing = async (id: string) => {
+        const itemToRemove = doc(db, "listings", id);
+        try {
+            await deleteDoc(itemToRemove);
+            navigate(`/profile/${cookies.user.uid}`);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     const updateListing = useCallback(async () => {
         if (id) {
@@ -199,26 +199,31 @@ function DetailPage() {
         setDocumentData();
     }, [updateListing, modalOpen]);
 
-
-  const getItem = async () => {
-    if (id) {
-      const docRef: any = doc(db, "listings", id);
-      const docSnap: any = await getDoc(docRef);
-      const item = docSnap.data();
-      if (item) {
-        setItem({
-          authorID: item.authorID,
-          title: item.title,
-          description: item.description,
-          image: item.image,
-          price: item.price,
-          category: item.category,
-          location: item.location,
-          id: id,
-        });
-      }
-    }
-  };
+    const getItem = async () => {
+        if (id) {
+            const docRef: any = doc(db, "listings", id);
+            const docSnap: any = await getDoc(docRef);
+            const item = docSnap.data();
+            if (item) {
+                setItem({
+                    authorID: item.authorID,
+                    title: item.title,
+                    description: item.description,
+                    image: item.image,
+                    price: item.price,
+                    category: item.category,
+                    location: item.location,
+                    id: id,
+                });
+            }
+        }
+    };
+    const filteredMyReceivedRequests = myReceivedRequests.filter(
+        (item) => item.accepted === 0
+    );
+    const itemHasRequest = filteredMyReceivedRequests.find(
+        (req) => req.itemId === item?.id
+    );
 
     return (
         <Box sx={wrapper}>
@@ -287,144 +292,162 @@ function DetailPage() {
                         </Box>
                         <Modal open={modalOpen} onClose={handleClose}>
                             <Box sx={modalStyle}>
-                                <form onSubmit={formik.handleSubmit}>
-                                    <DialogContent sx={crudModal}>
-                                        <DialogContentText
-                                            sx={{ fontSize: "2rem" }}
-                                        >
-                                            Update your listing
-                                        </DialogContentText>
-                                        <InputLabel id="category">
-                                            Category
-                                        </InputLabel>
-                                        <Select
-                                            id="category"
-                                            name="category"
-                                            value={formik.values.category}
-                                            label="Category"
-                                            onChange={formik.handleChange}
-                                            error={
-                                                formik.touched.category &&
-                                                Boolean(formik.errors.category)
-                                            }
-                                        >
-                                            {categories.map(
-                                                (chooseCategory, index) => (
-                                                    <MenuItem
-                                                        key={index}
-                                                        value={
-                                                            chooseCategory.title
-                                                        }
-                                                    >
-                                                        {chooseCategory.title}
-                                                    </MenuItem>
-                                                )
-                                            )}
-                                        </Select>
-                                        <TextField
-                                            id="title"
-                                            name="title"
-                                            autoFocus
-                                            margin="normal"
-                                            type="text"
-                                            label="Title"
-                                            value={formik.values.title}
-                                            onChange={formik.handleChange}
-                                            error={
-                                                formik.touched.title &&
-                                                Boolean(formik.errors.title)
-                                            }
-                                            helperText={
-                                                formik.touched.title &&
-                                                formik.errors.title
-                                            }
-                                        />
-                                        <TextField
-                                            id="description"
-                                            name="description"
-                                            autoFocus
-                                            margin="normal"
-                                            type="text"
-                                            label="Description"
-                                            value={formik.values.description}
-                                            onChange={formik.handleChange}
-                                            error={
-                                                formik.touched.description &&
-                                                Boolean(
+                                {itemHasRequest ? (
+                                    <>
+                                        You can't edit this item, since you have
+                                        a pending request
+                                    </>
+                                ) : (
+                                    <form onSubmit={formik.handleSubmit}>
+                                        <DialogContent sx={crudModal}>
+                                            <DialogContentText
+                                                sx={{ fontSize: "2rem" }}
+                                            >
+                                                Update your listing
+                                            </DialogContentText>
+                                            <InputLabel id="category">
+                                                Category
+                                            </InputLabel>
+                                            <Select
+                                                id="category"
+                                                name="category"
+                                                value={formik.values.category}
+                                                label="Category"
+                                                onChange={formik.handleChange}
+                                                error={
+                                                    formik.touched.category &&
+                                                    Boolean(
+                                                        formik.errors.category
+                                                    )
+                                                }
+                                            >
+                                                {categories.map(
+                                                    (chooseCategory, index) => (
+                                                        <MenuItem
+                                                            key={index}
+                                                            value={
+                                                                chooseCategory.title
+                                                            }
+                                                        >
+                                                            {
+                                                                chooseCategory.title
+                                                            }
+                                                        </MenuItem>
+                                                    )
+                                                )}
+                                            </Select>
+                                            <TextField
+                                                id="title"
+                                                name="title"
+                                                autoFocus
+                                                margin="normal"
+                                                type="text"
+                                                label="Title"
+                                                value={formik.values.title}
+                                                onChange={formik.handleChange}
+                                                error={
+                                                    formik.touched.title &&
+                                                    Boolean(formik.errors.title)
+                                                }
+                                                helperText={
+                                                    formik.touched.title &&
+                                                    formik.errors.title
+                                                }
+                                            />
+                                            <TextField
+                                                id="description"
+                                                name="description"
+                                                autoFocus
+                                                margin="normal"
+                                                type="text"
+                                                label="Description"
+                                                value={
+                                                    formik.values.description
+                                                }
+                                                onChange={formik.handleChange}
+                                                error={
+                                                    formik.touched
+                                                        .description &&
+                                                    Boolean(
+                                                        formik.errors
+                                                            .description
+                                                    )
+                                                }
+                                                helperText={
+                                                    formik.touched
+                                                        .description &&
                                                     formik.errors.description
-                                                )
-                                            }
-                                            helperText={
-                                                formik.touched.description &&
-                                                formik.errors.description
-                                            }
-                                        />
-                                        <TextField
-                                            id="price"
-                                            name="price"
-                                            autoFocus
-                                            margin="normal"
-                                            type="number"
-                                            label="Price"
-                                            value={formik.values.price}
-                                            onChange={formik.handleChange}
-                                            error={
-                                                formik.touched.price &&
-                                                Boolean(formik.errors.price)
-                                            }
-                                            helperText={
-                                                formik.touched.price &&
-                                                formik.errors.price
-                                            }
-                                        />
-                                        <TextField
-                                            id="location"
-                                            name="location"
-                                            autoFocus
-                                            margin="normal"
-                                            type="text"
-                                            label="Location"
-                                            value={formik.values.location}
-                                            onChange={formik.handleChange}
-                                            error={
-                                                formik.touched.location &&
-                                                Boolean(formik.errors.location)
-                                            }
-                                            helperText={
-                                                formik.touched.location &&
-                                                formik.errors.location
-                                            }
-                                        />
-                                        <TextField
-                                            id="image"
-                                            name="image"
-                                            autoFocus
-                                            margin="normal"
-                                            type="text"
-                                            label="Image"
-                                            value={formik.values.image}
-                                            onChange={formik.handleChange}
-                                            error={
-                                                formik.touched.image &&
-                                                Boolean(formik.errors.image)
-                                            }
-                                            helperText={
-                                                formik.touched.image &&
-                                                formik.errors.image
-                                            }
-                                        />
-                                        <Button
-                                            variant="contained"
-                                            type="submit"
-                                            sx={{
-                                                marginTop: "1.5rem",
-                                                color: "white",
-                                            }}
-                                        >
-                                            Update Listing
-                                        </Button>
-                                    </DialogContent>
-                                </form>
+                                                }
+                                            />
+                                            <TextField
+                                                id="price"
+                                                name="price"
+                                                autoFocus
+                                                margin="normal"
+                                                type="number"
+                                                label="Price"
+                                                value={formik.values.price}
+                                                onChange={formik.handleChange}
+                                                error={
+                                                    formik.touched.price &&
+                                                    Boolean(formik.errors.price)
+                                                }
+                                                helperText={
+                                                    formik.touched.price &&
+                                                    formik.errors.price
+                                                }
+                                            />
+                                            <TextField
+                                                id="location"
+                                                name="location"
+                                                autoFocus
+                                                margin="normal"
+                                                type="text"
+                                                label="Location"
+                                                value={formik.values.location}
+                                                onChange={formik.handleChange}
+                                                error={
+                                                    formik.touched.location &&
+                                                    Boolean(
+                                                        formik.errors.location
+                                                    )
+                                                }
+                                                helperText={
+                                                    formik.touched.location &&
+                                                    formik.errors.location
+                                                }
+                                            />
+                                            <TextField
+                                                id="image"
+                                                name="image"
+                                                autoFocus
+                                                margin="normal"
+                                                type="text"
+                                                label="Image"
+                                                value={formik.values.image}
+                                                onChange={formik.handleChange}
+                                                error={
+                                                    formik.touched.image &&
+                                                    Boolean(formik.errors.image)
+                                                }
+                                                helperText={
+                                                    formik.touched.image &&
+                                                    formik.errors.image
+                                                }
+                                            />
+                                            <Button
+                                                variant="contained"
+                                                type="submit"
+                                                sx={{
+                                                    marginTop: "1.5rem",
+                                                    color: "white",
+                                                }}
+                                            >
+                                                Update Listing
+                                            </Button>
+                                        </DialogContent>
+                                    </form>
+                                )}
                             </Box>
                         </Modal>
                     </>
@@ -496,12 +519,13 @@ function DetailPage() {
 
 const wrapper: SxProps = {
     position: "relative",
-    top: { xs: "60px", md: "170px", lg: "150px", xl: "150px" },
+    top: { xs: "60px", md: "250px", lg: "150px", xl: "150px" },
     width: "100%",
     height: "100%",
     display: "flex",
     justifyContent: "center",
-    marginBottom: "10rem",
+    marginBottom: "15rem",
+    minHeight: "800px",
 };
 
 const itemContainer: SxProps = {
@@ -519,6 +543,7 @@ const imageContainer: SxProps = {
     alignItems: "center",
     maxHeight: { xs: "400px", md: "500px", lg: "600px", xl: "600px" },
     maxWidth: { xs: "400px", md: "500px", lg: "600px", xl: "600px" },
+    mb: 10,
 };
 
 const infoContainer: SxProps = {
