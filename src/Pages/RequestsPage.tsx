@@ -96,7 +96,7 @@ const cardsContainer: SxProps = {
     alignItems: "center",
     width: "100%",
     height: "20rem",
-    overflowX: "scroll",
+    overflowX: "auto",
     position: "relative",
 };
 const notSignedIn: SxProps = {
