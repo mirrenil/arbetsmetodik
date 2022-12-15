@@ -19,6 +19,7 @@ https://chubbydog.vercel.app/
 Limitations:
 
 "About chubby dog" & "Terms and conditions" and social links in footer does not work.
+Adding a message with a request is not implemented yet.
 
 ---
 
@@ -77,7 +78,7 @@ Av:
 
 -   [x] Genomförd halvtidsavstämning med demo och godkänd opponering
 
--   [ ] Genomförd slutpresentation
+-   [x] Genomförd slutpresentation
 
 -   [x] GitHub har använts på ett strukturerat sätt med tydligt formulerade och avgränsade issues, branches, PR:s, branch protection och code reviews
 
