@@ -1,3 +1,5 @@
+import { cyan } from "@mui/material/colors";
+
 describe("Try to sign up with invalid credentials", () => {
     it("should show an error message", () => {
         cy.visit("https://chubbydog.vercel.app/signup");
@@ -18,6 +20,10 @@ describe("Sign in", () => {
         cy.get("#email").type("cypress@test.com");
         cy.get("#password").type("123456");
         cy.get("Button").last().click();
+        cy.location("pathname").should(
+            "eq",
+            "/profile/STTWxwUsR7eFK0xDyAOk1Tk7bmH2"
+        );
     });
 });
 
