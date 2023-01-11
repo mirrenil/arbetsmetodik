@@ -10,8 +10,8 @@ import "react-toastify/dist/ReactToastify.css";
 const validationSchema = yup.object({
     email: yup
         .string()
-        .email("Please enter a valid email")
-        .required("Please enter a valid email address"),
+        .email("Please enter a valid email address")
+        .required("Please enter an email address"),
     displayName: yup.string().required("Display name is required"),
     password: yup
         .string()
