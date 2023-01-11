@@ -1,5 +1,5 @@
 import { Typography, Box, TextField, Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
 import { ToastContainer } from "react-toastify";
@@ -8,7 +8,10 @@ import { useFormik } from "formik";
 import "react-toastify/dist/ReactToastify.css";
 
 const validationSchema = yup.object({
-    email: yup.string().required("Please enter your email address"),
+    email: yup
+        .string()
+        .email("Please enter a valid email")
+        .required("Please enter a valid email address"),
     displayName: yup.string().required("Display name is required"),
     password: yup
         .string()
@@ -27,6 +30,24 @@ function SignUpPage() {
     const [confirmationPassword, setConfirmationPassword] =
         useState<string>("");
     const [displayName, setDisplayedName] = useState<string>("");
+    const [buttonEnabled, setButtonEnabled] = useState<boolean>();
+
+    useEffect(() => {
+        checkFields();
+    });
+
+    const checkFields = () => {
+        if (
+            email.length &&
+            password.length &&
+            confirmationPassword.length &&
+            displayName.length
+        ) {
+            setButtonEnabled(false);
+        } else {
+            setButtonEnabled(true);
+        }
+    };
 
     const handleSignUp = async () => {
         if (password !== confirmationPassword) {
@@ -160,6 +181,7 @@ function SignUpPage() {
                         variant="contained"
                         sx={{ background: "#00C4BA", color: "white" }}
                         className="buttonStyle"
+                        disabled={buttonEnabled}
                     >
                         Sign up
                     </Button>
