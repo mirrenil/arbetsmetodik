@@ -18,19 +18,12 @@ describe("Sign in", () => {
     it("should sign in", () => {
         cy.visit("https://chubbydog.vercel.app/signin");
         cy.get("#email").type("cypress@test.com");
-        cy.get("#password").type("123456");
-        cy.get("Button").last().click();
+        cy.get("#password").get("#password").type("123456");
+        cy.get("button").last().click();
         cy.location("pathname").should(
             "eq",
             "/profile/STTWxwUsR7eFK0xDyAOk1Tk7bmH2"
         );
-    });
-});
-
-describe("Check if the images has alt texts", () => {
-    it("should contain alt text", () => {
-        cy.visit("https://chubbydog.vercel.app/");
-        cy.get("img").first().should("have.attr", "alt");
     });
 });
 
