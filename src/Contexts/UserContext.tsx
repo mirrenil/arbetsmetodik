@@ -20,6 +20,7 @@ interface UserContextValue {
     setMySentRequests?: () => void;
     deleteRequest: (a: string) => void;
     getMySentRequests: () => void;
+    getMyReceivedRequests: () => void;
 }
 
 export const UserContext = createContext<UserContextValue>({
@@ -29,6 +30,9 @@ export const UserContext = createContext<UserContextValue>({
     setMySentRequests: () => [],
     deleteRequest: () => {},
     getMySentRequests: () => {},
+    getMyReceivedRequests: () => {
+        undefined;
+    },
 });
 
 export function useUser() {
@@ -124,6 +128,7 @@ export function UserProvider({ children }: any) {
                 mySentRequests,
                 deleteRequest,
                 getMySentRequests,
+                getMyReceivedRequests,
             }}
         >
             {children}
