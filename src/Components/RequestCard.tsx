@@ -25,7 +25,7 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
     const [receiver, setReceiver] = useState<IUser>();
     const [item, setItem] = useState<IListItem>();
     const theme = useTheme();
-    const { deleteRequest } = useUser();
+    const { deleteRequest, getMyReceivedRequests } = useUser();
     const [deleteConfirmationpOpen, setDeleteConfirmationpOpen] =
         useState(false);
     const [denyConfirmationOpen, setDenyConfirmationOpen] = useState(false);
@@ -140,11 +140,13 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
     const acceptRequest = () => {
         handleRequestStatus(ReqStatus.accepted);
         handleAcceptConfirmationClose();
+        getMyReceivedRequests();
     };
 
     const denyRequest = () => {
         handleRequestStatus(ReqStatus.denied);
         handleDenyConfirmationClose();
+        getMyReceivedRequests();
     };
 
     const popUpText = {
@@ -155,12 +157,12 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
         },
         deny: {
             title: "Are you sure you want to deny this request?",
-            description: '"This action is irreversable."',
+            description: "This action is irreversable.",
             confirmButton: "Deny request",
         },
         accept: {
             title: "Are you sure you want to accept this request?",
-            description: '"This action is irreversable."',
+            description: "This action is irreversable.",
             confirmButton: "Accept request",
         },
     };
@@ -252,7 +254,7 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
                 {/* mySent && denied */}
                 {isMySentRequest && reqStatus === denied ? (
                     <Typography sx={[reqStatusStyle, deniedStyle]} variant="h5">
-                        You have denied this request
+                        Your request has been denied!
                     </Typography>
                 ) : null}
 
