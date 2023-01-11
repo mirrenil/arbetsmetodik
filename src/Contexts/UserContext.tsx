@@ -30,9 +30,7 @@ export const UserContext = createContext<UserContextValue>({
     setMySentRequests: () => [],
     deleteRequest: () => {},
     getMySentRequests: () => {},
-    getMyReceivedRequests: () => {
-        undefined;
-    },
+    getMyReceivedRequests: () => {},
 });
 
 export function useUser() {
