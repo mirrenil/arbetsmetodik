@@ -69,7 +69,7 @@ function SignUpPage() {
     const formik = useFormik({
         initialValues: {
             email: "",
-            displayName,
+            displayName: "",
             password: "",
             confirmPassword: "",
         },
