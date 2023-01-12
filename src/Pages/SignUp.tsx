@@ -1,5 +1,5 @@
 import { Typography, Box, TextField, Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Assets/FormStyle.css";
 import { useAuth } from "../Contexts/AuthContext";
 import { ToastContainer } from "react-toastify";
@@ -43,7 +43,7 @@ function SignUpPage() {
     const formik = useFormik({
         initialValues: {
             email: "",
-            displayName,
+            displayName: "",
             password: "",
             confirmPassword: "",
         },
@@ -81,7 +81,7 @@ function SignUpPage() {
                         id="email"
                         name="email"
                         label="Email"
-                        type="text"
+                        type="email"
                         value={formik.values.email}
                         onChange={(e) => {
                             formik.handleChange(e);
@@ -94,7 +94,7 @@ function SignUpPage() {
                     />
                     <TextField
                         id="displayName"
-                        label="Display name"
+                        label="Username"
                         name="displayName"
                         type="text"
                         onChange={(e) => {

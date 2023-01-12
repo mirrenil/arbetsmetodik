@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import {
     Button,
@@ -121,177 +121,143 @@ export default function NewListing() {
             <ToastContainer />
             {currentUser ? (
                 <>
-                    {currentUser.displayName ? (
-                        <>
-                            <form
-                                onSubmit={formik.handleSubmit}
-                                style={{ width: "95%", maxWidth: "400px" }}
-                            >
-                                <h1 style={{ textAlign: "center" }}>
-                                    Create a listing
-                                </h1>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        marginTop: "2rem",
-                                    }}
+                    <form
+                        onSubmit={formik.handleSubmit}
+                        style={{ width: "95%", maxWidth: "400px" }}
+                    >
+                        <h1 style={{ textAlign: "center" }}>
+                            Create a listing
+                        </h1>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginTop: "2rem",
+                            }}
+                        >
+                            <FormControl sx={textfieldStyle}>
+                                <InputLabel id="category">Category</InputLabel>
+                                <Select
+                                    name="category"
+                                    value={formik.values.category}
+                                    label="categoryLabel"
+                                    onChange={formik.handleChange}
+                                    error={
+                                        formik.touched.category &&
+                                        Boolean(formik.errors.category)
+                                    }
                                 >
-                                    <FormControl sx={textfieldStyle}>
-                                        <InputLabel id="category">
-                                            Category
-                                        </InputLabel>
-                                        <Select
-                                            name="category"
-                                            value={formik.values.category}
-                                            label="categoryLabel"
-                                            onChange={formik.handleChange}
-                                            error={
-                                                formik.touched.category &&
-                                                Boolean(formik.errors.category)
-                                            }
+                                    {categories.map((chooseCategory, index) => (
+                                        <MenuItem
+                                            key={index}
+                                            value={chooseCategory.title}
                                         >
-                                            {categories.map(
-                                                (chooseCategory, index) => (
-                                                    <MenuItem
-                                                        key={index}
-                                                        value={
-                                                            chooseCategory.title
-                                                        }
-                                                    >
-                                                        {chooseCategory.title}
-                                                    </MenuItem>
-                                                )
-                                            )}
-                                        </Select>
-                                    </FormControl>
-                                    <TextField
-                                        sx={textfieldStyle}
-                                        id="title"
-                                        name="title"
-                                        label="Title"
-                                        value={formik.values.title}
-                                        onChange={formik.handleChange}
-                                        error={
-                                            formik.touched.title &&
-                                            Boolean(formik.errors.title)
-                                        }
-                                        helperText={
-                                            formik.touched.title &&
-                                            formik.errors.title
-                                        }
-                                    />
-                                    <TextField
-                                        sx={textfieldStyle}
-                                        multiline
-                                        rows={3}
-                                        id="description"
-                                        name="description"
-                                        label="Description"
-                                        type="text"
-                                        value={formik.values.description}
-                                        onChange={formik.handleChange}
-                                        error={
-                                            formik.touched.description &&
-                                            Boolean(formik.errors.description)
-                                        }
-                                        helperText={
-                                            formik.touched.description &&
-                                            formik.errors.description
-                                        }
-                                    />
-                                    <TextField
-                                        sx={textfieldStyle}
-                                        id="price"
-                                        name="price"
-                                        label="Price"
-                                        type="number"
-                                        value={formik.values.price}
-                                        onChange={formik.handleChange}
-                                        error={
-                                            formik.touched.price &&
-                                            Boolean(formik.errors.price)
-                                        }
-                                        helperText={
-                                            formik.touched.price &&
-                                            formik.errors.price
-                                        }
-                                    />
-                                    <TextField
-                                        sx={textfieldStyle}
-                                        id="location"
-                                        name="location"
-                                        label="Location"
-                                        type="text"
-                                        value={formik.values.location}
-                                        onChange={formik.handleChange}
-                                        error={
-                                            formik.touched.location &&
-                                            Boolean(formik.errors.location)
-                                        }
-                                        helperText={
-                                            formik.touched.location &&
-                                            formik.errors.location
-                                        }
-                                    />
-                                    <TextField
-                                        sx={textfieldStyle}
-                                        id="imageUrl"
-                                        name="imageUrl"
-                                        label="Image Url"
-                                        type="text"
-                                        value={formik.values.imageUrl}
-                                        onChange={formik.handleChange}
-                                        error={
-                                            formik.touched.imageUrl &&
-                                            Boolean(formik.errors.imageUrl)
-                                        }
-                                        helperText={
-                                            formik.touched.imageUrl &&
-                                            formik.errors.imageUrl
-                                        }
-                                    />
-                                    {errorMessage ? (
-                                        <Typography>
-                                            Something went wrong, please try
-                                            again
-                                        </Typography>
-                                    ) : null}
-                                    <Button
-                                        color="primary"
-                                        variant="contained"
-                                        sx={{ width: "12rem", color: "white" }}
-                                        type="submit"
-                                    >
-                                        Submit
-                                    </Button>
-                                </Box>
-                            </form>
-                        </>
-                    ) : (
-                        <>
-                            <Typography
-                                variant="h5"
-                                sx={{ textAlign: "center" }}
-                            >
-                                Please update your profile with a username
-                                before creating a listing
-                            </Typography>
+                                            {chooseCategory.title}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <TextField
+                                sx={textfieldStyle}
+                                id="title"
+                                name="title"
+                                label="Title"
+                                value={formik.values.title}
+                                onChange={formik.handleChange}
+                                error={
+                                    formik.touched.title &&
+                                    Boolean(formik.errors.title)
+                                }
+                                helperText={
+                                    formik.touched.title && formik.errors.title
+                                }
+                            />
+                            <TextField
+                                sx={textfieldStyle}
+                                multiline
+                                rows={3}
+                                id="description"
+                                name="description"
+                                label="Description"
+                                type="text"
+                                value={formik.values.description}
+                                onChange={formik.handleChange}
+                                error={
+                                    formik.touched.description &&
+                                    Boolean(formik.errors.description)
+                                }
+                                helperText={
+                                    formik.touched.description &&
+                                    formik.errors.description
+                                }
+                            />
+                            <TextField
+                                sx={textfieldStyle}
+                                id="price"
+                                name="price"
+                                label="Price"
+                                type="number"
+                                value={formik.values.price}
+                                onChange={formik.handleChange}
+                                error={
+                                    formik.touched.price &&
+                                    Boolean(formik.errors.price)
+                                }
+                                helperText={
+                                    formik.touched.price && formik.errors.price
+                                }
+                            />
+                            <TextField
+                                sx={textfieldStyle}
+                                id="location"
+                                name="location"
+                                label="Location"
+                                type="text"
+                                value={formik.values.location}
+                                onChange={formik.handleChange}
+                                error={
+                                    formik.touched.location &&
+                                    Boolean(formik.errors.location)
+                                }
+                                helperText={
+                                    formik.touched.location &&
+                                    formik.errors.location
+                                }
+                            />
+                            <TextField
+                                sx={textfieldStyle}
+                                id="imageUrl"
+                                name="imageUrl"
+                                label="Image Url"
+                                type="text"
+                                value={formik.values.imageUrl}
+                                onChange={formik.handleChange}
+                                error={
+                                    formik.touched.imageUrl &&
+                                    Boolean(formik.errors.imageUrl)
+                                }
+                                helperText={
+                                    formik.touched.imageUrl &&
+                                    formik.errors.imageUrl
+                                }
+                            />
+                            {errorMessage ? (
+                                <Typography>
+                                    Something went wrong, please try again
+                                </Typography>
+                            ) : null}
                             <Button
-                                sx={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    color: "white",
-                                }}
+                                color="primary"
                                 variant="contained"
-                                onClick={() => navigate("/profile/:id")}
+                                sx={{ width: "12rem", color: "white" }}
+                                type="submit"
                             >
-                                Update profile
+                                Submit
                             </Button>
-                        </>
-                    )}
+                        </Box>
+                    </form>
                 </>
             ) : (
                 <Box sx={notSignedIn}>
