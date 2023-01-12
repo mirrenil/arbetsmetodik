@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Badge, Box, SxProps } from "@mui/material";
+import { Box, SxProps } from "@mui/material";
 import { Avatar, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,7 +23,6 @@ import { useUser } from "../Contexts/UserContext";
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const { currentUser, logout } = useAuth();
-    const { myReceivedRequests } = useUser();
     const userImg: any = currentUser?.photoURL;
     const userName: any = currentUser?.displayName;
     useEffect(() => {
@@ -31,10 +30,6 @@ const Header = () => {
         AOS.refresh();
     }, []);
     const navigate = useNavigate();
-
-    const newRequests = myReceivedRequests.filter(
-        (request) => request.accepted === 0
-    );
 
     const logoutUser = () => {
         logout();
@@ -124,13 +119,6 @@ const Header = () => {
                             </Link>
                         )}
                         <Box>
-                            {newRequests.length >= 1 && currentUser ? (
-                                <Badge
-                                    variant="dot"
-                                    color="error"
-                                    sx={{ position: "absolute" }}
-                                ></Badge>
-                            ) : null}
                             <MenuIcon
                                 onClick={() =>
                                     menuOpen
@@ -190,17 +178,6 @@ const Header = () => {
                                             My requests
                                         </Typography>
                                     </Box>
-                                    {newRequests.length >= 1 && currentUser ? (
-                                        <Badge
-                                            variant="dot"
-                                            color="error"
-                                            sx={{
-                                                position: "absolute",
-                                                right: "90px",
-                                                top: "43px",
-                                            }}
-                                        ></Badge>
-                                    ) : null}
                                 </Link>
                             ) : null}
                             <Link to="/" style={{ textDecoration: "none" }}>
@@ -337,17 +314,6 @@ const Header = () => {
                                         My requests
                                     </Typography>
                                 </Link>
-                                {newRequests.length >= 1 ? (
-                                    <Badge
-                                        variant="dot"
-                                        color="error"
-                                        sx={{
-                                            position: "absolute",
-                                            right: "250px",
-                                            top: "35px",
-                                        }}
-                                    ></Badge>
-                                ) : null}
                             </>
                         ) : null}
                         <Link
