@@ -12,8 +12,10 @@ const emailRules =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const validationSchema = yup.object({
-    email: yup.string().email().required("Required"),
-
+    email: yup
+        .string()
+        .email("Please enter a valid email address")
+        .required("Please enter an email address"),
     displayName: yup.string().required("Required"),
     password: yup
         .string()
@@ -105,6 +107,7 @@ function SignUpPage() {
                         id="email"
                         name="email"
                         label="Email"
+                        placeholder="chubbydog@email.com"
                         type="text"
                         value={formik.values.email}
                         onChange={(e) => {
