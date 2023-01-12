@@ -99,7 +99,7 @@ function ProfilePage() {
                         <Typography variant="h2" component="h2">
                             {user?.displayName}
                         </Typography>
-                        {currentUser?.uid === currentUserItems[0]?.authorID ? (
+                        {currentUser?.uid === id ? (
                             <Box sx={{ display: "flex", alignItems: "center" }}>
                                 <button
                                     onClick={handleOpen}
