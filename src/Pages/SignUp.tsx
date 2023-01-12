@@ -117,7 +117,7 @@ function SignUpPage() {
                     />
                     <TextField
                         id="displayName"
-                        label="Display name"
+                        label="Username"
                         name="displayName"
                         type="text"
                         onChange={(e) => {
