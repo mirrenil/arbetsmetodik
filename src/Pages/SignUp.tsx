@@ -7,20 +7,22 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import "react-toastify/dist/ReactToastify.css";
 
+const emailRules =
+    // eslint-disable-next-line
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 const validationSchema = yup.object({
-    email: yup
-        .string()
-        .email("Please enter a valid email address")
-        .required("Please enter an email address"),
-    displayName: yup.string().required("Display name is required"),
+    email: yup.string().email().required("Required"),
+
+    displayName: yup.string().required("Required"),
     password: yup
         .string()
         .min(6, "The password must be atleast 6 characters")
-        .required("Please enter a password"),
+        .required("Required"),
     confirmPassword: yup
         .string()
         .min(6, "The password must be atleast 6 characters")
-        .required("Please confirm your password"),
+        .required("Required"),
 });
 
 function SignUpPage() {
@@ -39,6 +41,7 @@ function SignUpPage() {
     const checkFields = () => {
         if (
             email.length &&
+            emailRules.test(email) &&
             password.length &&
             confirmationPassword.length &&
             displayName.length
@@ -108,6 +111,7 @@ function SignUpPage() {
                             formik.handleChange(e);
                             setEmail(e.target.value);
                         }}
+                        onBlur={formik.handleBlur("email")}
                         error={
                             formik.touched.email && Boolean(formik.errors.email)
                         }
@@ -122,6 +126,7 @@ function SignUpPage() {
                             formik.handleChange(e);
                             setDisplayedName(e.target.value);
                         }}
+                        onBlur={formik.handleBlur("displayName")}
                         value={formik.values.displayName}
                         error={
                             formik.touched.displayName &&
@@ -142,6 +147,7 @@ function SignUpPage() {
                             formik.handleChange(e);
                             setPassword(e.target.value);
                         }}
+                        onBlur={formik.handleBlur("password")}
                         error={
                             formik.touched.password &&
                             Boolean(formik.errors.password)
@@ -161,6 +167,7 @@ function SignUpPage() {
                             formik.handleChange(e);
                             setConfirmationPassword(e.target.value);
                         }}
+                        onBlur={formik.handleBlur("confirmPassword")}
                         error={
                             formik.touched.confirmPassword &&
                             Boolean(formik.errors.confirmPassword)
