@@ -93,21 +93,39 @@ function DetailPage() {
     const [reqSent, setReqSent] = useState<boolean>(false);
     const { mySentRequests, getMySentRequests, myReceivedRequests } = useUser();
     const [cookies] = useCookies(["user"]);
+    const [category, setCategory] = useState<any>();
+    const [title, setTitle] = useState<string>("");
+    const [price, setPrice] = useState<number>(0);
+    const [description, setDescription] = useState<string>("");
+    const [location, setLocation] = useState<string>("");
+    const [image, setImage] = useState<string>("");
 
     const formik = useFormik({
+        enableReinitialize: true,
         initialValues: {
-            category: "",
-            title: "",
-            price: "",
-            description: "",
-            location: "",
-            image: "",
+            category: category,
+            title: title,
+            price: price,
+            description: description,
+            location: location,
+            image: image,
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
             updateListing();
         },
     });
+
+    useEffect(() => {
+        if (item) {
+            setCategory(item.category);
+            setTitle(item.title);
+            setPrice(item.price);
+            setDescription(item.description);
+            setLocation(item.location);
+            setImage(item.image);
+        }
+    }, [item]);
 
     useEffect(() => {
         ifUserHasRequestOnItem();
