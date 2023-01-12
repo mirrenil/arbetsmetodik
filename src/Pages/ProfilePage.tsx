@@ -37,6 +37,16 @@ function ProfilePage() {
 
     const currentUserItems = items.filter((item) => item.authorID === user?.id);
 
+    const setDocumentData = async () => {
+        const userDocRef = doc(db, "users", `${id}`);
+        const docSnap = await getDoc(userDocRef);
+        if (docSnap.exists()) {
+            const user: any = docSnap.data();
+            user.id = docSnap.id;
+            await setUser(user);
+        }
+    };
+
     const handleNameChange = async (e: FormEvent) => {
         e.preventDefault();
         let userObject = {
@@ -48,19 +58,11 @@ function ProfilePage() {
             displayName: username,
             email: currentUser?.email,
         });
+        setDocumentData();
         handleClose();
     };
 
     useEffect(() => {
-        async function setDocumentData() {
-            const userDocRef = doc(db, "users", `${id}`);
-            const docSnap = await getDoc(userDocRef);
-            if (docSnap.exists()) {
-                const user: any = docSnap.data();
-                user.id = docSnap.id;
-                await setUser(user);
-            }
-        }
         setDocumentData();
         fetchItemsFromDb();
         AOS.init();
@@ -97,7 +99,7 @@ function ProfilePage() {
                         <Typography variant="h2" component="h2">
                             {user?.displayName}
                         </Typography>
-                        {currentUser?.uid === currentUserItems[0]?.authorID ? (
+                        {currentUser?.uid === id ? (
                             <Box sx={{ display: "flex", alignItems: "center" }}>
                                 <button
                                     onClick={handleOpen}
