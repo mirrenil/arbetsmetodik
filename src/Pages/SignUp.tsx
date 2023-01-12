@@ -7,10 +7,6 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import "react-toastify/dist/ReactToastify.css";
 
-const emailRules =
-    // eslint-disable-next-line
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
 const validationSchema = yup.object({
     email: yup
         .string()
@@ -43,7 +39,6 @@ function SignUpPage() {
     const checkFields = () => {
         if (
             email.length &&
-            emailRules.test(email) &&
             password.length &&
             confirmationPassword.length &&
             displayName.length

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Typography, Button, SxProps } from "@mui/material";
@@ -11,7 +11,10 @@ import { useFormik } from "formik";
 import "react-toastify/dist/ReactToastify.css";
 
 const validationSchema = yup.object({
-    email: yup.string().required("Please enter your email address"),
+    email: yup
+        .string()
+        .email("Please enter a valid email address")
+        .required("Please enter your email address"),
     password: yup
         .string()
         .min(6, "The password must be atleast 6 characters")
@@ -22,6 +25,19 @@ function SignInPage() {
     const { currentUser, login, errorMessage } = useAuth();
     const [loginEmail, setLoginEmail] = useState<string>("");
     const [loginPassword, setLoginPassword] = useState<string>("");
+    const [buttonEnabled, setButtonEnabled] = useState<boolean>();
+
+    useEffect(() => {
+        checkFields();
+    });
+
+    const checkFields = () => {
+        if (loginEmail.length && loginPassword.length) {
+            setButtonEnabled(false);
+        } else {
+            setButtonEnabled(true);
+        }
+    };
 
     const handleSignIn = async () => {
         try {
@@ -108,6 +124,7 @@ function SignInPage() {
                                 variant="contained"
                                 sx={{ background: "#00C4BA" }}
                                 type="submit"
+                                disabled={buttonEnabled}
                             >
                                 Sign in
                             </Button>
