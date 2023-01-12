@@ -252,7 +252,7 @@ const RequestCard = ({ request, isMySentRequest }: Props) => {
                 {/* mySent && denied */}
                 {isMySentRequest && reqStatus === denied ? (
                     <Typography sx={[reqStatusStyle, deniedStyle]} variant="h5">
-                        You have denied this request
+                        Your request is denied
                     </Typography>
                 ) : null}
 
