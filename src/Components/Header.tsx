@@ -124,13 +124,6 @@ const Header = () => {
                             </Link>
                         )}
                         <Box>
-                            {newRequests.length >= 1 && currentUser ? (
-                                <Badge
-                                    variant="dot"
-                                    color="error"
-                                    sx={{ position: "absolute" }}
-                                ></Badge>
-                            ) : null}
                             <MenuIcon
                                 onClick={() =>
                                     menuOpen
@@ -190,17 +183,6 @@ const Header = () => {
                                             My requests
                                         </Typography>
                                     </Box>
-                                    {newRequests.length >= 1 && currentUser ? (
-                                        <Badge
-                                            variant="dot"
-                                            color="error"
-                                            sx={{
-                                                position: "absolute",
-                                                right: "90px",
-                                                top: "43px",
-                                            }}
-                                        ></Badge>
-                                    ) : null}
                                 </Link>
                             ) : null}
                             <Link to="/" style={{ textDecoration: "none" }}>
@@ -337,17 +319,6 @@ const Header = () => {
                                         My requests
                                     </Typography>
                                 </Link>
-                                {newRequests.length >= 1 ? (
-                                    <Badge
-                                        variant="dot"
-                                        color="error"
-                                        sx={{
-                                            position: "absolute",
-                                            right: "250px",
-                                            top: "35px",
-                                        }}
-                                    ></Badge>
-                                ) : null}
                             </>
                         ) : null}
                         <Link
